@@ -6,12 +6,12 @@ PlayerSettings:
   serializedVersion: 11
   productGUID: 23639be819f24d044ae93a28448a771b
   AndroidProfiler: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: YGOPro2
-  productName: YGOPro2
+  companyName: "YGOPro2\uFF08Beta\uFF09"
+  productName: "YGOPro2\uFF08Beta\uFF09"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21176471, a: 1}
@@ -49,7 +49,7 @@ PlayerSettings:
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
-  m_MobileMTRendering: 0
+  m_MobileMTRendering: 1
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
@@ -62,7 +62,7 @@ PlayerSettings:
   allowedAutorotateToLandscapeRight: 1
   allowedAutorotateToLandscapeLeft: 1
   useOSAutorotation: 1
-  use32BitDisplayBuffer: 1
+  use32BitDisplayBuffer: 0
   disableDepthAndStencilBuffers: 0
   defaultIsFullScreen: 0
   defaultIsNativeResolution: 1
@@ -123,7 +123,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0
+  bundleVersion: 1.034.3
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -141,23 +141,23 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   applicationIdentifier:
-    Android: com.YGOPro2.YGOPro2
-    Standalone: unity.YGOPro2.YGOPro2
-    Tizen: com.YGOPro2.YGOPro2
-    iOS: com.YGOPro2.YGOPro2
-    tvOS: com.YGOPro2.YGOPro2
+    Android: cn.ygopro2.ygopro2android
+    Standalone: cn.ygopro2.ygopro2android
+    Tizen: cn.ygopro2.ygopro2android
+    iOS: cn.ygopro2.ygopro2android
+    tvOS: cn.ygopro2.ygopro2android
   buildNumber:
     iOS: 
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
-  AndroidPreferredInstallLocation: 1
+  AndroidPreferredInstallLocation: 0
   aotOptions: 
   stripEngineCode: 1
   iPhoneStrippingLevel: 0
   iPhoneScriptCallOptimization: 0
-  ForceInternetPermission: 0
-  ForceSDCardPermission: 0
+  ForceInternetPermission: 1
+  ForceSDCardPermission: 1
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
@@ -228,10 +228,10 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
+  AndroidKeystoreName: ygopro.jks
   AndroidKeyaliasName: 
-  AndroidTVCompatibility: 1
-  AndroidIsGame: 1
+  AndroidTVCompatibility: 0
+  AndroidIsGame: 0
   androidEnableBanner: 1
   m_AndroidBanners:
   - width: 320
@@ -243,46 +243,9 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 0}
+      m_Icon: {fileID: 2800000, guid: 92d79efb33a455e48990f4a79c142aa9, type: 3}
       m_Width: 128
       m_Height: 128
-      m_Kind: 0
-  - m_BuildTarget: Standalone
-    m_Icons:
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 1024
-      m_Height: 1024
-      m_Kind: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 512
-      m_Height: 512
-      m_Kind: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 256
-      m_Height: 256
-      m_Kind: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 874a0c923ab9f3648a0b5bf2830ee874, type: 3}
-      m_Width: 128
-      m_Height: 128
-      m_Kind: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 874a0c923ab9f3648a0b5bf2830ee874, type: 3}
-      m_Width: 48
-      m_Height: 48
-      m_Kind: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 32
-      m_Height: 32
-      m_Kind: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 16
-      m_Height: 16
       m_Kind: 0
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs: []
