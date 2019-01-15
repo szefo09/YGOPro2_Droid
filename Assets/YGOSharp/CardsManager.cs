@@ -19,19 +19,16 @@ namespace YGOSharp
         {
             nullName = InterString.Get("未知卡片");
             nullString = "";
-            nullString += "欢迎使用 YGOPro2 1033.D.3";
+            nullString += "欢迎使用：\r\nYGOPro2";
             nullString += "\r\n\r\n";
-            nullString += "使用本软件竞技前请在官方网站阅读竞技声明。";
-            //if (File.Exists("config/link.conf"))
-            //{
-            nullString += "\r\n";
-            nullString += "[url=http://ygopro2.lofter.com/lisence][u]http://ygopro2.lofter.com/lisence[/u][/url]";
-            nullString += "\r\n\r\n";
-            nullString += "官方网站：\r\n[url=http://ygopro2.lofter.com][u]http://ygopro2.lofter.com[/u][/url]\r\n请随时关注此页面的新卡消息和程序更新消息。";
-            //}
-            nullString += "\r\n\r\n";
-            nullString += "公测玩家交流群：\r\n[url=https://jq.qq.com/?_wv=1027&k=42Gsxgd][u]580454979[/u][/url]";
-            nullString += "\r\n[url=https://jq.qq.com/?_wv=1027&k=44aGRzz][u]428563714[/u][/url]";
+            nullString += "软件下载：";
+            nullString += "\r\n①：[url=https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA][u]https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA[/u][/url]";
+            nullString += "\r\n\r\n②：[url=https://github.com/Unicorn369/YGOPro2_Data][u]https://github.com/Unicorn369/YGOPro2_Data[/u][/url]";
+            nullString += "\r\n\r\n\r\n";
+            nullString += "欢迎加入QQ群：";
+            nullString += "\r\n①：[url=https://jq.qq.com/?_wv=1027&k=5nq6xJe][u]649612818[/u][/url]";
+            nullString += "\r\n②：[url=https://jq.qq.com/?_wv=1027&k=5idyod3][u]559276772[/u][/url]";
+            nullString += "\r\n③：[url=https://jq.qq.com/?_wv=1027&k=5kMUyu2][u]614684407[/u][/url]";
             using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
             {
                 connection.Open();
