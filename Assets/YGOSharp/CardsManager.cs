@@ -19,19 +19,12 @@ namespace YGOSharp
         {
             nullName = InterString.Get("未知卡片");
             nullString = "";
-            nullString += "欢迎使用 YGOPro2 1033.D.3";
+            nullString += "欢迎使用：\r\nYGOPro2 For Android";
             nullString += "\r\n\r\n";
-            nullString += "使用本软件竞技前请在官方网站阅读竞技声明。";
-            //if (File.Exists("config/link.conf"))
-            //{
-            nullString += "\r\n";
-            nullString += "[url=http://ygopro2.lofter.com/lisence][u]http://ygopro2.lofter.com/lisence[/u][/url]";
-            nullString += "\r\n\r\n";
-            nullString += "官方网站：\r\n[url=http://ygopro2.lofter.com][u]http://ygopro2.lofter.com[/u][/url]\r\n请随时关注此页面的新卡消息和程序更新消息。";
-            //}
-            nullString += "\r\n\r\n";
-            nullString += "公测玩家交流群：\r\n[url=https://jq.qq.com/?_wv=1027&k=42Gsxgd][u]580454979[/u][/url]";
-            nullString += "\r\n[url=https://jq.qq.com/?_wv=1027&k=44aGRzz][u]428563714[/u][/url]";
+            nullString += "源码：";
+			nullString += "\r\n「Android」\r\n[url=https://github.com/Unicorn369/YGOPro2_Droid][u]https://github.com/Unicorn369/YGOPro2_Droid[/u][/url]";
+			//nullString += "\r\nWindows：[url=https://github.com/lllyasviel/YGOProUnity_V2][u]https://github.com/lllyasviel/YGOProUnity_V2[/u][/url]";
+			nullString += "\r\n\r\n「Windows」\r\n[url=https://github.com/mercury233/ygopro2][u]https://github.com/mercury233/ygopro2[/u][/url]";
             using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
             {
                 connection.Open();

@@ -23,6 +23,8 @@ public class GameTextureManager
 
     static Dictionary<ulong, bool> addedMap = new Dictionary<ulong, bool>();
 
+    static HttpDldFile df = new HttpDldFile();
+
     public class BitmapHelper
     {
         public System.Drawing.Color[,] colors = null;
@@ -750,6 +752,18 @@ public class GameTextureManager
         if (!File.Exists(path))
         {
             path = "pics/" + pic.code.ToString() + ".jpg";
+        }
+        if (!File.Exists(path) && pic.code != 0)
+        {
+            //下载卡图
+            df.Download("http://update.ygopro.win/ygopro2-data/picture/card/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
+            path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+        }
+        if (!File.Exists(path) && pic.code != 0)
+        {
+            //下载先行卡卡图
+            df.Download("http://update.ygopro.win/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
+            path = "expansions/pics/" + pic.code.ToString() + ".jpg";
         }
         if (!File.Exists(path))
         {
