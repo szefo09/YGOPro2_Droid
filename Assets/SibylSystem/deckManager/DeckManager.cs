@@ -1084,7 +1084,7 @@ public class DeckManager : ServantWithCardDescription
         gameObjectDesk.transform.position = new Vector3(0, 0, 0);
         gameObjectDesk.transform.eulerAngles = new Vector3(90, 0, 0);
         gameObjectDesk.transform.localScale = new Vector3(30, 30, 1);
-        gameObjectDesk.GetComponent<Renderer>().material.mainTexture = Program.GetTextureViaPath("texture/duel/deckTable.png");
+        gameObjectDesk.GetComponent<Renderer>().material.mainTexture = Program.GetTextureViaPath("textures/duel/deckTable.png");
         //UIHelper.SetMaterialRenderingMode(gameObjectDesk.GetComponent<Renderer>().material, UIHelper.RenderingMode.Transparent);
         Rigidbody rigidbody = gameObjectDesk.AddComponent<Rigidbody>();
         rigidbody.useGravity = false;

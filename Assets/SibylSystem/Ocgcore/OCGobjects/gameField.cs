@@ -130,9 +130,9 @@ public class GameField : OCGobject
 
     public void loadOldField()
     {
-        if (File.Exists("texture/duel/field.png"))
+        if (File.Exists("textures/field2.png"))
         {
-            Texture2D textureField = UIHelper.getTexture2D("texture/duel/field.png");
+            Texture2D textureField = UIHelper.getTexture2D("textures/field2.png");
             Texture2D[] textureFieldSliced = UIHelper.sliceField(textureField);
             leftT.mainTexture = textureFieldSliced[0];
             midT.mainTexture = textureFieldSliced[1];
@@ -150,9 +150,9 @@ public class GameField : OCGobject
 
     public void loadNewField()
     {
-        if (File.Exists("texture/duel/newfield.png"))
+        if (File.Exists("textures/field3.png"))
         {
-            Texture2D textureField = UIHelper.getTexture2D("texture/duel/newfield.png");
+            Texture2D textureField = UIHelper.getTexture2D("textures/field3.png");
             Texture2D[] textureFieldSliced = UIHelper.sliceField(textureField);
             leftT.mainTexture = textureFieldSliced[0];
             midT.mainTexture = textureFieldSliced[1];
@@ -426,6 +426,22 @@ public class GameField : OCGobject
                         if (File.Exists("picture/field/" + code.ToString() + ".png"))  
                         {
                             tex = UIHelper.getTexture2D("picture/field/" + code.ToString() + ".png");
+                        }
+                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".png"))  
+                        {
+                            tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".png");
+                        }
+                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".jpg"))  
+                        {
+                            tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".jpg");
+                        }
+                        else if (File.Exists("pics/field/" + code.ToString() + ".png"))  
+                        {
+                            tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".png");
+                        }
+                        else if (File.Exists("pics/field/" + code.ToString() + ".jpg"))  
+                        {
+                            tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".jpg");
                         }
                         else
                         {

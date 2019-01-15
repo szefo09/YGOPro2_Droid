@@ -280,12 +280,27 @@ public class Program : MonoBehaviour
         //保持唤醒
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         //创建资源目录
-        if (!Directory.Exists("/storage/emulated/0/ygopro2"))
+        if (!Directory.Exists("/storage/emulated/0/ygocore"))
         {
-            Directory.CreateDirectory("/storage/emulated/0/ygopro2");
+            DirPaths("/storage/emulated/0/ygocore/cdb/");
+            DirPaths("/storage/emulated/0/ygocore/config/");
+            DirPaths("/storage/emulated/0/ygocore/deck/");
+            DirPaths("/storage/emulated/0/ygocore/expansions/pics/field/");
+            DirPaths("/storage/emulated/0/ygocore/pack/");
+            DirPaths("/storage/emulated/0/ygocore/pics/field/");
+            DirPaths("/storage/emulated/0/ygocore/picture/cardIn8thEdition/");
+            DirPaths("/storage/emulated/0/ygocore/replay/");
+            DirPaths("/storage/emulated/0/ygocore/sound/");
+            DirPaths("/storage/emulated/0/ygocore/textures/common/");
+            DirPaths("/storage/emulated/0/ygocore/textures/face/");
+            DirPaths("/storage/emulated/0/ygocore/textures/duel/healthBar/");
+            DirPaths("/storage/emulated/0/ygocore/textures/duel/phase/");
+            DirPaths("/storage/emulated/0/ygocore/textures/ui/");
+            File.Create("/storage/emulated/0/ygocore/.nomedia");
+            File.Create("/storage/emulated/0/ygocore/expansions/pics/.nomedia");
         }
-        Environment.CurrentDirectory = "/storage/emulated/0/ygopro2";
-        System.IO.Directory.SetCurrentDirectory("/storage/emulated/0/ygopro2");
+        Environment.CurrentDirectory = "/storage/emulated/0/ygocore";
+        System.IO.Directory.SetCurrentDirectory("/storage/emulated/0/ygocore");
         #elif UNITY_IPHONE //iPhone
         Environment.CurrentDirectory = Application.persistentDataPath;
         System.IO.Directory.SetCurrentDirectory(Application.persistentDataPath);
@@ -302,9 +317,10 @@ public class Program : MonoBehaviour
         go(300, () =>
         {
             InterString.initialize("config/translation.conf");
+            //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            GameStringManager.initialize("config/strings.conf");
+            GameStringManager.initialize("strings.conf");
             if (File.Exists("cdb/strings.conf"))
             {
                 GameStringManager.initialize("cdb/strings.conf");
@@ -313,9 +329,10 @@ public class Program : MonoBehaviour
             {
                 GameStringManager.initialize("expansions/strings.conf");
             }
-            YGOSharp.BanlistManager.initialize("config/lflist.conf");
+            YGOSharp.BanlistManager.initialize("lflist.conf");
 
             var fileInfos = (new DirectoryInfo("cdb")).GetFiles();
+            //var fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -323,13 +340,16 @@ public class Program : MonoBehaviour
                     if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                     {
                         YGOSharp.CardsManager.initialize("cdb/" + fileInfos[i].Name);
+                        //YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
                     }
                 }
             }
 
             if (Directory.Exists("expansions"))
+            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))
             {
                 fileInfos = (new DirectoryInfo("expansions")).GetFiles();
+                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -337,6 +357,7 @@ public class Program : MonoBehaviour
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                         {
                             YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
+                            //YGOSharp.CardsManager.initialize("expansions" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
                         }
                     }
                 }
@@ -344,6 +365,7 @@ public class Program : MonoBehaviour
 
 
             fileInfos = (new DirectoryInfo("pack")).GetFiles();
+            //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 3)
@@ -351,6 +373,7 @@ public class Program : MonoBehaviour
                     if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 3, 3) == ".db")
                     {
                         YGOSharp.PacksManager.initialize("pack/" + fileInfos[i].Name);
+                        //YGOSharp.PacksManager.initialize("pack" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
                     }
                 }
             }
@@ -851,7 +874,7 @@ public class Program : MonoBehaviour
         Screen.SetResolution(1280, 720, true);
         Application.targetFrameRate = -1;
         #endif
-        
+
         mouseParticle = Instantiate(new_mouse);
         instance = this;
         initialize();
@@ -996,5 +1019,27 @@ public class Program : MonoBehaviour
     }
 
     #endregion
+
+    //递归创建目录
+    private static void DirPaths(string filefullpath)
+    {
+        if (!File.Exists(filefullpath))
+        {
+            string dirpath = filefullpath.Substring(0, filefullpath.LastIndexOf("/"));
+            string[] paths = dirpath.Split("/");
+            if (paths.Length > 1)
+            {
+                string path = paths[0];
+                for (int i = 1; i < paths.Length; i++)
+                {
+                    path += "/" + paths[i];
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                }
+            }
+        }
+    }
 
 }

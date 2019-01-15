@@ -736,7 +736,7 @@ public static class UIHelper
     {
         try
         {
-            FileInfo[] fileInfos = (new DirectoryInfo("texture/face")).GetFiles();
+            FileInfo[] fileInfos = (new DirectoryInfo("textures/face")).GetFiles();
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -748,7 +748,7 @@ public static class UIHelper
                         {
                             try
                             {
-                                faces.Add(name, UIHelper.getTexture2D("texture/face/" + fileInfos[i].Name));
+                                faces.Add(name, UIHelper.getTexture2D("textures/face/" + fileInfos[i].Name));
                             }
                             catch (Exception e)
                             {

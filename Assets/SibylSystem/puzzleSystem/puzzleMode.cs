@@ -41,7 +41,7 @@ public class puzzleMode : WindowServantSP
 
     public void KF_puzzle(string name)
     {
-        launch("puzzle/" + name + ".lua");
+        launch("single/" + name + ".lua");
     }
 
     public override void show()
@@ -54,7 +54,7 @@ public class puzzleMode : WindowServantSP
     {
         superScrollView.clear();
         List<string[]> args = new List<string[]>();
-        FileInfo[] fileInfos = (new DirectoryInfo("puzzle")).GetFiles();
+        FileInfo[] fileInfos = (new DirectoryInfo("single")).GetFiles();
         Array.Sort(fileInfos, UIHelper.CompareName);
         for (int i = 0; i < fileInfos.Length; i++)
         {
