@@ -869,7 +869,8 @@ public class Program : MonoBehaviour
         {
             Screen.SetResolution(1300, 700, false);
         }
-        Application.targetFrameRate = 120;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 144;
         #elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
         Screen.SetResolution(1280, 720, true);
         Application.targetFrameRate = -1;
