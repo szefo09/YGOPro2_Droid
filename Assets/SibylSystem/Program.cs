@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Linq;
+using System.Net;
 
 public class Program : MonoBehaviour
 {
@@ -280,8 +282,6 @@ public class Program : MonoBehaviour
         //保持唤醒
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         //创建资源目录
-        if (!Directory.Exists("/storage/emulated/0/ygocore"))
-        {
             DirPaths("/storage/emulated/0/ygocore/cdb/");
             DirPaths("/storage/emulated/0/ygocore/config/");
             DirPaths("/storage/emulated/0/ygocore/deck/");
@@ -296,8 +296,18 @@ public class Program : MonoBehaviour
             DirPaths("/storage/emulated/0/ygocore/textures/duel/healthBar/");
             DirPaths("/storage/emulated/0/ygocore/textures/duel/phase/");
             DirPaths("/storage/emulated/0/ygocore/textures/ui/");
+            DirPaths("/storage/emulated/0/ygocore/updates/");
+        if(!File.Exists("/storage/emulated/0/ygocore/.nomedia"))
+        {
             File.Create("/storage/emulated/0/ygocore/.nomedia");
-            File.Create("/storage/emulated/0/ygocore/expansions/pics/.nomedia");
+        }
+        if(!File.Exists("/storage/emulated/0/ygocore/expansions/.nomedia"))
+        {
+            File.Create("/storage/emulated/0/ygocore/expansions/.nomedia");
+        }
+        if(!File.Exists("/storage/emulated/0/ygocore/picture/.nomedia"))
+        {
+            File.Create("/storage/emulated/0/ygocore/picture/.nomedia");
         }
         Environment.CurrentDirectory = "/storage/emulated/0/ygocore";
         System.IO.Directory.SetCurrentDirectory("/storage/emulated/0/ygocore");
@@ -316,23 +326,26 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
+            UpdateClient();
             InterString.initialize("config/translation.conf");
             //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
+            //GameStringManager.initialize("config/strings.conf");
             GameStringManager.initialize("strings.conf");
-            if (File.Exists("cdb/strings.conf"))
+            if (File.Exists("config/strings.conf"))
             {
-                GameStringManager.initialize("cdb/strings.conf");
+                GameStringManager.initialize("config/strings.conf");
             }
             if (File.Exists("expansions/strings.conf"))
             {
                 GameStringManager.initialize("expansions/strings.conf");
             }
+            //YGOSharp.BanlistManager.initialize("config/lflist.conf");
             YGOSharp.BanlistManager.initialize("lflist.conf");
 
-            var fileInfos = (new DirectoryInfo("cdb")).GetFiles();
-            //var fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles();//System Language
+            FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+            //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -348,8 +361,8 @@ public class Program : MonoBehaviour
             if (Directory.Exists("expansions"))
             //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles();
-                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles();
+                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -383,6 +396,52 @@ public class Program : MonoBehaviour
 
         });
 
+    }
+
+    private void UpdateClient()
+    {
+        try
+        {
+            WWW w = new WWW("https://api.github.com/repos/szefo09/updateYGOPro2/contents/");
+            while (!w.isDone)
+            {
+            }
+            List<ApiFile> toDownload = new List<ApiFile>();
+            List<ApiFile> apiFromGit = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(w.text);
+            if (!File.Exists("updates/SHAs.txt"))
+            {
+                toDownload.AddRange(apiFromGit);
+            }
+            
+            if (File.Exists("updates/SHAs.txt"))
+            {
+                List<ApiFile> local = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(File.ReadAllText("updates/SHAs.txt"));
+                foreach(ApiFile file in apiFromGit)
+                {
+                    if(file.sha != local.First(x => x.name == file.name).sha)
+                    {
+                        toDownload.Add(file);
+                    }
+                }
+            }
+            HttpDldFile httpDldFile = new HttpDldFile();
+            foreach (var dl in toDownload)
+            {
+                if (Path.GetExtension(dl.name)==".cdb")
+                {
+                    httpDldFile.Download(dl.download_url, Path.Combine("cdb", dl.name));
+                }
+                if (Path.GetExtension(dl.name) == ".conf")
+                {
+                    httpDldFile.Download(dl.download_url, Path.Combine("config", dl.name));
+                }
+            }
+            File.WriteAllText("updates/SHAs.txt", w.text);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     public GameObject mouseParticle;
