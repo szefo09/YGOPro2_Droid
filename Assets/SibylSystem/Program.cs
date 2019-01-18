@@ -283,46 +283,29 @@ public class Program : MonoBehaviour
         //保持唤醒
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         //创建资源目录
-            if (!Directory.Exists("/storage/emulated/0/ygocore"))
+            if (!Directory.Exists("/storage/emulated/0/ygocore/updates/version1.0.txt"))
             {
                 string filePath = Application.streamingAssetsPath + "/ygocore.zip";
                 var www = new WWW(filePath);
                 while (!www.isDone) { }
                 byte[] bytes = www.bytes;
                 ExtractZipFile(bytes, "/storage/emulated/0/");
+                File.Create("/storage/emulated/0/ygocore/.nomedia");
             }
-            DirPaths("/storage/emulated/0/ygocore/cdb/");
-            DirPaths("/storage/emulated/0/ygocore/config/");
-            DirPaths("/storage/emulated/0/ygocore/deck/");
-            DirPaths("/storage/emulated/0/ygocore/expansions/pics/field/");
-            DirPaths("/storage/emulated/0/ygocore/pack/");
-            DirPaths("/storage/emulated/0/ygocore/pics/field/");
-            DirPaths("/storage/emulated/0/ygocore/picture/cardIn8thEdition/");
-            DirPaths("/storage/emulated/0/ygocore/replay/");
-            DirPaths("/storage/emulated/0/ygocore/sound/");
-            DirPaths("/storage/emulated/0/ygocore/textures/common/");
-            DirPaths("/storage/emulated/0/ygocore/textures/face/");
-            DirPaths("/storage/emulated/0/ygocore/textures/duel/healthBar/");
-            DirPaths("/storage/emulated/0/ygocore/textures/duel/phase/");
-            DirPaths("/storage/emulated/0/ygocore/textures/ui/");
-            DirPaths("/storage/emulated/0/ygocore/updates/");
-        if(!File.Exists("/storage/emulated/0/ygocore/.nomedia"))
-        {
-            File.Create("/storage/emulated/0/ygocore/.nomedia");
-        }
-        if(!File.Exists("/storage/emulated/0/ygocore/expansions/.nomedia"))
-        {
-            File.Create("/storage/emulated/0/ygocore/expansions/.nomedia");
-        }
-        if(!File.Exists("/storage/emulated/0/ygocore/picture/.nomedia"))
-        {
-            File.Create("/storage/emulated/0/ygocore/picture/.nomedia");
-        }
+
         Environment.CurrentDirectory = "/storage/emulated/0/ygocore";
         System.IO.Directory.SetCurrentDirectory("/storage/emulated/0/ygocore");
 #elif UNITY_IPHONE //iPhone
-        Environment.CurrentDirectory = Application.persistentDataPath;
-        System.IO.Directory.SetCurrentDirectory(Application.persistentDataPath);
+            if (!Directory.Exists(Application.persistentDataPath +"/ygocore/updates/version1.0.txt"))
+            {
+                string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+                var www = new WWW(filePath);
+                while (!www.isDone) { }
+                byte[] bytes = www.bytes;
+                ExtractZipFile(System.IO.File.ReadAllBytes (bytes), Application.persistentDataPath + "/");
+            }
+        Environment.CurrentDirectory = Application.persistentDataPath+"/ygocore";
+        System.IO.Directory.SetCurrentDirectory(Application.persistentDataPath+"/ygocore");
 #endif
         go(1, () =>
         {
@@ -335,6 +318,7 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
+            //UpdateClient();
             InterString.initialize("config/translation.conf");
             //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
@@ -353,7 +337,6 @@ public class Program : MonoBehaviour
             YGOSharp.BanlistManager.initialize("lflist.conf");
 
             FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-            //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -369,8 +352,8 @@ public class Program : MonoBehaviour
             if (Directory.Exists("expansions"))
             //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();
+                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray(); ;
+                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -455,9 +438,14 @@ public class Program : MonoBehaviour
     {
         try
         {
+
             WWW w = new WWW("https://api.github.com/repos/szefo09/updateYGOPro2/contents/");
             while (!w.isDone)
             {
+                if (Application.internetReachability == NetworkReachability.NotReachable)
+                {
+                    throw new Exception("No Internet connection!");
+                }
             }
             List<ApiFile> toDownload = new List<ApiFile>();
             List<ApiFile> apiFromGit = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(w.text);
@@ -471,9 +459,24 @@ public class Program : MonoBehaviour
                 List<ApiFile> local = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(File.ReadAllText("updates/SHAs.txt"));
                 foreach(ApiFile file in apiFromGit)
                 {
-                    if(file.sha != local.First(x => x.name == file.name).sha)
+                    if(file.sha != local.FirstOrDefault(x => x.name == file.name).sha)
                     {
                         toDownload.Add(file);
+                    }
+                }
+                foreach(ApiFile f in local)
+                {
+                    if(f.name != apiFromGit.FirstOrDefault(x => x.name == f.name).name)
+                    {
+                        if (File.Exists("cdb/"+f.name))
+                        {
+                            File.Delete("cdb/" + f.name);
+                        }
+                        if (File.Exists("config/" + f.name))
+                        {
+                            File.Delete("config/" + f.name);
+                        }
+
                     }
                 }
             }
@@ -493,7 +496,7 @@ public class Program : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.Log(e.ToString());
         }
     }
 
