@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
-using System.Net;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 
 public class Program : MonoBehaviour
 {
@@ -275,13 +275,22 @@ public class Program : MonoBehaviour
 
     void initialize()
     {
-        #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
         //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
-        #elif UNITY_ANDROID //Android
+
+#elif UNITY_ANDROID //Android
         //保持唤醒
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         //创建资源目录
+            if (!Directory.Exists("/storage/emulated/0/ygocore"))
+            {
+                string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+                var www = new WWW(filePath);
+                while (!www.isDone) { }
+                byte[] bytes = www.bytes;
+                ExtractZipFile(bytes, "/storage/emulated/0/");
+            }
             DirPaths("/storage/emulated/0/ygocore/cdb/");
             DirPaths("/storage/emulated/0/ygocore/config/");
             DirPaths("/storage/emulated/0/ygocore/deck/");
@@ -311,10 +320,10 @@ public class Program : MonoBehaviour
         }
         Environment.CurrentDirectory = "/storage/emulated/0/ygocore";
         System.IO.Directory.SetCurrentDirectory("/storage/emulated/0/ygocore");
-        #elif UNITY_IPHONE //iPhone
+#elif UNITY_IPHONE //iPhone
         Environment.CurrentDirectory = Application.persistentDataPath;
         System.IO.Directory.SetCurrentDirectory(Application.persistentDataPath);
-        #endif
+#endif
         go(1, () =>
         {
             UIHelper.iniFaces();
@@ -326,7 +335,6 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            UpdateClient();
             InterString.initialize("config/translation.conf");
             //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
@@ -397,7 +405,52 @@ public class Program : MonoBehaviour
         });
 
     }
+    public void ExtractZipFile(byte[] data, string outFolder)
+    {
 
+        ZipFile zf = null;
+        try
+        {
+            //use MemoryStream!!!!
+            using (MemoryStream mstrm = new MemoryStream(data))
+            {
+                zf = new ZipFile(mstrm);
+
+                foreach (ZipEntry zipEntry in zf)
+                {
+                    if (!zipEntry.IsFile)
+                    {
+                        continue;
+                    }
+
+                    String entryFileName = zipEntry.Name;
+                    byte[] buffer = new byte[4096];     // 4K is optimum
+                    Stream zipStream = zf.GetInputStream(zipEntry);
+
+                    String fullZipToPath = Path.Combine(outFolder, entryFileName);
+                    string directoryName = Path.GetDirectoryName(fullZipToPath);
+                    if (directoryName.Length > 0)
+                        Directory.CreateDirectory(directoryName);
+                    using (FileStream streamWriter = File.Create(fullZipToPath))
+                    {
+                        StreamUtils.Copy(zipStream, streamWriter, buffer);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
+        finally
+        {
+            if (zf != null)
+            {
+                zf.IsStreamOwner = true;
+                zf.Close();
+            }
+        }
+    }
     private void UpdateClient()
     {
         try
