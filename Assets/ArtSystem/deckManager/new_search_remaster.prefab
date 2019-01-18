@@ -345,7 +345,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129162}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -65, y: 98, z: 0}
+  m_LocalPosition: {x: -64, y: 98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 459346}
@@ -587,13 +587,13 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 0.78431374}
   mPivot: 4
-  mWidth: 100
-  mHeight: 30
+  mWidth: 40
+  mHeight: 40
   mDepth: 0
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 3.3333333
+  aspectRatio: 1
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -667,7 +667,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 0.116071425
+  aspectRatio: 0.12149533
   mType: 1
   mFillDirection: 4
   mFillAmount: 1
@@ -717,7 +717,7 @@ MonoBehaviour:
   anchorOffset: 0
   softBorderPadding: 1
   renderQueue: 0
-  startingRenderQueue: 3002
+  startingRenderQueue: 3005
   mClipTexture: {fileID: 0}
   mAlpha: 1
   mClipping: 4
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: {fileID: 11461548}
   inputType: 0
-  onReturnKey: 0
+  onReturnKey: 1
   keyboardType: 0
   hideInput: 0
   validation: 0
@@ -1151,11 +1151,11 @@ MonoBehaviour:
   leftAnchor:
     target: {fileID: 418574}
     relative: 1
-    absolute: -225
+    absolute: -224
   rightAnchor:
     target: {fileID: 418574}
     relative: 1
-    absolute: -130
+    absolute: -129
   bottomAnchor:
     target: {fileID: 418574}
     relative: 0
@@ -1210,7 +1210,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 0.10204082
+  aspectRatio: 0.13392857
   mType: 1
   mFillDirection: 4
   mFillAmount: 1
@@ -1347,13 +1347,13 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 0.98823535, g: 0.98823535, b: 0.98823535, a: 0.78431374}
   mPivot: 4
-  mWidth: 100
-  mHeight: 30
+  mWidth: 45
+  mHeight: 45
   mDepth: 0
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 3.3333333
+  aspectRatio: 1
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -1412,7 +1412,7 @@ MonoBehaviour:
   anchorOffset: 0
   softBorderPadding: 1
   renderQueue: 0
-  startingRenderQueue: 3002
+  startingRenderQueue: 3005
   mClipTexture: {fileID: 0}
   mAlpha: 1
   mClipping: 3

@@ -480,11 +480,11 @@ public class Program : MonoBehaviour
             HttpDldFile httpDldFile = new HttpDldFile();
             foreach (var dl in toDownload)
             {
-                if (Path.GetExtension(dl.name)==".cdb")
+                if (Path.GetExtension(dl.name)== ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
                 {
                     httpDldFile.Download(dl.download_url, Path.Combine("cdb", dl.name));
                 }
-                if (Path.GetExtension(dl.name) == ".conf")
+                if (Path.GetExtension(dl.name) == ".conf" && !(Application.internetReachability == NetworkReachability.NotReachable))
                 {
                     httpDldFile.Download(dl.download_url, Path.Combine("config", dl.name));
                 }

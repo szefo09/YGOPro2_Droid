@@ -640,7 +640,7 @@ public class DeckManager : ServantWithCardDescription
                     );
         print(result);
         UIHelper.trySetLableText(gameObjectSearch, "title_", result.Count.ToString());
-        UIInput_search.isSelected = true;
+        //UIInput_search.isSelected = true;
     }
 
   public  YGOSharp.Banlist currentBanlist = null;
@@ -1829,7 +1829,7 @@ public class DeckManager : ServantWithCardDescription
         else
         {
             UIInput_search.value = "";
-            UIInput_search.isSelected = true;
+            //UIInput_search.isSelected = true;
         }
     }
 }

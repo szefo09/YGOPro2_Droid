@@ -48,7 +48,8 @@ public class UIselectableList : MonoBehaviour {
     public void install()
     {
         uIScrollView = panel.gameObject.AddComponent<UIScrollView>();
-        uIScrollView.can_be_draged = false;
+        uIScrollView.can_be_draged = true;
+        uIScrollView.iOSDragEmulation = true;
         uIScrollView.movement = UIScrollView.Movement.Vertical;
         uIScrollView.contentPivot = UIWidget.Pivot.TopLeft;
         uIScrollView.dragEffect = UIScrollView.DragEffect.Momentum;
