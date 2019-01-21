@@ -130,7 +130,7 @@ public class GameField : OCGobject
 
     public void loadOldField()
     {
-        if (File.Exists("texture/duel/field"))
+        if (File.Exists("texture/duel/field.png"))
         {
             Texture2D textureField = UIHelper.getTexture2D("texture/duel/field.png");
             Texture2D[] textureFieldSliced = UIHelper.sliceField(textureField);

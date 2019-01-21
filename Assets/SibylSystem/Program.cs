@@ -282,14 +282,14 @@ public class Program : MonoBehaviour
 #elif UNITY_ANDROID //Android
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
-        //string GamePaths = "/storage/emulated/0/ygocore";
+        //string GamePaths = "/storage/emulated/0/ygocore/";
 
         //YGOPro2 Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
         string GamePaths = "/storage/emulated/0/ygopro2/";
 
         if(!File.Exists(GamePaths + "updates/version1.0.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "ygocore.zip";
+            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
@@ -353,10 +353,10 @@ public class Program : MonoBehaviour
             }
 
             if (Directory.Exists("expansions"))
-            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))
+            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
             {
                 fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();
+                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)

@@ -49,7 +49,9 @@ pack/
 picture/
 replay/
 sound/
+texture/
 textures/
+updates/
 cards.cdb
 lflist.conf
 strings.conf
