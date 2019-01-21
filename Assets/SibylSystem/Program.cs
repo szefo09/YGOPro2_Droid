@@ -280,32 +280,36 @@ public class Program : MonoBehaviour
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
 
 #elif UNITY_ANDROID //Android
-        //保持唤醒
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        //创建资源目录
-            if (!Directory.Exists("/storage/emulated/0/ygocore/updates/version1.0.txt"))
-            {
-                string filePath = Application.streamingAssetsPath + "/ygocore.zip";
-                var www = new WWW(filePath);
-                while (!www.isDone) { }
-                byte[] bytes = www.bytes;
-                ExtractZipFile(bytes, "/storage/emulated/0/");
-                File.Create("/storage/emulated/0/ygocore/.nomedia");
-            }
+        //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
+        string GamePaths = "/storage/emulated/0/ygocore";
 
-        Environment.CurrentDirectory = "/storage/emulated/0/ygocore";
-        System.IO.Directory.SetCurrentDirectory("/storage/emulated/0/ygocore");
+        //YGOPro2 Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
+        //string GamePaths = "/storage/emulated/0/ygopro2/";
+
+        if(!File.Exists(GamePaths + "updates/version1.0.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "ygocore.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, GamePaths);
+            //File.Create(GamePaths + ".nomedia");
+        }
+        Environment.CurrentDirectory = GamePaths;
+        System.IO.Directory.SetCurrentDirectory(GamePaths);
 #elif UNITY_IPHONE //iPhone
-            if (!Directory.Exists(Application.persistentDataPath +"/ygocore/updates/version1.0.txt"))
-            {
-                string filePath = Application.streamingAssetsPath + "/ygocore.zip";
-                var www = new WWW(filePath);
-                while (!www.isDone) { }
-                byte[] bytes = www.bytes;
-                ExtractZipFile(System.IO.File.ReadAllBytes (bytes), Application.persistentDataPath + "/");
-            }
-        Environment.CurrentDirectory = Application.persistentDataPath+"/ygocore";
-        System.IO.Directory.SetCurrentDirectory(Application.persistentDataPath+"/ygocore");
+        string GamePaths = Application.persistentDataPath + "/ygopro2/";
+        if(!File.Exists(GamePaths + "updates/version1.0.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(System.IO.File.ReadAllBytes(bytes), GamePaths);
+        }
+        Environment.CurrentDirectory = GamePaths;
+        System.IO.Directory.SetCurrentDirectory(GamePaths);
 #endif
         go(1, () =>
         {
@@ -323,20 +327,19 @@ public class Program : MonoBehaviour
             //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            //GameStringManager.initialize("config/strings.conf");
-            GameStringManager.initialize("strings.conf");
-            if (File.Exists("config/strings.conf"))
+            GameStringManager.initialize("strings.conf");//YGOMobile Paths
+            if (File.Exists("cdb/strings.conf"))
             {
-                GameStringManager.initialize("config/strings.conf");
+                GameStringManager.initialize("cdb/strings.conf");
             }
             if (File.Exists("expansions/strings.conf"))
             {
                 GameStringManager.initialize("expansions/strings.conf");
             }
-            //YGOSharp.BanlistManager.initialize("config/lflist.conf");
-            YGOSharp.BanlistManager.initialize("lflist.conf");
+            YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
 
             FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+            //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -350,10 +353,10 @@ public class Program : MonoBehaviour
             }
 
             if (Directory.Exists("expansions"))
-            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))
+            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray(); ;
-                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles();
+                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -451,6 +454,7 @@ public class Program : MonoBehaviour
             List<ApiFile> apiFromGit = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(w.text);
             if (!File.Exists("updates/SHAs.txt"))
             {
+                Directory.CreateDirectory("updates");
                 toDownload.AddRange(apiFromGit);
             }
             
@@ -485,11 +489,11 @@ public class Program : MonoBehaviour
             {
                 if (Path.GetExtension(dl.name)== ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
                 {
-                    httpDldFile.Download(dl.download_url, Path.Combine("cdb", dl.name));
+                    httpDldFile.Download(dl.download_url, Path.Combine("cdb/", dl.name));
                 }
                 if (Path.GetExtension(dl.name) == ".conf" && !(Application.internetReachability == NetworkReachability.NotReachable))
                 {
-                    httpDldFile.Download(dl.download_url, Path.Combine("config", dl.name));
+                    httpDldFile.Download(dl.download_url, Path.Combine("config/", dl.name));
                 }
             }
             File.WriteAllText("updates/SHAs.txt", w.text);
