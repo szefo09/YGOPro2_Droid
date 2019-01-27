@@ -431,21 +431,21 @@ public class GameField : OCGobject
                         {
                             tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".png");
                         }
-                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".jpg"))  
-                        {
-                            tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".jpg");
-                        }
                         else if (File.Exists("pics/field/" + code.ToString() + ".png"))  
                         {
                             tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".png");
                         }
-                        else if (File.Exists("pics/field/" + code.ToString() + ".jpg"))  
+                        else if (File.Exists("picture/field/" + code.ToString() + ".jpg"))  
                         {
-                            tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".jpg");
+                            tex = UIHelper.getTexture2D("picture/field/" + code.ToString() + ".jpg");
+                        }
+                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".jpg"))  
+                        {
+                            tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".jpg");
                         }
                         else
                         {
-                            tex = UIHelper.getTexture2D("picture/field/" + code.ToString() + ".jpg");
+                            tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".jpg");
                         }
                         if (tex != null)
                         {

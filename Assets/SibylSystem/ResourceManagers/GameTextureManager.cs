@@ -332,15 +332,6 @@ public class GameTextureManager
                 path = "picture/card/" + pic.code.ToString() + ".jpg";
             }
             bool Iam8 = false;
-            //if (!File.Exists(path))
-            //{
-            //    Iam8 = true;
-            //    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-            //}
-            if (!File.Exists(path))
-            {
-                path = "expansions/pics/" + pic.code.ToString() + ".png";
-            }
             if (!File.Exists(path))
             {
                 Iam8 = true;
@@ -348,12 +339,13 @@ public class GameTextureManager
             }
             if (!File.Exists(path))
             {
-                path = "pics/" + pic.code.ToString() + ".png";
+                Iam8 = true;
+                path = "pics/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path))
             {
                 Iam8 = true;
-                path = "pics/" + pic.code.ToString() + ".jpg";
+                path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path))
             {
@@ -612,15 +604,6 @@ public class GameTextureManager
                 path = "picture/card/" + pic.code.ToString() + ".jpg";
             }
             bool Iam8 = false;
-            //if (!File.Exists(path))
-            //{
-            //    Iam8 = true;
-            //    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-            //}
-            if (!File.Exists(path))
-            {
-                path = "expansions/pics/" + pic.code.ToString() + ".png";
-            }
             if (!File.Exists(path))
             {
                 Iam8 = true;
@@ -628,12 +611,13 @@ public class GameTextureManager
             }
             if (!File.Exists(path))
             {
-                path = "pics/" + pic.code.ToString() + ".png";
+                Iam8 = true;
+                path = "pics/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path))
             {
                 Iam8 = true;
-                path = "pics/" + pic.code.ToString() + ".jpg";
+                path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path))
             {
@@ -653,11 +637,7 @@ public class GameTextureManager
              *  暂时只能直接贴图，以后再处理
             */
             #elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
-            path = "picture/null/" + pic.code.ToString() + ".png";
-            if (!File.Exists(path))
-            {
-                path = "picture/null.png";
-            }
+            path = "picture/null.png";
 
             byte[] data;
             using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -667,6 +647,19 @@ public class GameTextureManager
                 file.Read(data, 0, (int)file.Length);
             }
             pic.data = data;
+            //#elif UNITY_IPHONE //iPhone Test (Android not support)
+            //path = Application.streamingAssetsPath + "/closeup/" + pic.code.ToString() + ".png";
+            //if (File.Exists(path))
+            //{
+            //    www = new WWW(path);
+            //    byte[] data = www.bytes;
+            //    pic.data = data;
+            //} else {
+            //    path = Application.streamingAssetsPath + "/null.png"
+            //    www = new WWW(path);
+            //    byte[] data = www.bytes;
+            //    pic.data = data;
+            //}
             #endif
         }
         else
@@ -803,25 +796,17 @@ public class GameTextureManager
         {
             path = "picture/card/" + pic.code.ToString() + ".jpg";
         }
-        //if (!File.Exists(path))
-        //{
-        //    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-        //}
-        if (!File.Exists(path))
-        {
-            path = "expansions/pics/" + pic.code.ToString() + ".png";
-        }
         if (!File.Exists(path))
         {
             path = "expansions/pics/" + pic.code.ToString() + ".jpg";
         }
         if (!File.Exists(path))
         {
-            path = "pics/" + pic.code.ToString() + ".png";
+            path = "pics/" + pic.code.ToString() + ".jpg";
         }
         if (!File.Exists(path))
         {
-            path = "pics/" + pic.code.ToString() + ".jpg";
+            path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
         }
         #if UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
         if (!File.Exists(path) && pic.code != 0)
