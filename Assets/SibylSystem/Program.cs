@@ -337,8 +337,9 @@ public class Program : MonoBehaviour
                 GameStringManager.initialize("expansions/strings.conf");
             }
             YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
+            YGOSharp.CardsManager.initialize("cards.cdb");
 
-            FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+            /*FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
             //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
@@ -350,12 +351,12 @@ public class Program : MonoBehaviour
                         //YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
                     }
                 }
-            }
+            }*/
 
             if (Directory.Exists("expansions"))
             //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+                FileInfo[] fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
                 //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
@@ -371,16 +372,19 @@ public class Program : MonoBehaviour
             }
 
 
-            fileInfos = (new DirectoryInfo("pack")).GetFiles();
-            //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();
-            for (int i = 0; i < fileInfos.Length; i++)
+            if (Directory.Exists("pack"))
             {
-                if (fileInfos[i].Name.Length > 3)
+                FileInfo[] fileInfos = (new DirectoryInfo("pack")).GetFiles();
+                //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();
+                for (int i = 0; i < fileInfos.Length; i++)
                 {
-                    if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 3, 3) == ".db")
+                    if (fileInfos[i].Name.Length > 3)
                     {
-                        YGOSharp.PacksManager.initialize("pack/" + fileInfos[i].Name);
-                        //YGOSharp.PacksManager.initialize("pack" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
+                        if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 3, 3) == ".db")
+                        {
+                            YGOSharp.PacksManager.initialize("pack/" + fileInfos[i].Name);
+                            //YGOSharp.PacksManager.initialize("pack" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
+                        }
                     }
                 }
             }
