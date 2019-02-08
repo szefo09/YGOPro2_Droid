@@ -241,7 +241,18 @@ public class selectDeck : WindowServantSP
         string path = "deck/" + superScrollView.selectedString + ".ydk";
         if (File.Exists(path))
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
             System.Diagnostics.Process.Start("notepad.exe", path);
+#elif UNITY_STANDALONE_OSX //Mac OS X
+            System.Diagnostics.Process.Start("open", "-e " + path);
+#elif UNITY_STANDALONE_LINUX //Linux
+            System.Diagnostics.Process.Start("gedit", path);
+//#elif UNITY_ANDROID //Android (Java)
+//			AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+//			AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+//			jo.Call("Open", path);
+//#elif UNITY_IPHONE //iPhone
+#endif
         }
     }
 
