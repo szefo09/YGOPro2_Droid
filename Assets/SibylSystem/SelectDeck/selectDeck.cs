@@ -247,10 +247,9 @@ public class selectDeck : WindowServantSP
             System.Diagnostics.Process.Start("open", "-e " + path);
 #elif UNITY_STANDALONE_LINUX //Linux
             System.Diagnostics.Process.Start("gedit", path);
-//#elif UNITY_ANDROID //Android (Java)
-//			AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-//			AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-//			jo.Call("Open", path);
+#elif UNITY_ANDROID //Android (Java)
+            AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.UnityAndroid");
+            jo.Call("showToast", "暂不支持！以后再做唤醒编辑器打开");
 //#elif UNITY_IPHONE //iPhone
 #endif
         }

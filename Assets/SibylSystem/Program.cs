@@ -337,7 +337,7 @@ public class Program : MonoBehaviour
                 GameStringManager.initialize("expansions/strings.conf");
             }
             YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
-            YGOSharp.CardsManager.initialize("cards.cdb");
+            YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
 
             /*FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
             //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
@@ -392,6 +392,20 @@ public class Program : MonoBehaviour
             initializeALLservants();
             loadResources();
 
+#if UNITY_ANDROID //Android Java Test
+            if(!File.Exists("updates/image_version1.0.txt"))//用于检查更新
+            {
+                if(File.Exists("pics.zip"))//YGOMobile内置的卡图包
+                {
+                    AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.UnityAndroid");
+                    jo.Call("doZipExtractor", "pics.zip", "./");
+                    File.Create("updates/image_version1.0.txt");
+                } else {
+                    AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.UnityAndroid");
+                    jo.Call("doDownLoad", "http://192.168.1.222:3690/pics.zip", "./");
+                }
+            }
+#endif
         });
 
     }
@@ -445,7 +459,6 @@ public class Program : MonoBehaviour
     {
         try
         {
-
             WWW w = new WWW("https://api.github.com/repos/szefo09/updateYGOPro2/contents/");
             while (!w.isDone)
             {
@@ -461,22 +474,22 @@ public class Program : MonoBehaviour
                 Directory.CreateDirectory("updates");
                 toDownload.AddRange(apiFromGit);
             }
-            
+
             if (File.Exists("updates/SHAs.txt"))
             {
                 List<ApiFile> local = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(File.ReadAllText("updates/SHAs.txt"));
-                foreach(ApiFile file in apiFromGit)
+                foreach (ApiFile file in apiFromGit)
                 {
-                    if(file.sha != local.FirstOrDefault(x => x.name == file.name).sha)
+                    if (local.FirstOrDefault(x => x.name == file.name)==null || file.sha != local.FirstOrDefault(x => x.name == file.name).sha)
                     {
                         toDownload.Add(file);
                     }
                 }
-                foreach(ApiFile f in local)
+                foreach (ApiFile f in local)
                 {
-                    if(f.name != apiFromGit.FirstOrDefault(x => x.name == f.name).name)
+                    if (apiFromGit.FirstOrDefault(x => x.name == f.name) == null || f.name != apiFromGit.FirstOrDefault(x => x.name == f.name).name)
                     {
-                        if (File.Exists("cdb/"+f.name))
+                        if (File.Exists("cdb/" + f.name))
                         {
                             File.Delete("cdb/" + f.name);
                         }
@@ -491,7 +504,7 @@ public class Program : MonoBehaviour
             HttpDldFile httpDldFile = new HttpDldFile();
             foreach (var dl in toDownload)
             {
-                if (Path.GetExtension(dl.name)== ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
+                if (Path.GetExtension(dl.name) == ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
                 {
                     httpDldFile.Download(dl.download_url, Path.Combine("cdb/", dl.name));
                 }
@@ -505,6 +518,7 @@ public class Program : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log(e.ToString());
+            File.Delete("updates/SHAs.txt");
         }
     }
 
