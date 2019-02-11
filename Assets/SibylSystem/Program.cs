@@ -393,16 +393,16 @@ public class Program : MonoBehaviour
             loadResources();
 
 #if UNITY_ANDROID //Android Java Test
+            AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.UnityAndroid");
             if(!File.Exists("updates/image_version1.0.txt"))//用于检查更新
             {
                 if(File.Exists("pics.zip"))//YGOMobile内置的卡图包
                 {
-                    AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.UnityAndroid");
-                    jo.Call("doZipExtractor", "pics.zip", "./");
+                    jo.Call("doExtractZipFile", "pics.zip", "./");
                     File.Create("updates/image_version1.0.txt");
                 } else {
-                    AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.UnityAndroid");
-                    jo.Call("doDownLoad", "http://192.168.1.222:3690/pics.zip", "./");
+                    //jo.Call("doDownloadFile", "https://github.com/Unicorn369/YGOPro2_Data/releases/download/0.1/ygopro2-data.zip", "./");//下载不解压
+                    jo.Call("doDownloadZipFile", "http://download.ygopro.win/ygopro2/Android-Image-Data.zip");//下载并解压,完成后删除
                 }
             }
 #endif
