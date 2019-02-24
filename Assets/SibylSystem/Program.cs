@@ -287,7 +287,7 @@ public class Program : MonoBehaviour
         //YGOPro2 Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
         //string GamePaths = "/storage/emulated/0/ygopro2/";
 
-        if(!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -300,7 +300,7 @@ public class Program : MonoBehaviour
         System.IO.Directory.SetCurrentDirectory(GamePaths);
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if(!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -394,14 +394,12 @@ public class Program : MonoBehaviour
 
 #if UNITY_ANDROID //Android Java Test
             AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-            if(!File.Exists("updates/image_version1.0.txt"))//用于检查更新
+            if (!File.Exists("updates/image_version1.0.txt"))//用于检查更新
             {
-                if(File.Exists("pics.zip"))//YGOMobile内置的卡图包
+                if (File.Exists("pics.zip"))//YGOMobile内置的卡图包
                 {
                     jo.Call("doExtractZipFile", "pics.zip", "./");
                     File.Create("updates/image_version1.0.txt");
-                //} else {
-                //    jo.Call("doDownloadZipFile", "http://download.ygopro.win/ygopro2/Android-Image-Data.zip");//下载并解压,完成后删除
                 }
             }
 #endif

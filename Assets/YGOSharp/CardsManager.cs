@@ -25,6 +25,11 @@ namespace YGOSharp
 			nullString += "\r\n「Android」\r\n[url=https://github.com/Unicorn369/YGOPro2_Droid][u]https://github.com/Unicorn369/YGOPro2_Droid[/u][/url]";
 			//nullString += "\r\nWindows：[url=https://github.com/lllyasviel/YGOProUnity_V2][u]https://github.com/lllyasviel/YGOProUnity_V2[/u][/url]";
 			nullString += "\r\n\r\n「Windows」\r\n[url=https://github.com/mercury233/ygopro2][u]https://github.com/mercury233/ygopro2[/u][/url]";
+            nullString += "\r\n\r\n\r\n";
+            nullString += "欢迎加入QQ群：";
+            nullString += "\r\n①：[url=https://jq.qq.com/?_wv=1027&k=5nq6xJe][u]649612818[/u][/url]";
+            nullString += "\r\n③：[url=https://jq.qq.com/?_wv=1027&k=50MZVQA][u]831010207[/u][/url]";
+            nullString += "\r\n②：[url=https://jq.qq.com/?_wv=1027&k=5idyod3][u]559276772[/u][/url]";
             using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
             {
                 connection.Open();
