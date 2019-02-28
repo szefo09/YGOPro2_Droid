@@ -450,7 +450,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171500}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 274, z: 0}
+  m_LocalPosition: {x: 2, y: 273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 419752}
@@ -813,7 +813,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 20, y: 20, z: 0}
+  m_Size: {x: 30, y: 30, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6550730
 BoxCollider:
@@ -963,7 +963,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: Hide active duels
+  mText: "\u9690\u85CF\u5F00\u59CB\u7684\u623F\u95F4"
   mFontSize: 20
   mFontStyle: 0
   mAlignment: 0
@@ -1251,7 +1251,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: Room List
+  mText: "\u623F\u95F4\u4FE1\u606F"
   mFontSize: 30
   mFontStyle: 0
   mAlignment: 1
@@ -1417,7 +1417,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: Hide AI rooms
+  mText: "\u9690\u85CF\u4EBA\u673A\u7684\u623F\u95F4"
   mFontSize: 20
   mFontStyle: 0
   mAlignment: 0
@@ -1523,24 +1523,24 @@ MonoBehaviour:
   leftAnchor:
     target: {fileID: 419752}
     relative: 1
-    absolute: -39
+    absolute: -44
   rightAnchor:
     target: {fileID: 419752}
     relative: 1
-    absolute: -19
+    absolute: -14
   bottomAnchor:
     target: {fileID: 419752}
     relative: 1
-    absolute: -47
+    absolute: -52
   topAnchor:
     target: {fileID: 419752}
     relative: 1
-    absolute: -27
+    absolute: -22
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 20
-  mHeight: 20
+  mWidth: 30
+  mHeight: 30
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -1595,7 +1595,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 0.9369863
+  aspectRatio: 0.94
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -1762,7 +1762,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: 'Room Name: '
+  mText: "\u623F\u95F4\u540D\uFF1A"
   mFontSize: 25
   mFontStyle: 0
   mAlignment: 1
@@ -2240,7 +2240,6 @@ MonoBehaviour:
   mod: {fileID: 120608, guid: b102b714e94a8bf4abf4b4ada52e4158, type: 2}
   panel: {fileID: 11450640}
   scrollBar: {fileID: 11447614}
-  heightOfEach: 20
   preHeight: 0
 --- !u!114 &11487676
 MonoBehaviour:
@@ -2408,7 +2407,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: Refresh
+  mText: "\u5237\u65B0\u623F\u95F4"
   mFontSize: 20
   mFontStyle: 0
   mAlignment: 1
