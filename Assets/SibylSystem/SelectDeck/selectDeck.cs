@@ -249,7 +249,7 @@ public class selectDeck : WindowServantSP
             System.Diagnostics.Process.Start("gedit", path);
 #elif UNITY_ANDROID //Android (https://github.com/Unicorn369/Unity_Android_Library)
             AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-            jo.Call("openFile", "/storage/emulated/0/ygopro2/" + path);
+            jo.Call("openFile", Program.Android_Path + path);
 //#elif UNITY_IPHONE //iPhone
 #endif
         }

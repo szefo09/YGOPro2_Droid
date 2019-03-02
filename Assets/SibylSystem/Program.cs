@@ -274,6 +274,9 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
+    //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
+    public static string Android_Path = "/storage/emulated/0/ygopro2/";
+
     void initialize()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
@@ -282,23 +285,18 @@ public class Program : MonoBehaviour
 
 #elif UNITY_ANDROID //Android
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
-        //string GamePaths = "/storage/emulated/0/ygocore/";
 
-        //YGOPro2 Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
-        string GamePaths = "/storage/emulated/0/ygopro2/";
-
-        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(Android_Path + "updates/version1.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
-            ExtractZipFile(bytes, GamePaths);
+            ExtractZipFile(bytes, Android_Path);
             //File.Create(GamePaths + ".nomedia");
         }
-        Environment.CurrentDirectory = GamePaths;
-        System.IO.Directory.SetCurrentDirectory(GamePaths);
+        Environment.CurrentDirectory = Android_Path;
+        System.IO.Directory.SetCurrentDirectory(Android_Path);
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
         if (!File.Exists(GamePaths + "updates/version1.0.txt"))
