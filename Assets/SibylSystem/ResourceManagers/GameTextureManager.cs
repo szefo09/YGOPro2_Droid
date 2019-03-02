@@ -808,25 +808,17 @@ public class GameTextureManager
         {
             path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
         }
-        #if UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
-        if (!File.Exists(path) && pic.code != 0)
+        if (!File.Exists(path) && pic.code != 0 && Program.DownloadImage)
         {
             //YGOMobile (177x254)
-            df.Download("http://android.ygopro.win/YGOMobile/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
+            df.Download("http://download.ygopro.win/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
             path = "expansions/pics/" + pic.code.ToString() + ".jpg";
         }
-        #endif
-        if (!File.Exists(path) && pic.code != 0)
+        if (!File.Exists(path) && pic.code != 0 && Program.DownloadImage)
         {
-            //YGOPro2 (421x614)
-            df.Download("http://update.ygopro.win/ygopro2-data/picture/card/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
-            path = "picture/card/" + pic.code.ToString() + ".jpg";
-        }
-        if (!File.Exists(path) && pic.code != 0)
-        {
-            //YGOPro2 pre(336x490)
-            df.Download("http://update.ygopro.win/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
-            path = "picture/card/" + pic.code.ToString() + ".jpg";
+            //先行卡 (177x254)
+            df.Download("http://download.ygopro.win/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");
+            path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
         }
         if (!File.Exists(path))
         {

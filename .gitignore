@@ -33,6 +33,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Library_
 Temp/
 ygopro.jks
 AI_core_vs2017solution/bin/
@@ -51,6 +52,7 @@ replay/
 sound/
 texture/
 textures/
+update/
 updates/
 cards.cdb
 lflist.conf

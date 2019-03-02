@@ -87,6 +87,7 @@ public class Program : MonoBehaviour
     public GameObject new_ui_setting;
     public GameObject new_ui_book;
     public GameObject new_ui_selectServer;
+    public GameObject new_ui_RoomList;
     public GameObject new_ui_gameInfo;
     public GameObject new_ui_cardDescription;
     public GameObject new_ui_search;
@@ -287,7 +288,7 @@ public class Program : MonoBehaviour
         //YGOPro2 Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
         string GamePaths = "/storage/emulated/0/ygopro2/";
 
-        if(!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -300,7 +301,7 @@ public class Program : MonoBehaviour
         System.IO.Directory.SetCurrentDirectory(GamePaths);
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if(!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -323,8 +324,7 @@ public class Program : MonoBehaviour
         go(300, () =>
         {
             //UpdateClient();
-            InterString.initialize("config/translation.conf");
-            //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
+            InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
             GameStringManager.initialize("config/strings.conf");
@@ -338,33 +338,28 @@ public class Program : MonoBehaviour
             }
             YGOSharp.BanlistManager.initialize("config/lflist.conf");
 
-            FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-            //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
+            FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
                 {
                     if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                     {
-                        YGOSharp.CardsManager.initialize("cdb/" + fileInfos[i].Name);
-                        //YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
+                        YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
                     }
                 }
             }
 
-            if (Directory.Exists("expansions"))
-            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
+            if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
+                fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
                     {
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                         {
-                            YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
-                            //YGOSharp.CardsManager.initialize("expansions" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
+                            YGOSharp.CardsManager.initialize("expansions" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
                         }
                     }
                 }
@@ -388,6 +383,17 @@ public class Program : MonoBehaviour
             initializeALLservants();
             loadResources();
 
+#if UNITY_ANDROID //Android Java Test
+            AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
+            if (!File.Exists("updates/image_version1.0.txt"))//用于检查更新
+            {
+                if (File.Exists("pics.zip"))//YGOMobile内置的卡图包
+                {
+                    jo.Call("doExtractZipFile", "pics.zip", "./");
+                    File.Create("updates/image_version1.0.txt");
+                }
+            }
+#endif
         });
 
     }
@@ -441,11 +447,10 @@ public class Program : MonoBehaviour
     {
         try
         {
-
             WWW w = new WWW("https://api.github.com/repos/szefo09/updateYGOPro2/contents/");
             while (!w.isDone)
             {
-                if (Application.internetReachability == NetworkReachability.NotReachable)
+                if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(w.error))
                 {
                     throw new Exception("No Internet connection!");
                 }
@@ -457,22 +462,22 @@ public class Program : MonoBehaviour
                 Directory.CreateDirectory("updates");
                 toDownload.AddRange(apiFromGit);
             }
-            
+
             if (File.Exists("updates/SHAs.txt"))
             {
                 List<ApiFile> local = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(File.ReadAllText("updates/SHAs.txt"));
-                foreach(ApiFile file in apiFromGit)
+                foreach (ApiFile file in apiFromGit)
                 {
-                    if(file.sha != local.FirstOrDefault(x => x.name == file.name).sha)
+                    if (local.FirstOrDefault(x => x.name == file.name)==null || file.sha != local.FirstOrDefault(x => x.name == file.name).sha)
                     {
                         toDownload.Add(file);
                     }
                 }
-                foreach(ApiFile f in local)
+                foreach (ApiFile f in local)
                 {
-                    if(f.name != apiFromGit.FirstOrDefault(x => x.name == f.name).name)
+                    if (apiFromGit.FirstOrDefault(x => x.name == f.name) == null || f.name != apiFromGit.FirstOrDefault(x => x.name == f.name).name)
                     {
-                        if (File.Exists("cdb/"+f.name))
+                        if (File.Exists("cdb/" + f.name))
                         {
                             File.Delete("cdb/" + f.name);
                         }
@@ -487,7 +492,7 @@ public class Program : MonoBehaviour
             HttpDldFile httpDldFile = new HttpDldFile();
             foreach (var dl in toDownload)
             {
-                if (Path.GetExtension(dl.name)== ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
+                if (Path.GetExtension(dl.name) == ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
                 {
                     httpDldFile.Download(dl.download_url, Path.Combine("cdb/", dl.name));
                 }
@@ -500,7 +505,7 @@ public class Program : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log(e.ToString());
+            File.Delete("updates/SHAs.txt");
         }
     }
 
@@ -885,6 +890,7 @@ public class Program : MonoBehaviour
     public DeckManager deckManager;
     public Ocgcore ocgcore;
     public SelectServer selectServer;
+    public RoomList roomList;
     public Book book;
     public puzzleMode puzzleMode;
     public AIRoom aiRoom;
@@ -906,6 +912,8 @@ public class Program : MonoBehaviour
         servants.Add(ocgcore);
         selectServer = new SelectServer();
         servants.Add(selectServer);
+        roomList = new RoomList();
+        servants.Add(roomList);
         book = new Book();
         servants.Add(book);
         selectReplay = new selectReplay();
@@ -962,6 +970,10 @@ public class Program : MonoBehaviour
         {
             aiRoom.hide();
         }
+        if(to != roomList && to != selectServer && roomList.isShowed)
+        {
+            roomList.hide();
+        }
 
         if (to == backGroundPic && backGroundPic.isShowed == false) backGroundPic.show();
         if (to == menu && menu.isShowed == false) menu.show();
@@ -974,6 +986,7 @@ public class Program : MonoBehaviour
         if (to == selectReplay && selectReplay.isShowed == false) selectReplay.show();
         if (to == puzzleMode && puzzleMode.isShowed == false) puzzleMode.show();
         if (to == aiRoom && aiRoom.isShowed == false) aiRoom.show();
+        if (to == roomList && !roomList.isShowed) roomList.show();
 
     }
 
@@ -1110,6 +1123,7 @@ public class Program : MonoBehaviour
     public static bool Running = true;
 
     public static bool MonsterCloud = false;
+    public static bool DownloadImage = false;
     public static float fieldSize = 1;
 
     void OnApplicationQuit()
