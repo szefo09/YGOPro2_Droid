@@ -348,21 +348,20 @@ public class Program : MonoBehaviour
                 }
             }
 
-            if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
+            if (Directory.Exists("expansions"))
             {
-                fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
+                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
                     {
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                         {
-                            YGOSharp.CardsManager.initialize("expansions" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
+                            YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
                         }
                     }
                 }
             }
-
 
             fileInfos = (new DirectoryInfo("pack")).GetFiles();
             //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();

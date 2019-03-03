@@ -17,35 +17,8 @@ public class AppLanguage
 
     public static string ES = "/es-ES";        //西班牙语(西班牙) Spanish
 
-    public static string Null = "";             //Unknown
-    //public static string Null = "en-WW";      //English
-
-    /*public static string LanguageDir()
-    {
-        if (Application.systemLanguage == SystemLanguage.ChineseSimplified) {        //可能无法识别
-            return CN; //中文简体
-        } else if (Application.systemLanguage == SystemLanguage.ChineseTraditional) {//可能无法识别
-            return TW; //中文繁體
-        } else if (Application.systemLanguage == SystemLanguage.Chinese) {
-            return CN; //中文
-        } else if (Application.systemLanguage == SystemLanguage.English) {
-            return US; //English
-        } else if (Application.systemLanguage == SystemLanguage.French) {
-            return FR; //Français
-        } else if (Application.systemLanguage == SystemLanguage.German) {
-            return DE; //Deutsch
-        } else if (Application.systemLanguage == SystemLanguage.Italian) {
-            return IT; //Italiano
-        } else if (Application.systemLanguage == SystemLanguage.Japanese) {
-            return JP; //日本語
-        } else if (Application.systemLanguage == SystemLanguage.Korean) {
-            return KR; //한국어
-        } else if (Application.systemLanguage == SystemLanguage.Spanish) {
-            return ES; //Español
-        } else {
-            return Null;
-        }
-    }*/
+    //public static string Null = "";          //Unknown
+    public static string Null = "/en-US";      //English
 
     public static string LanguageDir()
     {
