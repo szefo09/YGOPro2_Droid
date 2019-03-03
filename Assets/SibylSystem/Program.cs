@@ -274,6 +274,9 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
+    //YGOPro2 Path (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
+    public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygocore/";//YGOMobile Path
+
     void initialize()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
@@ -282,23 +285,18 @@ public class Program : MonoBehaviour
 
 #elif UNITY_ANDROID //Android
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
-        string GamePaths = "/storage/emulated/0/ygocore/";
-
-        //YGOPro2 Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
-        //string GamePaths = "/storage/emulated/0/ygopro2/";
-
-        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version1.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
-            ExtractZipFile(bytes, GamePaths);
-            //File.Create(GamePaths + ".nomedia");
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+            //File.Create(ANDROID_GAME_PATH + ".nomedia");
         }
-        Environment.CurrentDirectory = GamePaths;
-        System.IO.Directory.SetCurrentDirectory(GamePaths);
+        Environment.CurrentDirectory = ANDROID_GAME_PATH;
+        System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
+
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
         if (!File.Exists(GamePaths + "updates/version1.0.txt"))
@@ -399,8 +397,10 @@ public class Program : MonoBehaviour
             {
                 if (File.Exists("pics.zip"))//YGOMobile内置的卡图包
                 {
-                    jo.Call("doExtractZipFile", "pics.zip", "./");
+                    jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
                     File.Create("updates/image_version1.0.txt");
+                } else {
+                    jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
                 }
             }
 #endif
