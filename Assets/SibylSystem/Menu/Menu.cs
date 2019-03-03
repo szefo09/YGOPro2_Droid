@@ -144,9 +144,12 @@ public class Menu : WindowServantSP
         Application.OpenURL("https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/closeup_version1.0.zip");
 #elif UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        if (!File.Exists("updates/closeup_version1.0.txt"))//用于检查更新
-        {
-            jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/closeup_version1.0.zip");//下载并解压
+        if (!File.Exists("updates/closeup_version1.0.txt")) {//用于检查更新
+            if (File.Exists("closeup_version1.0.zip")) {//如果有则直接解压
+                jo.Call("doExtractZipFile", "closeup_version1.0.zip", Program.ANDROID_GAME_PATH);
+            } else {//否则下载并解压，锁定目录：/ygopro2
+                jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/closeup_version1.0.zip");
+            }
         } else {
             jo.Call("showToast", "已下载，无需再次下载！");
         }

@@ -141,7 +141,7 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   applicationIdentifier:
-    Android: cn.ygopro2.ygopro2android
+    Android: com.ygopro2.ygopro2android
     Standalone: cn.ygopro2.ygopro2android
     Tizen: cn.ygopro2.ygopro2android
     iOS: cn.ygopro2.ygopro2android
