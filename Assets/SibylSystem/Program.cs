@@ -274,7 +274,7 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
-    //YGOPro2 Path (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)
+    //YGOPro2 Path (https://github.com/Unicorn369/YGOPro2_Droid/tree/Test)  //Multi-language support
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygocore/";//YGOMobile Path
 
     void initialize()
@@ -285,7 +285,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_ANDROID //Android
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version1.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version1.1.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -299,7 +299,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version1.1.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -323,7 +323,6 @@ public class Program : MonoBehaviour
         {
             //UpdateClient();
             InterString.initialize("config/translation.conf");
-            //InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
             GameStringManager.initialize("strings.conf");//YGOMobile Paths
@@ -338,25 +337,9 @@ public class Program : MonoBehaviour
             YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
             YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
 
-            /*FileInfo[] fileInfos = (new DirectoryInfo("cdb")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-            //FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
-            for (int i = 0; i < fileInfos.Length; i++)
-            {
-                if (fileInfos[i].Name.Length > 4)
-                {
-                    if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
-                    {
-                        YGOSharp.CardsManager.initialize("cdb/" + fileInfos[i].Name);
-                        //YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
-                    }
-                }
-            }*/
-
             if (Directory.Exists("expansions"))
-            //if (Directory.Exists("expansions" + AppLanguage.LanguageDir()))//System Language
             {
                 FileInfo[] fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
-                //fileInfos = (new DirectoryInfo("expansions" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -364,17 +347,14 @@ public class Program : MonoBehaviour
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                         {
                             YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
-                            //YGOSharp.CardsManager.initialize("expansions" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
                         }
                     }
                 }
             }
 
-
             if (Directory.Exists("pack"))
             {
                 FileInfo[] fileInfos = (new DirectoryInfo("pack")).GetFiles();
-                //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 3)
@@ -382,7 +362,6 @@ public class Program : MonoBehaviour
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 3, 3) == ".db")
                         {
                             YGOSharp.PacksManager.initialize("pack/" + fileInfos[i].Name);
-                            //YGOSharp.PacksManager.initialize("pack" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
                         }
                     }
                 }
@@ -393,12 +372,11 @@ public class Program : MonoBehaviour
 
 #if UNITY_ANDROID //Android Java Test
             AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-            if (!File.Exists("updates/image_version1.0.txt"))//用于检查更新
+            if (!File.Exists("updates/image_version1.1.txt"))//用于检查更新
             {
-                if (File.Exists("pics.zip"))//YGOMobile内置的卡图包
-                {
+                if (File.Exists("pics.zip")) {//YGOMobile内置的卡图包
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Create("updates/image_version1.0.txt");
+                    File.Create("updates/image_version1.1.txt");
                 } else {
                     jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
                 }
@@ -1004,6 +982,14 @@ public class Program : MonoBehaviour
 
     #region MonoBehaviors
 
+    private float LastUpdateShowTime = 0f;
+
+    private float UpdateShowDeltaTime = 1f;  //更新帧率
+
+    private int FrameUpdate = 0;
+
+    private float m_FPS = 0;
+
     void Start()
     {
         #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
@@ -1022,6 +1008,8 @@ public class Program : MonoBehaviour
         instance = this;
         initialize();
         go(500, () => { gameStart(); });
+
+        LastUpdateShowTime = Time.realtimeSinceStartup;
     }
 
     int preWid = 0;
@@ -1032,15 +1020,26 @@ public class Program : MonoBehaviour
 
     void OnGUI()
     {
-        if (Event.current.type == EventType.ScrollWheel)
+        if (Event.current.type == EventType.ScrollWheel) {
             _padScroll = -Event.current.delta.y / 100;
-        else
+        } else {
             _padScroll = 0;
+        }
+
+        //GUI.Label(new Rect(Screen.width / 2, 0, 100, 100), "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 100, 100), "FPS: " + m_FPS);
     }
 
     void Update()
     {
-       
+        FrameUpdate++;
+        if(Time.realtimeSinceStartup - LastUpdateShowTime >= UpdateShowDeltaTime)
+        {
+            m_FPS = FrameUpdate / (Time.realtimeSinceStartup - LastUpdateShowTime);
+            FrameUpdate = 0;
+            LastUpdateShowTime = Time.realtimeSinceStartup;
+        }
+
         if (preWid != Screen.width || preheight != Screen.height)
         {
             Resources.UnloadUnusedAssets();

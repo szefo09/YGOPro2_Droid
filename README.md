@@ -54,9 +54,9 @@ The feedbacks is checked every day.
 
 > `cp -f -r libs ../../../Assets/Plugins/Android/`
 
-# How to compile the libocgcore.so、libsqlite3.so? (Linux)
+# How to compile the libocgcore.so? (Linux)
 
-*In most case you do not need to care about the libocgcore.so、libsqlite3.so.*
+*In most case you do not need to care about the libocgcore.so.*
 
 > `cd AI_core_vs2017solution/build/gmake.linux`
 

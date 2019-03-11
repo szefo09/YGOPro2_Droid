@@ -6,22 +6,17 @@ ifndef config
 endif
 export config
 
-PROJECTS := sqlite3 ocgcore
+PROJECTS := ocgcore
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
-
-sqlite3: 
-	@echo "==== Building sqlite3 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f sqlite3.make
 
 ocgcore: 
 	@echo "==== Building ocgcore ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f ocgcore.make
 
 clean:
-	@${MAKE} --no-print-directory -C . -f sqlite3.make clean
 	@${MAKE} --no-print-directory -C . -f ocgcore.make clean
 
 help:
@@ -34,7 +29,6 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   sqlite3"
 	@echo "   ocgcore"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"
