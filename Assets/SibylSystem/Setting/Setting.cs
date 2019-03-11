@@ -6,6 +6,8 @@ public class Setting : WindowServant2D
 
     public LAZYsetting setting;
 
+    public bool batterySaving;
+
     public override void initialize()
     {
         gameObject = createWindow(this, Program.I().new_ui_setting);
@@ -14,6 +16,8 @@ public class Setting : WindowServant2D
         UIHelper.registEvent(gameObject, "screen_", resizeScreen);
         UIHelper.registEvent(gameObject, "full_", resizeScreen);
         UIHelper.registEvent(gameObject, "resize_", resizeScreen);
+        UIHelper.registEvent(gameObject, "batterySaving", batterySavingMode);
+        batterySaving = UIHelper.getByName<UIToggle>(gameObject, "batterySaving").value = UIHelper.fromStringToBool(Config.Get("batterySaving", "0"));
         UIHelper.getByName<UIToggle>(gameObject, "full_").value = Screen.fullScreen;
         UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Screen.width.ToString() + "*" + Screen.height.ToString();
         UIHelper.getByName<UIToggle>(gameObject, "ignoreWatcher_").value = UIHelper.fromStringToBool(Config.Get("ignoreWatcher_", "0"));
@@ -75,6 +79,20 @@ public class Setting : WindowServant2D
         UIHelper.registEvent(setting.Vlink.gameObject, onCP);
         onchangeMouse();
         onchangeCloud();
+    }
+
+    private void batterySavingMode()
+    {
+        if (batterySaving)
+        {
+            Application.targetFrameRate = 30;
+        }
+        else
+        {
+            Application.targetFrameRate = -1;
+        }
+        batterySaving = !batterySaving;
+        save();
     }
 
     private void readVales()
@@ -237,6 +255,7 @@ public class Setting : WindowServant2D
 
     public void save()
     {
+        Config.Set("batterySaving", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "batterySaving").value));
         Config.Set("ignoreWatcher_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreWatcher_").value));
         Config.Set("ignoreOP_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreOP_").value));
         Config.Set("smartSelect_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "smartSelect_").value));

@@ -287,7 +287,7 @@ public class Program : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         if (!File.Exists(ANDROID_GAME_PATH + "updates/version1.0.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+            string filePath = Application.streamingAssetsPath + "/ygopro2.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
@@ -301,7 +301,7 @@ public class Program : MonoBehaviour
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
         if (!File.Exists(GamePaths + "updates/version1.0.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+            string filePath = Application.streamingAssetsPath + "/ygopro2.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
@@ -995,6 +995,14 @@ public class Program : MonoBehaviour
 
     #region MonoBehaviors
 
+    private float LastUpdateShowTime = 0f;
+
+    private float UpdateShowDeltaTime = 1f;  //更新帧率
+
+    private int FrameUpdate = 0;
+
+    private float m_FPS = 0;
+
     void Start()
     {
         #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
@@ -1013,6 +1021,8 @@ public class Program : MonoBehaviour
         instance = this;
         initialize();
         go(500, () => { gameStart(); });
+
+        LastUpdateShowTime = Time.realtimeSinceStartup;
     }
 
     int preWid = 0;
@@ -1023,15 +1033,26 @@ public class Program : MonoBehaviour
 
     void OnGUI()
     {
-        if (Event.current.type == EventType.ScrollWheel)
+        if (Event.current.type == EventType.ScrollWheel) {
             _padScroll = -Event.current.delta.y / 100;
-        else
+        } else {
             _padScroll = 0;
+        }
+
+        //GUI.Label(new Rect(Screen.width / 2, 0, 100, 100), "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 100, 100), "FPS: " + m_FPS);
     }
 
     void Update()
     {
-       
+        FrameUpdate++;
+        if(Time.realtimeSinceStartup - LastUpdateShowTime >= UpdateShowDeltaTime)
+        {
+            m_FPS = FrameUpdate / (Time.realtimeSinceStartup - LastUpdateShowTime);
+            FrameUpdate = 0;
+            LastUpdateShowTime = Time.realtimeSinceStartup;
+        }
+
         if (preWid != Screen.width || preheight != Screen.height)
         {
             Resources.UnloadUnusedAssets();
