@@ -16,7 +16,7 @@ The feedbacks is checked every day.
 
 # How to compile the game?
 
-1. Download Unity 5.6.6f2 (https://unity3d.com/cn/get-unity/download/archive).
+1. Download Unity 5.6.7f1 (https://unity3d.com/cn/get-unity/download/archive).
 
 2. Clone the repository.
 

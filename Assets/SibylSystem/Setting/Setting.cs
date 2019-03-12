@@ -6,8 +6,6 @@ public class Setting : WindowServant2D
 
     public LAZYsetting setting;
 
-    public bool batterySaving;
-
     public override void initialize()
     {
         gameObject = createWindow(this, Program.I().new_ui_setting);
@@ -16,8 +14,6 @@ public class Setting : WindowServant2D
         UIHelper.registEvent(gameObject, "screen_", resizeScreen);
         UIHelper.registEvent(gameObject, "full_", resizeScreen);
         UIHelper.registEvent(gameObject, "resize_", resizeScreen);
-        UIHelper.registEvent(gameObject, "batterySaving", batterySavingMode);
-        batterySaving = UIHelper.getByName<UIToggle>(gameObject, "batterySaving").value = UIHelper.fromStringToBool(Config.Get("batterySaving", "0"));
         UIHelper.getByName<UIToggle>(gameObject, "full_").value = Screen.fullScreen;
         UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Screen.width.ToString() + "*" + Screen.height.ToString();
         UIHelper.getByName<UIToggle>(gameObject, "ignoreWatcher_").value = UIHelper.fromStringToBool(Config.Get("ignoreWatcher_", "0"));
@@ -68,8 +64,10 @@ public class Setting : WindowServant2D
         }
         setting.showoffATK.value = Config.Get("showoffATK", "1800");
         setting.showoffStar.value = Config.Get("showoffStar", "5");
+        setting.showoffFPS.value = Config.Get("showoffFPS", "60");
         UIHelper.registEvent(setting.showoffATK.gameObject, onchangeClose);
         UIHelper.registEvent(setting.showoffStar.gameObject, onchangeClose);
+        UIHelper.registEvent(setting.showoffFPS.gameObject, onchangeFPS);
         UIHelper.registEvent(setting.mouseEffect.gameObject, onchangeMouse);
         UIHelper.registEvent(setting.closeUp.gameObject, onchangeCloseUp);
         UIHelper.registEvent(setting.cloud.gameObject, onchangeCloud);
@@ -81,18 +79,14 @@ public class Setting : WindowServant2D
         onchangeCloud();
     }
 
-    private void batterySavingMode()
+    private void onchangeFPS()
     {
-        if (batterySaving)
-        {
-            Application.targetFrameRate = 30;
-        }
-        else
-        {
+        if (setting.showoffFPS.value == "无限制") {
             Application.targetFrameRate = -1;
+        } else {
+            int FPS = int.Parse(setting.showoffFPS.value);
+            Application.targetFrameRate = FPS;
         }
-        batterySaving = !batterySaving;
-        save();
     }
 
     private void readVales()
@@ -250,12 +244,12 @@ public class Setting : WindowServant2D
         }
         Config.Set("showoffATK", setting.showoffATK.value.ToString());
         Config.Set("showoffStar", setting.showoffStar.value.ToString());
+        Config.Set("showoffFPS", setting.showoffFPS.value.ToString());
         Config.Set("resize_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "resize_").value));
     }
 
     public void save()
     {
-        Config.Set("batterySaving", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "batterySaving").value));
         Config.Set("ignoreWatcher_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreWatcher_").value));
         Config.Set("ignoreOP_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreOP_").value));
         Config.Set("smartSelect_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "smartSelect_").value));
