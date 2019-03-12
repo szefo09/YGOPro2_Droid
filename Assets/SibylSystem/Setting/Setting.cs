@@ -64,8 +64,10 @@ public class Setting : WindowServant2D
         }
         setting.showoffATK.value = Config.Get("showoffATK", "1800");
         setting.showoffStar.value = Config.Get("showoffStar", "5");
+        setting.showoffFPS.value = Config.Get("showoffFPS", "60");
         UIHelper.registEvent(setting.showoffATK.gameObject, onchangeClose);
         UIHelper.registEvent(setting.showoffStar.gameObject, onchangeClose);
+        UIHelper.registEvent(setting.showoffFPS.gameObject, onchangeFPS);
         UIHelper.registEvent(setting.mouseEffect.gameObject, onchangeMouse);
         UIHelper.registEvent(setting.closeUp.gameObject, onchangeCloseUp);
         UIHelper.registEvent(setting.cloud.gameObject, onchangeCloud);
@@ -75,6 +77,16 @@ public class Setting : WindowServant2D
         UIHelper.registEvent(setting.Vlink.gameObject, onCP);
         onchangeMouse();
         onchangeCloud();
+    }
+
+    private void onchangeFPS()
+    {
+        if (setting.showoffFPS.value == "无限制") {
+            Application.targetFrameRate = -1;
+        } else {
+            int FPS = int.Parse(setting.showoffFPS.value);
+            Application.targetFrameRate = FPS;
+        }
     }
 
     private void readVales()
@@ -232,6 +244,7 @@ public class Setting : WindowServant2D
         }
         Config.Set("showoffATK", setting.showoffATK.value.ToString());
         Config.Set("showoffStar", setting.showoffStar.value.ToString());
+        Config.Set("showoffFPS", setting.showoffFPS.value.ToString());
         Config.Set("resize_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "resize_").value));
     }
 
