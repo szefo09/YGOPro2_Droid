@@ -379,6 +379,7 @@ public class Program : MonoBehaviour
                     File.Create("updates/image_version1.1.txt");
                 } else {
                     jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
+                    Application.OpenURL("https://www.taptap.com/app/37972");
                 }
             }
 #endif

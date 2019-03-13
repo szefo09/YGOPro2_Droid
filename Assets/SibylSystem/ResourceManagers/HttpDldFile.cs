@@ -10,25 +10,36 @@ using UnityEngine;
 
 public class HttpDldFile
 {
+    private readonly System.Threading.Semaphore semaphore = new System.Threading.Semaphore(6, 6);
     public bool Download(string url, string filename)
     {
         bool flag = false;
         try
         {
-        if(!Directory.Exists(Path.GetDirectoryName(filename))){
-            Directory.CreateDirectory(Path.GetDirectoryName(filename));
-        }
-        
-        using (var client = new WebClient())
-        {
-            ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-            //client.Headers.Add(HttpRequestHeader.Authorization, string.Concat("token ", RepoData.GetToken()));
-            client.Headers.Add(HttpRequestHeader.ContentType,"application/x-www-form-urlencoded; charset=UTF-8");
-            client.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36 Edge/15.15063");
-            client.DownloadFile(new Uri(url), filename+".tmp");
-        }
-        flag = true;
-        if(File.Exists(filename))
+            if (!Directory.Exists(Path.GetDirectoryName(filename)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+            }
+
+            using (var client = new TimeoutWebClient())
+            {
+                ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+
+                //authorization needed to acces github
+                if (Path.GetExtension(filename).Contains("png"))
+                {
+                    //client.Headers.Add(HttpRequestHeader.Authorization, string.Concat("token ", RepoData.GetToken()));
+                    client.Timeout = 6500;
+                }
+                if (Path.GetExtension(filename).Contains("jpg"))
+                {
+                    client.Timeout = 3500;
+                }
+                semaphore.WaitOne();
+                client.DownloadFile(new Uri(url), filename + ".tmp");
+            }
+            flag = true;
+            if (File.Exists(filename))
             {
                 File.Delete(filename);
             }
@@ -37,6 +48,10 @@ public class HttpDldFile
         catch (Exception)
         {
             flag = false;
+        }
+        finally
+        {
+            semaphore.Release();
         }
         return flag;
     }
@@ -68,5 +83,25 @@ public class HttpDldFile
         }
         return isOk;
     }
+}
+public class TimeoutWebClient : WebClient
+{
+    public int Timeout { get; set; }
 
+    public TimeoutWebClient()
+    {
+        Timeout = 10000;
+    }
+
+    public TimeoutWebClient(int timeout)
+    {
+        Timeout = timeout;
+    }
+
+    protected override WebRequest GetWebRequest(Uri address)
+    {
+        WebRequest request = base.GetWebRequest(address);
+        request.Timeout = Timeout;
+        return request;
+    }
 }
