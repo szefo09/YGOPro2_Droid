@@ -258,7 +258,7 @@ public class GameTextureManager
             if (File.Exists("picture/closeup/" + pic.code.ToString() + ".png"))
             {
                 string path = "picture/closeup/" + pic.code.ToString() + ".png";
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_ANDROID //编译器、Windows、Android
                 BitmapHelper bitmap = new BitmapHelper(path);
                 int left;
                 int right;
@@ -290,10 +290,11 @@ public class GameTextureManager
                 caculateK(pic);
 
                 /*
-                 *  以上处理其他平台无法正常使用
+                 *  以上处理iOS平台无法正常使用
+                 *  Android已成功编译 libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android.git)
                  *  暂时只能直接贴图，以后再处理
-                */
-#elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
+                **/
+#elif UNITY_IPHONE //iPhone
                 byte[] data;
                 using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
@@ -593,7 +594,7 @@ public class GameTextureManager
             string path = "picture/closeup/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_ANDROID //编译器、Windows、Android
                 path = "picture/card/" + pic.code.ToString() + ".png";
                 if (!File.Exists(path))
                 {
@@ -629,10 +630,11 @@ public class GameTextureManager
                 //pic.autoMade = true;
 
                 /*
-                 *  以上处理其他平台无法正常使用
+                 *  以上处理iOS平台无法正常使用
+                 *  Android已成功编译libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android.git)
                  *  暂时只能直接贴图，以后再处理
-                */
-#elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
+                **/
+#elif UNITY_IPHONE //iPhone
                 path = "picture/null.png";
 
                 byte[] data;
@@ -647,7 +649,7 @@ public class GameTextureManager
             }
             else
             {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_ANDROID //编译器、Windows、Android
                 BitmapHelper bitmap = new BitmapHelper(path);
                 int left;
                 int right;
@@ -701,10 +703,11 @@ public class GameTextureManager
                 caculateK(pic);
 
                 /*
-                 *  以上处理其他平台无法正常使用
+                 *  以上处理iOS平台无法正常使用
+                 *  Android已成功编译libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android.git)
                  *  暂时只能直接贴图，以后再处理
-                */
-#elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
+                **/
+#elif UNITY_IPHONE //iPhone
                 byte[] data;
                 using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
@@ -805,7 +808,7 @@ public class GameTextureManager
             if (!File.Exists(path) && pic.code != 0 && Program.DownloadImage)
             {
                 //YGOMobile (177x254)
-                df.Download("http://download.ygopro.win/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
+                df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path) && pic.code != 0 && Program.DownloadImage)

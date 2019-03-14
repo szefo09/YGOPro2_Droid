@@ -285,7 +285,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_ANDROID //Android
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version1.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2.zip";
             var www = new WWW(filePath);
@@ -299,7 +299,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version1.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version2.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2.zip";
             var www = new WWW(filePath);
@@ -382,15 +382,16 @@ public class Program : MonoBehaviour
 
 #if UNITY_ANDROID //Android Java Test
             AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-            if (!File.Exists("updates/image_version1.0.txt"))//用于检查更新
+            if (!File.Exists("updates/image_version1.1.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Create("updates/image_version1.0.txt");
+                    File.Copy("updates/version2.0.txt", "updates/image_version1.1.txt", true);
                 } else if (File.Exists("/storage/emulated/0/ygocore/pics.zip")) {//YGOMobile内置的卡图包
                     jo.Call("doExtractZipFile", "/storage/emulated/0/ygocore/pics.zip", ANDROID_GAME_PATH);
-                    File.Create("updates/image_version1.0.txt");
+                    File.Copy("updates/version2.0.txt", "updates/image_version1.1.txt", true);
                 } else {
+                    Application.OpenURL("https://www.taptap.com/app/37972");
                     jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
                 }
             }
