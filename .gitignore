@@ -40,6 +40,7 @@ AI_core_vs2017solution/bin/
 AI_core_vs2017solution/obj/
 AI_core_vs2017solution/build/android/libs/
 AI_core_vs2017solution/build/android/obj/
+Assets/Plugins/Android/libs/x86*
 
 # ygopro
 cdb/

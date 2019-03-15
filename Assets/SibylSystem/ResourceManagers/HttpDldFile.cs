@@ -10,7 +10,6 @@ using UnityEngine;
 
 public class HttpDldFile
 {
-    private readonly System.Threading.Semaphore semaphore = new System.Threading.Semaphore(6, 6);
     public bool Download(string url, string filename)
     {
         bool flag = false;
@@ -33,7 +32,6 @@ public class HttpDldFile
                 {
                     client.Timeout = 3500;
                 }
-                semaphore.WaitOne();
                 client.DownloadFile(new Uri(url), filename + ".tmp");
             }
             flag = true;
@@ -46,10 +44,6 @@ public class HttpDldFile
         catch (Exception)
         {
             flag = false;
-        }
-        finally
-        {
-            semaphore.Release();
         }
         return flag;
     }
