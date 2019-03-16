@@ -277,6 +277,12 @@ public class Program : MonoBehaviour
     //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
+    public static bool ANDROID_SDK_M = true;
+#elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
+    public static bool ANDROID_SDK_M = false;
+#endif
+
     void initialize()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
@@ -394,6 +400,17 @@ public class Program : MonoBehaviour
                     Application.OpenURL("https://www.taptap.com/app/37972");
                     jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
                 }
+            }
+
+            /*
+             *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
+             *  经测试，只有Android M以上才能正常使用。为了让Android M以下的也能使用，只好多做一下判断
+             */
+            bool SDK = jo.Call<bool>("SdkInt");
+            if (SDK == true) { //Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                ANDROID_SDK_M = true;
+            } else {
+                ANDROID_SDK_M = false;
             }
 #endif
         });
