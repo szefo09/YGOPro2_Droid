@@ -25,7 +25,6 @@ public class GameTextureManager
 
     static HttpDldFile df = new HttpDldFile();
 
-    private static readonly Semaphore _sem = new Semaphore(30, 30);
     public class BitmapHelper
     {
         public System.Drawing.Color[,] colors = null;
@@ -228,18 +227,15 @@ public class GameTextureManager
                         }
                         if (pic.type == GameTextureType.card_feature)
                         {
-                            _sem.WaitOne();
-                            new Thread(() => ProcessingCardFeature(pic)).Start();
+                            ProcessingCardFeature(pic);
                         }
                         if (pic.type == GameTextureType.card_picture)
                         {
-                            _sem.WaitOne();
-                            new Thread(() => ProcessingCardPicture(pic)).Start();
+                            ProcessingCardPicture(pic);
                         }
                         if (pic.type == GameTextureType.card_verticle_drawing)
                         {
-                            _sem.WaitOne();
-                            new Thread(() => ProcessingVerticleDrawing(pic)).Start();
+                            ProcessingVerticleDrawing(pic);
                         }
                     }
                 }
@@ -258,52 +254,46 @@ public class GameTextureManager
             if (File.Exists("picture/closeup/" + pic.code.ToString() + ".png"))
             {
                 string path = "picture/closeup/" + pic.code.ToString() + ".png";
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_ANDROID //编译器、Windows、Android
-                BitmapHelper bitmap = new BitmapHelper(path);
-                int left;
-                int right;
-                int up;
-                int down;
-                CutTop(bitmap, out left, out right, out up, out down);
-                up = CutLeft(bitmap, up);
-                down = CutRight(bitmap, down);
-                right = CutButton(bitmap, right);
-                int width = right - left;
-                int height = down - up;
-                pic.hashed_data = new float[width, height, 4];
-                for (int w = 0; w < width; w++)
-                {
-                    for (int h = 0; h < height; h++)
+                if (Program.ANDROID_SDK_M) {
+                    BitmapHelper bitmap = new BitmapHelper(path);
+                    int left;
+                    int right;
+                    int up;
+                    int down;
+                    CutTop(bitmap, out left, out right, out up, out down);
+                    up = CutLeft(bitmap, up);
+                    down = CutRight(bitmap, down);
+                    right = CutButton(bitmap, right);
+                    int width = right - left;
+                    int height = down - up;
+                    pic.hashed_data = new float[width, height, 4];
+                    for (int w = 0; w < width; w++)
                     {
-                        System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
-                        float a = (float)color.A / 255f;
-                        if (w < 40) if (a > (float)w / (float)40) a = (float)w / (float)40;
-                        if (w > (width - 40)) if (a > 1f - (float)(w - (width - 40)) / (float)40) a = 1f - (float)(w - (width - 40)) / (float)40;
-                        if (h < 40) if (a > (float)h / (float)40) a = (float)h / (float)40;
-                        if (h > (height - 40)) if (a > 1f - (float)(h - (height - 40)) / (float)40) a = 1f - (float)(h - (height - 40)) / (float)40;
-                        pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
-                        pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
-                        pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
-                        pic.hashed_data[w, height - h - 1, 3] = a;
+                        for (int h = 0; h < height; h++)
+                        {
+                            System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
+                            float a = (float)color.A / 255f;
+                            if (w < 40) if (a > (float)w / (float)40) a = (float)w / (float)40;
+                            if (w > (width - 40)) if (a > 1f - (float)(w - (width - 40)) / (float)40) a = 1f - (float)(w - (width - 40)) / (float)40;
+                            if (h < 40) if (a > (float)h / (float)40) a = (float)h / (float)40;
+                            if (h > (height - 40)) if (a > 1f - (float)(h - (height - 40)) / (float)40) a = 1f - (float)(h - (height - 40)) / (float)40;
+                            pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
+                            pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
+                            pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
+                            pic.hashed_data[w, height - h - 1, 3] = a;
+                        }
                     }
+                    caculateK(pic);
+                } else {
+                    byte[] data;
+                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        file.Seek(0, SeekOrigin.Begin);
+                        data = new byte[file.Length];
+                        file.Read(data, 0, (int)file.Length);
+                    }
+                    pic.data = data;
                 }
-                caculateK(pic);
-
-                /*
-                 *  以上处理iOS平台无法正常使用
-                 *  Android已成功编译 libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android.git)
-                 *  暂时只能直接贴图，以后再处理
-                **/
-#elif UNITY_IPHONE //iPhone
-                byte[] data;
-                using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                {
-                    file.Seek(0, SeekOrigin.Begin);
-                    data = new byte[file.Length];
-                    file.Read(data, 0, (int)file.Length);
-                }
-                pic.data = data;
-#endif
 
                 if (!loadedList.ContainsKey(hashPic(pic.code, pic.type)))
                 {
@@ -391,10 +381,6 @@ public class GameTextureManager
         catch (Exception e)
         {
             Debug.Log("e 1" + e.ToString());
-        }
-        finally
-        {
-            _sem.Release();
         }
     }
 
@@ -594,129 +580,115 @@ public class GameTextureManager
             string path = "picture/closeup/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_ANDROID //编译器、Windows、Android
-                path = "picture/card/" + pic.code.ToString() + ".png";
-                if (!File.Exists(path))
-                {
-                    path = "picture/card/" + pic.code.ToString() + ".jpg";
-                }
-                bool Iam8 = false;
-                if (!File.Exists(path))
-                {
-                    Iam8 = true;
-                    path = "expansions/pics/" + pic.code.ToString() + ".jpg";
-                }
-                if (!File.Exists(path))
-                {
-                    Iam8 = true;
-                    path = "pics/" + pic.code.ToString() + ".jpg";
-                }
-                if (!File.Exists(path))
-                {
-                    Iam8 = true;
-                    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-                }
-                if (!File.Exists(path))
-                {
-                    path = "textures/unknown.jpg";//YGOMobile Paths
-                }
-                if (!File.Exists(path))
-                {
+                if (Program.ANDROID_SDK_M) {
+                    path = "picture/card/" + pic.code.ToString() + ".png";
+                    if (!File.Exists(path))
+                    {
+                        path = "picture/card/" + pic.code.ToString() + ".jpg";
+                    }
+                    bool Iam8 = false;
+                    if (!File.Exists(path))
+                    {
+                        Iam8 = true;
+                        path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+                    }
+                    if (!File.Exists(path))
+                    {
+                        Iam8 = true;
+                        path = "pics/" + pic.code.ToString() + ".jpg";
+                    }
+                    if (!File.Exists(path))
+                    {
+                        Iam8 = true;
+                        path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
+                    }
+                    if (!File.Exists(path))
+                    {
+                        path = "textures/unknown.jpg";//YGOMobile Paths
+                    }
+                    if (!File.Exists(path))
+                    {
+                        path = "picture/null.png";
+                    }
+                    pic.hashed_data = getCuttedPic(path, pic.pCard, Iam8);
+                    softVtype(pic, 0.5f);
+                    pic.k = 1;
+                } else {
                     path = "picture/null.png";
+                    byte[] data;
+                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        file.Seek(0, SeekOrigin.Begin);
+                        data = new byte[file.Length];
+                        file.Read(data, 0, (int)file.Length);
+                    }
+                    pic.data = data;
                 }
-                pic.hashed_data = getCuttedPic(path, pic.pCard, Iam8);
-                softVtype(pic, 0.5f);
-                pic.k = 1;
-                //pic.autoMade = true;
-
-                /*
-                 *  以上处理iOS平台无法正常使用
-                 *  Android已成功编译libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android.git)
-                 *  暂时只能直接贴图，以后再处理
-                **/
-#elif UNITY_IPHONE //iPhone
-                path = "picture/null.png";
-
-                byte[] data;
-                using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                {
-                    file.Seek(0, SeekOrigin.Begin);
-                    data = new byte[file.Length];
-                    file.Read(data, 0, (int)file.Length);
-                }
-                pic.data = data;
-#endif
             }
             else
             {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_ANDROID //编译器、Windows、Android
-                BitmapHelper bitmap = new BitmapHelper(path);
-                int left;
-                int right;
-                int up;
-                int down;
-                CutTop(bitmap, out left, out right, out up, out down);
-                up = CutLeft(bitmap, up);
-                down = CutRight(bitmap, down);
-                right = CutButton(bitmap, right);
-                int width = right - left;
-                int height = down - up;
-                pic.hashed_data = new float[width, height, 4];
-                for (int w = 0; w < width; w++)
-                {
+                if (Program.ANDROID_SDK_M) {
+                    BitmapHelper bitmap = new BitmapHelper(path);
+                    int left;
+                    int right;
+                    int up;
+                    int down;
+                    CutTop(bitmap, out left, out right, out up, out down);
+                    up = CutLeft(bitmap, up);
+                    down = CutRight(bitmap, down);
+                    right = CutButton(bitmap, right);
+                    int width = right - left;
+                    int height = down - up;
+                    pic.hashed_data = new float[width, height, 4];
+                    for (int w = 0; w < width; w++)
+                    {
+                        for (int h = 0; h < height; h++)
+                        {
+                            System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
+                            pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
+                            pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
+                            pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
+                            pic.hashed_data[w, height - h - 1, 3] = (float)color.A / 255f;
+                        }
+                    }
+                    float wholeUNalpha = 0;
+                    for (int w = 0; w < width; w++)
+                    {
+                        if (pic.hashed_data[w, 0, 3] > 0.1f)
+                        {
+                            wholeUNalpha += ((float)Math.Abs(w - width / 2)) / ((float)(width / 2));
+                        }
+                        if (pic.hashed_data[w, height - 1, 3] > 0.1f)
+                        {
+                            wholeUNalpha += 1;
+                        }
+                    }
                     for (int h = 0; h < height; h++)
                     {
-                        System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
-                        pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
-                        pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
-                        pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
-                        pic.hashed_data[w, height - h - 1, 3] = (float)color.A / 255f;
+                        if (pic.hashed_data[0, h, 3] > 0.1f)
+                        {
+                            wholeUNalpha += 1;
+                        }
+                        if (pic.hashed_data[width - 1, h, 3] > 0.1f)
+                        {
+                            wholeUNalpha += 1;
+                        }
                     }
-                }
-                float wholeUNalpha = 0;
-                for (int w = 0; w < width; w++)
-                {
-                    if (pic.hashed_data[w, 0, 3] > 0.1f)
+                    if (wholeUNalpha >= ((width + height) * 0.5f * 0.12f))
                     {
-                        wholeUNalpha += ((float)Math.Abs(w - width / 2)) / ((float)(width / 2));
+                        softVtype(pic, 0.7f);
                     }
-                    if (pic.hashed_data[w, height - 1, 3] > 0.1f)
+                    caculateK(pic);
+                } else {
+                    byte[] data;
+                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
                     {
-                        wholeUNalpha += 1;
+                        file.Seek(0, SeekOrigin.Begin);
+                        data = new byte[file.Length];
+                        file.Read(data, 0, (int)file.Length);
                     }
+                    pic.data = data;
                 }
-                for (int h = 0; h < height; h++)
-                {
-                    if (pic.hashed_data[0, h, 3] > 0.1f)
-                    {
-                        wholeUNalpha += 1;
-                    }
-                    if (pic.hashed_data[width - 1, h, 3] > 0.1f)
-                    {
-                        wholeUNalpha += 1;
-                    }
-                }
-                if (wholeUNalpha >= ((width + height) * 0.5f * 0.12f))
-                {
-                    softVtype(pic, 0.7f);
-                }
-                caculateK(pic);
-
-                /*
-                 *  以上处理iOS平台无法正常使用
-                 *  Android已成功编译libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android.git)
-                 *  暂时只能直接贴图，以后再处理
-                **/
-#elif UNITY_IPHONE //iPhone
-                byte[] data;
-                using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                {
-                    file.Seek(0, SeekOrigin.Begin);
-                    data = new byte[file.Length];
-                    file.Read(data, 0, (int)file.Length);
-                }
-                pic.data = data;
-#endif
             }
 
             if (!loadedList.ContainsKey(hashPic(pic.code, pic.type)))
@@ -727,10 +699,6 @@ public class GameTextureManager
         catch (Exception e)
         {
             Debug.Log("e 3" + e.ToString());
-        }
-        finally
-        {
-            _sem.Release();
         }
     }
 
@@ -851,10 +819,6 @@ public class GameTextureManager
         catch (Exception e)
         {
             Debug.Log("e 2" + e.ToString());
-        }
-                finally
-        {
-            _sem.Release();
         }
     }
 
