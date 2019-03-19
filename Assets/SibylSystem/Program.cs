@@ -278,18 +278,25 @@ public class Program : MonoBehaviour
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
-    public static bool ANDROID_SDK_M = true;
+    public static bool ANDROID_API_M = true;
 #elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
-    public static bool ANDROID_SDK_M = false;
+    public static bool ANDROID_API_M = false;
 #endif
 
     void initialize()
     {
+        AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
         //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
-
 #elif UNITY_ANDROID //Android
+        /*
+        * 部分机型Sdcard目录可能不是：/storage/emulated/0/
+        * 可能为：/sdcard/、/mnt/sdcard/、/storage/emulated/legacy/... 等等其他路径
+        * 推荐使用Java判断: Environment.getExternalStorageDirectory().toString() + path;
+        */
+        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");
+
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
         {
@@ -387,7 +394,6 @@ public class Program : MonoBehaviour
             loadResources();
 
 #if UNITY_ANDROID //Android Java Test
-            AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
             if (!File.Exists("updates/image_version1.1.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
@@ -403,14 +409,15 @@ public class Program : MonoBehaviour
             }
 
             /*
-             *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
-             *  经测试，只有Android M以上才能正常使用。为了让Android M以下的也能使用，只好多做一下判断
-             */
-            bool SDK = jo.Call<bool>("SdkInt");
-            if (SDK == true) { //Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                ANDROID_SDK_M = true;
+            * 使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
+            * 经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能酬和使用立绘效果，需做判断
+            */
+            //Java: Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            bool API_SUPPORT = jo.Call<bool>("APIVersion");
+            if (API_SUPPORT == true) {
+                ANDROID_API_M = true;
             } else {
-                ANDROID_SDK_M = false;
+                ANDROID_API_M = false;
             }
 #endif
         });
