@@ -254,7 +254,7 @@ public class GameTextureManager
             if (File.Exists("picture/closeup/" + pic.code.ToString() + ".png"))
             {
                 string path = "picture/closeup/" + pic.code.ToString() + ".png";
-                if (Program.ANDROID_SDK_M) {
+                if (Program.ANDROID_API_M) {
                     BitmapHelper bitmap = new BitmapHelper(path);
                     int left;
                     int right;
@@ -580,7 +580,7 @@ public class GameTextureManager
             string path = "picture/closeup/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
-                if (Program.ANDROID_SDK_M) {
+                if (Program.ANDROID_API_M) {
                     path = "picture/card/" + pic.code.ToString() + ".png";
                     if (!File.Exists(path))
                     {
@@ -627,7 +627,7 @@ public class GameTextureManager
             }
             else
             {
-                if (Program.ANDROID_SDK_M) {
+                if (Program.ANDROID_API_M) {
                     BitmapHelper bitmap = new BitmapHelper(path);
                     int left;
                     int right;
