@@ -8,7 +8,7 @@ public class LAZYsetting : MonoBehaviour {
     public UISlider sliderAlpha;
     public UIPopupList showoffATK;
     public UIPopupList showoffStar;
-    public UIPopupList showoffFPS;
+    public UIPopupList LimFPS;
     public UIToggle mouseEffect;
     public UIToggle closeUp;
     public UIToggle showoff;
