@@ -285,7 +285,9 @@ public class Program : MonoBehaviour
 
     void initialize()
     {
+#if !UNITY_EDITOR && UNITY_ANDROID
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
+#endif
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
         //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
@@ -383,7 +385,7 @@ public class Program : MonoBehaviour
             initializeALLservants();
             loadResources();
 
-#if UNITY_ANDROID //Android Java Test
+#if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
             if (!File.Exists("updates/image_version1.1.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {//YGOMobile内置的卡图包

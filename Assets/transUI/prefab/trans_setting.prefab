@@ -9980,7 +9980,7 @@ MonoBehaviour:
   sliderAlpha: {fileID: 11468830}
   showoffATK: {fileID: 11465400}
   showoffStar: {fileID: 114122206682793576}
-  showoffFPS: {fileID: 11461176}
+  LimFPS: {fileID: 11461176}
   mouseEffect: {fileID: 11460026}
   closeUp: {fileID: 11451290}
   showoff: {fileID: 11470560}
@@ -13744,7 +13744,7 @@ MonoBehaviour:
   - 40
   - 50
   - 60
-  - "\u65E0\u9650\u5236"
+  - Auto
   padding: {x: 4, y: 4}
   textColor: {r: 1, g: 1, b: 1, a: 1}
   backgroundColor: {r: 0, g: 0, b: 0, a: 1}
