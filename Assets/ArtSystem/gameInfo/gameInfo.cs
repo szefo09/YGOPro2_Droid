@@ -120,10 +120,10 @@ public class gameInfo : MonoBehaviour
             opponent.transform.localPosition = new Vector3(Screen.width / 2-14, Screen.height / 2 - 14 - k * (float)(opponent.under.height));
         }
 
-        float height = 132 + 50 * (HashedButtons.Count);
-        if (HashedButtons.Count==0)  
+        float height = 198 + 50 * (HashedButtons.Count);
+        if (HashedButtons.Count == 0)  
         {
-            height = 116;
+            height = 174;
         }
          width = (150 * kb) + 15f;
         float localPositionPanX = (((float)Screen.width - 150 * kb) / 2) - 15f;

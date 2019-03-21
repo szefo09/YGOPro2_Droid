@@ -14,7 +14,7 @@ public class LAZYsetting : MonoBehaviour {
     public UIToggle showoff;
     public UIToggle showoffWhenActived;
     public UIToggle cloud;
-    public UIToggle DownloadImage;
+    public UIToggle autoPicDownload;
     public UIToggle Vbattle;
     public UIToggle Vmove;
     public UIToggle Vchain;

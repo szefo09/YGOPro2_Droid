@@ -288,15 +288,17 @@ public class Program : MonoBehaviour
 #if !UNITY_EDITOR && UNITY_ANDROID
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
 #endif
+
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
         //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
 #elif UNITY_ANDROID //Android
-        /*
-        * 部分机型Sdcard目录可能不是：/storage/emulated/0/
-        * 可能为：/sdcard/、/mnt/sdcard/、/storage/emulated/legacy/... 等等其他路径
-        * 推荐使用Java判断: Environment.getExternalStorageDirectory().toString() + path;
-        */
+        /**
+         *  public String GamePath(String path) {
+         *      GAME_DIR = Environment.getExternalStorageDirectory().toString(); + path;
+         *      return GAME_DIR;
+         *  }
+         */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -414,12 +416,20 @@ public class Program : MonoBehaviour
                 }
             }
 
-            /*
-            * 使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
-            * 经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能酬和使用立绘效果，需做判断
-            */
-            //Java: Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            /**
+             *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
+             *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能酬和使用立绘效果，需做判断
+             *
+             *  public boolean APIVersion() {
+             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             *          return true;
+             *      } else {
+             *          return true;
+             *      }
+             *  }
+             */
             bool API_SUPPORT = jo.Call<bool>("APIVersion");
+
             if (API_SUPPORT == true) {
                 ANDROID_API_M = true;
             } else {
@@ -1176,7 +1186,7 @@ public class Program : MonoBehaviour
     public static bool Running = true;
 
     public static bool MonsterCloud = false;
-    public static bool DownloadImage = false;
+
     public static float fieldSize = 1;
 
     void OnApplicationQuit()

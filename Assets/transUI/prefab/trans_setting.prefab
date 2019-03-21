@@ -9986,7 +9986,7 @@ MonoBehaviour:
   showoff: {fileID: 11470560}
   showoffWhenActived: {fileID: 11452754}
   cloud: {fileID: 114247332317060808}
-  DownloadImage: {fileID: 114654519243977964}
+  autoPicDownload: {fileID: 114654519243977964}
   Vbattle: {fileID: 11435302}
   Vmove: {fileID: 11428410}
   Vchain: {fileID: 11427298}
@@ -18216,7 +18216,7 @@ GameObject:
   - component: {fileID: 114462178772296572}
   - component: {fileID: 114658492503328412}
   m_Layer: 5
-  m_Name: '*DownloadImage'
+  m_Name: '*AutoPicDownload'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

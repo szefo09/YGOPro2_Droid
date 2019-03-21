@@ -71,7 +71,7 @@ public class Setting : WindowServant2D
         UIHelper.registEvent(setting.mouseEffect.gameObject, onchangeMouse);
         UIHelper.registEvent(setting.closeUp.gameObject, onchangeCloseUp);
         UIHelper.registEvent(setting.cloud.gameObject, onchangeCloud);
-        UIHelper.registEvent(setting.DownloadImage.gameObject, onchangeDownload);
+        UIHelper.registEvent(setting.autoPicDownload.gameObject, onchangeDownload);
         UIHelper.registEvent(setting.Vpedium.gameObject, onCP);
         UIHelper.registEvent(setting.Vfield.gameObject, onCP);
         UIHelper.registEvent(setting.Vlink.gameObject, onCP);
@@ -113,7 +113,7 @@ public class Setting : WindowServant2D
 
     public void onchangeDownload()
     {
-        Program.DownloadImage = setting.DownloadImage.value;
+        GameTextureManager.AutoPicDownload = setting.autoPicDownload.value;
     }
 
     public void onchangeMouse()
