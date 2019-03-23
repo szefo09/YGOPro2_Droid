@@ -399,13 +399,13 @@ public class DeckManager : ServantWithCardDescription
                     if (detailShowed)
                     {
                         gameObjectDetailedSearch.GetComponent<UITexture>().height = 700;
-                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 230 - 115f * Screen.height / 700f, Screen.height * 0.5f, 0)), 0.6f);
-                        reShowBar(0, 230 + 230 * Screen.height / 700f);
+                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 460 - 115f * Screen.height / 700f, Screen.height * 0.5f, 0)), 0.6f);
+                        reShowBar(0, 460 + 460 * Screen.height/ 700f);
                     }
                     else
                     {
                         gameObjectDetailedSearch.GetComponent<UITexture>().height = 700;
-                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 230 - 115f * Screen.height / 700f, Screen.height * 1.5f, 0)), 0.6f);
+                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 460 - 115f * Screen.height / 700f, Screen.height * 1.5f, 0)), 0.6f);
                         reShowBar(0, 230);
                     }
                 }
@@ -415,13 +415,13 @@ public class DeckManager : ServantWithCardDescription
                     if (detailShowed)
                     {
                         gameObjectDetailedSearch.GetComponent<UITexture>().height = Screen.height;
-                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 345f, Screen.height * 0.5f, 0)), 0.6f);
-                        reShowBar(0, 460);
+                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 575f, Screen.height * 0.5f, 0)), 0.6f);
+                        reShowBar(0, 460 * 2);
                     }
                     else
                     {
                         gameObjectDetailedSearch.GetComponent<UITexture>().height = Screen.height;
-                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 345f, Screen.height * 1.5f, 0)), 0.6f);
+                        iTween.MoveTo(gameObjectDetailedSearch, Program.camera_main_2d.ScreenToWorldPoint(new Vector3(Screen.width - 575f, Screen.height * 1.5f, 0)), 0.6f);
                         reShowBar(0, 230);
                     }
                 }
