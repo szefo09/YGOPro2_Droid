@@ -311,6 +311,17 @@ public class Program : MonoBehaviour
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
             //File.Create(ANDROID_GAME_PATH + ".nomedia");
         }
+
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !File.Exists(ANDROID_GAME_PATH + "textures/ui/bg_of_right_game_buttons.png")
+        || !File.Exists(ANDROID_GAME_PATH + "textures/ui/bg_of_right_card_searcher2.png"))
+        {
+            string filePath = Application.streamingAssetsPath + "/ui.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+        }
+
         Environment.CurrentDirectory = ANDROID_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
 
@@ -394,14 +405,14 @@ public class Program : MonoBehaviour
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
                     File.Copy("updates/version2.0.txt", "updates/image_version1.1.txt", true);
                 } else {
-                    Application.OpenURL("https://www.taptap.com/app/37972");
+                    //Application.OpenURL("https://www.taptap.com/app/37972");
                     jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
                 }
             }
 
             /**
              *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
-             *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能酬和使用立绘效果，需做判断
+             *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
              *
              *  public boolean APIVersion() {
              *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -1063,8 +1074,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        //GUI.Label(new Rect(Screen.width / 2, 0, 100, 100), "FPS: " + m_FPS);
-        GUI.Label(new Rect(10, 5, 100, 100), "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Version 2.2] " + "FPS: " + m_FPS);
     }
 
     void Update()
@@ -1169,14 +1179,13 @@ public class Program : MonoBehaviour
     public static bool Running = true;
 
     public static bool MonsterCloud = false;
-    public static bool DownloadImage = false;
+
     public static float fieldSize = 1;
 
     void OnApplicationQuit()
     {
         TcpHelper.SaveRecord();
-        cardDescription.save();
-        setting.saveWhenQuit();
+        SaveConfig();
         for (int i = 0; i < servants.Count; i++)
         {
             servants[i].OnQuit();
@@ -1196,6 +1205,13 @@ public class Program : MonoBehaviour
     public void quit()
     {
         OnApplicationQuit();
+    }
+
+    public void SaveConfig()
+    {
+        cardDescription.save();
+        setting.save();
+        setting.saveWhenQuit();
     }
 
     #endregion
