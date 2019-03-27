@@ -274,7 +274,7 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
-    //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid)
+    //YGOMobile Paths (https://github.com/Unicorn369/YGOPro2_Droid/tree/Android)
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
