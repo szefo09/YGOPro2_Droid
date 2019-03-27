@@ -149,7 +149,7 @@ public class Menu : WindowServantSP
                 jo.Call("doExtractZipFile", "closeup_version1.1.zip", Program.ANDROID_GAME_PATH);
             } else if (File.Exists("updates/closeup_version1.0.txt")){//如果有则下载更新包
                 jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/up_closeup_version1.1.zip");
-            } else {//否则下载并解压，锁定目录：/ygocore
+            } else {//否则下载并解压，锁定目录：ANDROID_GAME_PATH
                 jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/closeup_version1.1.zip");
             }
         } else {
