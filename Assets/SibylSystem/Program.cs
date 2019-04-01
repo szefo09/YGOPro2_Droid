@@ -329,11 +329,8 @@ public class Program : MonoBehaviour
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
         if (!File.Exists(GamePaths + "updates/version2.0.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(System.IO.File.ReadAllBytes(bytes), GamePaths);
+                string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+                ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
         }
         Environment.CurrentDirectory = GamePaths;
         System.IO.Directory.SetCurrentDirectory(GamePaths);
