@@ -817,15 +817,15 @@ public class GameTextureManager
             if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {
                 //YGOMobile (177x254)
-                df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
+                df.Download("http://koishi.222diy.gdn/smallpics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
+            /*if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {
                 //先行卡 (177x254)
                 df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");
                 path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-            }
+            }*/
             if (!File.Exists(path))
             {
                 if (pic.code > 0)
@@ -1035,4 +1035,3 @@ public class GameTextureManager
         main.Start();
     }
 }
-
