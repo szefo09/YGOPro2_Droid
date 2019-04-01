@@ -15,7 +15,7 @@ public class GameField : OCGobject
     Transform p_hole_opl = null;
     Transform p_hole_mer = null;
     Transform p_hole_opr = null;
-    public phaser Phase = null; 
+    public phaser Phase = null;
     public bool mePHole = false;
     public bool opPHole = false;
 
@@ -55,8 +55,8 @@ public class GameField : OCGobject
         Program.I().ocgcore.sendReturn(m.get());
     }
 
-    public int retOfMp = -1;    
-    void onMP() 
+    public int retOfMp = -1;
+    void onMP()
     {
         var m = new BinaryMaster();
         m.writer.Write(retOfMp);
@@ -244,8 +244,8 @@ public class GameField : OCGobject
 
     public void Update()
     {
-        delat = ((isLong ? (40f + 60f * ((1.21f - Program.fieldSize) / 0.21f)) :0f))/110f*5f;
-        fieldSprite_height += ((isLong ? (819f + 40f + 60f * ((1.21f-Program.fieldSize) / 0.21f)) : 819f) - fieldSprite_height) * (Program.deltaTime * 4);
+        delat = ((isLong ? (40f + 60f * ((1.21f - Program.fieldSize) / 0.21f)) : 0f)) / 110f * 5f;
+        fieldSprite_height += ((isLong ? (819f + 40f + 60f * ((1.21f - Program.fieldSize) / 0.21f)) : 819f) - fieldSprite_height) * (Program.deltaTime * 4);
         midT.height = (int)fieldSprite_height;
 
         Vector3 position = midT.gameObject.transform.localPosition;
@@ -400,7 +400,7 @@ public class GameField : OCGobject
 
     }
 
-    private static void relocateTextMesh(TMPro.TextMeshPro obj, uint con, game_location loc,Vector3 poi)
+    private static void relocateTextMesh(TMPro.TextMeshPro obj, uint con, game_location loc, Vector3 poi)
     {
         obj.transform.position = UIHelper.getCamGoodPosition(Program.I().ocgcore.get_point_worldposition(new GPS
         {
@@ -422,30 +422,30 @@ public class GameField : OCGobject
                     fieldCode[player] = code;
                     if (code > 0)
                     {
-                        Texture2D tex;
-                        if (File.Exists("picture/field/" + code.ToString() + ".png"))  
+                        Texture2D tex = null;
+                        if (File.Exists("picture/field/" + code.ToString() + ".png"))
                         {
                             tex = UIHelper.getTexture2D("picture/field/" + code.ToString() + ".png");
                         }
-                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".png"))  
+                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".png"))
                         {
                             tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".png");
                         }
-                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".jpg"))  
-                        {
-                            tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".jpg");
-                        }
-                        else if (File.Exists("pics/field/" + code.ToString() + ".png"))  
+                        else if (File.Exists("pics/field/" + code.ToString() + ".png"))
                         {
                             tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".png");
                         }
-                        else if (File.Exists("pics/field/" + code.ToString() + ".jpg"))  
+                        else if (File.Exists("picture/field/" + code.ToString() + ".jpg"))
                         {
-                            tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".jpg");
+                            tex = UIHelper.getTexture2D("picture/field/" + code.ToString() + ".jpg");
+                        }
+                        else if (File.Exists("expansions/pics/field/" + code.ToString() + ".jpg"))
+                        {
+                            tex = UIHelper.getTexture2D("expansions/pics/field/" + code.ToString() + ".jpg");
                         }
                         else
                         {
-                            tex = UIHelper.getTexture2D("picture/field/" + code.ToString() + ".jpg");
+                            tex = UIHelper.getTexture2D("pics/field/" + code.ToString() + ".jpg");
                         }
                         if (tex != null)
                         {
@@ -488,7 +488,7 @@ public class GameField : OCGobject
         }
     }
 
-    public void shiftBlackHole(bool on,Vector3 v=default(Vector3))
+    public void shiftBlackHole(bool on, Vector3 v = default(Vector3))
     {
         if (on)
         {
@@ -533,17 +533,17 @@ public class GameField : OCGobject
     }
     GameObject big_string;
 
-    public void animation_show_big_string(Texture2D tex,bool only=false)    
+    public void animation_show_big_string(Texture2D tex, bool only = false)
     {
-        if (Ocgcore.inSkiping) 
+        if (Ocgcore.inSkiping)
         {
             return;
         }
-        if (only)   
+        if (only)
         {
             destroy(big_string);
         }
-        big_string = create(Program.I().New_phase,Program.I().ocgcore.centre(),Vector3.zero,false,Program.ui_main_2d,true,new Vector3(Screen.height / 1000f* Program.fieldSize, Screen.height / 1000f * Program.fieldSize, Screen.height / 1000f * Program.fieldSize));
+        big_string = create(Program.I().New_phase, Program.I().ocgcore.centre(), Vector3.zero, false, Program.ui_main_2d, true, new Vector3(Screen.height / 1000f * Program.fieldSize, Screen.height / 1000f * Program.fieldSize, Screen.height / 1000f * Program.fieldSize));
         big_string.GetComponentInChildren<UITexture>().mainTexture = tex;
         Program.I().ocgcore.Sleep(40);
         big_string.AddComponent<animation_screen_lock2>();
@@ -642,7 +642,7 @@ public class GameField : OCGobject
             {
                 p = gps,
                 position = Program.I().ocgcore.get_point_worldposition(gps)
-                
+
             };
             field_disabled_containers.Add(container);
         }
@@ -658,7 +658,7 @@ public class GameField : OCGobject
 
     public void realize()
     {
-        if (Phase.colliderBp.enabled)   
+        if (Phase.colliderBp.enabled)
         {
             Phase.labBp.gradientTop = Color.white;
         }
@@ -706,13 +706,13 @@ public class GameField : OCGobject
                 Phase.labEp.gradientTop = Color.green;
                 break;
         }
-        for (int i = 0; i < field_disabled_containers.Count; i++)   
+        for (int i = 0; i < field_disabled_containers.Count; i++)
         {
             if (field_disabled_containers[i].disabled)
             {
                 if (field_disabled_containers[i].game_object == null)
                 {
-                    field_disabled_containers[i].game_object = create(Program.I().mod_simple_quad, field_disabled_containers[i].position,new Vector3(90,0,0),false,null,true);
+                    field_disabled_containers[i].game_object = create(Program.I().mod_simple_quad, field_disabled_containers[i].position, new Vector3(90, 0, 0), false, null, true);
                     field_disabled_containers[i].game_object.transform.localScale = Vector3.zero;
                     iTween.ScaleTo(field_disabled_containers[i].game_object, new Vector3(4, 4, 4), 1f);
                     field_disabled_containers[i].game_object.GetComponent<Renderer>().material.mainTexture = GameTextureManager.negated;
@@ -720,7 +720,7 @@ public class GameField : OCGobject
             }
             else
             {
-                destroy(field_disabled_containers[i].game_object,0.6f,true,true);
+                destroy(field_disabled_containers[i].game_object, 0.6f, true, true);
             }
         }
 

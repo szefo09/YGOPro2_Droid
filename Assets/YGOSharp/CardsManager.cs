@@ -22,9 +22,14 @@ namespace YGOSharp
             nullString += "欢迎使用：\r\nYGOPro2 For Android";
             nullString += "\r\n\r\n";
             nullString += "源码：";
-			nullString += "\r\n「Android」\r\n[url=https://github.com/Unicorn369/YGOPro2_Droid][u]https://github.com/Unicorn369/YGOPro2_Droid[/u][/url]";
-			//nullString += "\r\nWindows：[url=https://github.com/lllyasviel/YGOProUnity_V2][u]https://github.com/lllyasviel/YGOProUnity_V2[/u][/url]";
-			nullString += "\r\n\r\n「Windows」\r\n[url=https://github.com/mercury233/ygopro2][u]https://github.com/mercury233/ygopro2[/u][/url]";
+            nullString += "\r\n「Android」\r\n[url=https://github.com/Unicorn369/YGOPro2_Droid][u]https://github.com/Unicorn369/YGOPro2_Droid[/u][/url]";
+            //nullString += "\r\nWindows：[url=https://github.com/lllyasviel/YGOProUnity_V2][u]https://github.com/lllyasviel/YGOProUnity_V2[/u][/url]";
+            nullString += "\r\n\r\n「Windows」\r\n[url=https://github.com/mercury233/ygopro2][u]https://github.com/mercury233/ygopro2[/u][/url]";
+            nullString += "\r\n\r\n\r\n";
+            nullString += "欢迎加入QQ群：";
+            nullString += "\r\n①：[url=https://jq.qq.com/?_wv=1027&k=5nq6xJe][u]649612818[/u][/url]";
+            nullString += "\r\n③：[url=https://jq.qq.com/?_wv=1027&k=50MZVQA][u]831010207[/u][/url]";
+            nullString += "\r\n②：[url=https://jq.qq.com/?_wv=1027&k=5idyod3][u]559276772[/u][/url]";
             using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
             {
                 connection.Open();
@@ -98,6 +103,7 @@ namespace YGOSharp
             int getDefence_UP,
             int getP_UP,
             int getYear_UP,
+            int getOT,
             string getPack,
             int getBAN,
             Banlist banlist,
@@ -122,7 +128,7 @@ namespace YGOSharp
                     {
                         if (((card.Type & getTypeFilter)) == getTypeFilter || getTypeFilter == 0)
                         {
-                            if ((card.Race & getRaceFilter) >0 || getRaceFilter == 0)
+                            if ((card.Race & getRaceFilter) > 0 || getRaceFilter == 0)
                             {
                                 if ((card.Attribute & getAttributeFilter) > 0 || getAttributeFilter == 0)
                                 {
@@ -140,9 +146,12 @@ namespace YGOSharp
                                                         {
                                                             if (getBAN == -233 || banlist == null || banlist.GetQuantity(card.Id) == getBAN)
                                                             {
-                                                                if (getPack == "" || card.packFullName == getPack)
+                                                                if (getOT == 0 || getOT == card.Ot)
                                                                 {
-                                                                    returnValue.Add(card);
+                                                                    if (getPack == "" || card.packFullName == getPack)
+                                                                    {
+                                                                        returnValue.Add(card);
+                                                                    }
                                                                 }
                                                             }
                                                         }

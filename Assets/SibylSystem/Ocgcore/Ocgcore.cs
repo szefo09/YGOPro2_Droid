@@ -739,6 +739,7 @@ public class Ocgcore : ServantWithCardDescription
 
     public void onHome()
     {
+        Program.I().SaveConfig();
         returnTo();
     }
 
@@ -1315,6 +1316,7 @@ public class Ocgcore : ServantWithCardDescription
                 isFirst = ((playertype & 0xf) > 0) ? false : true;
                 gameInfo.swaped = false;
                 isObserver = ((playertype & 0xf0) > 0) ? true : false;
+                r.ReadByte(); // duel_rule
                 life_0 = r.ReadInt32();
                 life_1 = r.ReadInt32();
                 lpLimit = life_0;

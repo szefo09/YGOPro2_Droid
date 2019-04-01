@@ -28,7 +28,7 @@ public class UIselectableList : MonoBehaviour {
     }
     public Action selectedAction;
     UIScrollView uIScrollView;
-    float heightOfEach=20;
+    float heightOfEach = 35;
     public float preHeight = 0;
     class selection
     {

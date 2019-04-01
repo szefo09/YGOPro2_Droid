@@ -16,7 +16,7 @@ The feedbacks is checked every day.
 
 # How to compile the game?
 
-1. Download Unity 5.6.6f2 (https://unity3d.com/cn/get-unity/download/archive).
+1. Download Unity 5.6.7f1 (https://unity3d.com/cn/get-unity/download/archive).
 
 2. Clone the repository.
 
@@ -54,9 +54,9 @@ The feedbacks is checked every day.
 
 > `cp -f -r libs ../../../Assets/Plugins/Android/`
 
-# How to compile the libocgcore.so、libsqlite3.so? (Linux)
+# How to compile the libocgcore.so? (Linux)
 
-*In most case you do not need to care about the libocgcore.so、libsqlite3.so.*
+*In most case you do not need to care about the libocgcore.so.*
 
 > `cd AI_core_vs2017solution/build/gmake.linux`
 
