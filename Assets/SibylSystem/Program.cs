@@ -481,9 +481,9 @@ public class Program : MonoBehaviour
         try
         {
             HttpDldFile httpDldFile = new HttpDldFile();
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", Path.Combine("cdb/", "cards.cdb"));
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", Path.Combine("config/", "lflist.conf"));
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", Path.Combine("config/", "strings.conf"));
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cards.cdb");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "lflist.conf");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "strings.conf");
         }
         catch (Exception e)
         {
