@@ -123,7 +123,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.034.8 (Test 2.2.1)
+  bundleVersion: 1.034.9-1
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -144,7 +144,7 @@ PlayerSettings:
     Android: cn.ygopro2.ygopro2android
     Standalone: cn.ygopro2.ygopro2android
     Tizen: cn.ygopro2.ygopro2android
-    iOS: cn.ygopro2.ygopro2android
+    iOS: cn.ygopro2.ygopro2ios
     tvOS: cn.ygopro2.ygopro2android
   buildNumber:
     iOS: 
@@ -228,7 +228,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: ygopro.jks
+  AndroidKeystoreName: C:/ygo/koishi.jks
   AndroidKeyaliasName: 
   AndroidTVCompatibility: 0
   AndroidIsGame: 0
