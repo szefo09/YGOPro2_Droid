@@ -346,7 +346,7 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            //UpdateClient();
+            UpdateClient();
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
