@@ -19,7 +19,7 @@ namespace YGOSharp
         {
             nullName = InterString.Get("未知卡片");
             nullString = "";
-            nullString += "欢迎使用：\r\nYGOPro2 For Android";
+            nullString += "欢迎使用：\r\nYGOPro2 for iOS";
             nullString += "\r\n\r\n";
             nullString += "源码：";
             nullString += "\r\n「Android」\r\n[url=https://github.com/purerosefallen/ygopro2][u]https://github.com/purerosefallen/ygopro2[/u][/url]";
@@ -30,6 +30,7 @@ namespace YGOSharp
             //nullString += "\r\n①：[url=https://jq.qq.com/?_wv=1027&k=5nq6xJe][u]649612818[/u][/url]";
             //nullString += "\r\n③：[url=https://jq.qq.com/?_wv=1027&k=50MZVQA][u]831010207[/u][/url]";
             //nullString += "\r\n②：[url=https://jq.qq.com/?_wv=1027&k=5idyod3][u]559276772[/u][/url]";
+            nullString += "该版本为内部测试版本，感谢大家的测试！\r\n";
             using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
             {
                 connection.Open();
