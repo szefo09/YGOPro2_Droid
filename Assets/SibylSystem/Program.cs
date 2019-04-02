@@ -480,7 +480,7 @@ public class Program : MonoBehaviour
     {
         try
         {
-            WWW w = new WWW("https://api.github.com/repos/purerosefallen/ygopro/contents/");
+            WWW w = new WWW("https://api.github.com/repos/purerosefallen/ygopro-database-raw/contents/");
             while (!w.isDone)
             {
                 if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(w.error))
