@@ -19,7 +19,7 @@ namespace YGOSharp
         {
             nullName = InterString.Get("未知卡片");
             nullString = "";
-            nullString += "欢迎使用：\r\nYGOPro2 for iOS";
+            nullString += "欢迎使用：\r\nKoishiPro2 for iOS";
             nullString += "\r\n\r\n";
             nullString += "源码：";
             nullString += "\r\n「iOS」\r\n[url=https://github.com/purerosefallen/ygopro2][u]https://github.com/purerosefallen/ygopro2[/u][/url]";
