@@ -448,7 +448,7 @@ public class Ocgcore : ServantWithCardDescription
             case Condition.duel:
                 SetBar(Program.I().new_bar_duel, 0, 0);
                 UIHelper.registEvent(toolBar, "input_", onChat);
-                UIHelper.registEvent(toolBar, "gg_", onDuelResultConfirmed);
+                UIHelper.registEvent(toolBar, "gg_", onSurrender);
                 UIHelper.registEvent(toolBar, "left_", on_left);
                 UIHelper.registEvent(toolBar, "right_", on_right);
                 UIHelper.registEvent(toolBar, "rush_", on_rush);
@@ -8815,7 +8815,7 @@ public class Ocgcore : ServantWithCardDescription
     void onDuelResultConfirmed()
     {
 
-        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
+        /*if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
         {
             surrended = false;
             Program.I().room.duelEnded = false;
@@ -8823,7 +8823,7 @@ public class Ocgcore : ServantWithCardDescription
             Program.I().room.sideWaitingObserver = false;
             onExit();
             return;
-        }
+        } */
 
         if (Program.I().room.needSide == true)
         {
@@ -8845,7 +8845,18 @@ public class Ocgcore : ServantWithCardDescription
             return;
         }
 
+        //RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        surrended = false;
+        Program.I().room.duelEnded = false;
+        Program.I().room.needSide = false;
+        Program.I().room.sideWaitingObserver = false;
+        onExit();
+        return;
+    }
+
+    void onSurrender() {
         RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        return;
     }
 
     private void sendSorted()
