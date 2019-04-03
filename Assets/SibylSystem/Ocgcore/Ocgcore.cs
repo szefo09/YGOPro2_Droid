@@ -2711,11 +2711,11 @@ public class Ocgcore : ServantWithCardDescription
             {
                 if (File.Exists("replay/" + TcpHelper.lastRecordName + ".yrp3d"))
                 {
-                    if (File.Exists("replay/" + "-lastReplay" + ".yrp3d"))
+                    if (File.Exists("replay/lastReplay.yrp3d"))
                     {
-                        File.Delete("replay/" + "-lastReplay" + ".yrp3d");
+                        File.Delete("replay/lastReplay.yrp3d");
                     }
-                    File.Move("replay/" + TcpHelper.lastRecordName + ".yrp3d", "replay/-lastReplay.yrp3d");
+                    File.Move("replay/" + TcpHelper.lastRecordName + ".yrp3d", "replay/lastReplay.yrp3d");
                 }
             }
             catch (Exception e)
