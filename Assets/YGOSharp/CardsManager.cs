@@ -22,7 +22,7 @@ namespace YGOSharp
             nullString += "欢迎使用：\r\nYGOPro2 for iOS";
             nullString += "\r\n\r\n";
             nullString += "源码：";
-            nullString += "\r\n「Android」\r\n[url=https://github.com/purerosefallen/ygopro2][u]https://github.com/purerosefallen/ygopro2[/u][/url]";
+            nullString += "\r\n「iOS」\r\n[url=https://github.com/purerosefallen/ygopro2][u]https://github.com/purerosefallen/ygopro2[/u][/url]";
             //nullString += "\r\nWindows：[url=https://github.com/lllyasviel/YGOProUnity_V2][u]https://github.com/lllyasviel/YGOProUnity_V2[/u][/url]";
             //nullString += "\r\n\r\n「Windows」\r\n[url=https://github.com/mercury233/ygopro2][u]https://github.com/mercury233/ygopro2[/u][/url]";
             nullString += "\r\n\r\n\r\n";
