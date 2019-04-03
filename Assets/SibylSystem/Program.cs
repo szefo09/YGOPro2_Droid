@@ -295,7 +295,7 @@ public class Program : MonoBehaviour
 #elif UNITY_ANDROID //Android
         /**
          *  public String GamePath(String path) {
-         *      GAME_DIR = Environment.getExternalStorageDirectory().toString(); + path;
+         *      GAME_DIR = Environment.getExternalStorageDirectory().toString() + path;
          *      return GAME_DIR;
          *  }
          */
@@ -428,6 +428,9 @@ public class Program : MonoBehaviour
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
                     File.Copy("updates/version2.0.txt", "updates/image_version1.2.txt", true);
+                } else if (File.Exists(ANDROID_GAME_PATH + "../ygocore/pics.zip")) {
+                    jo.Call("doExtractZipFile", ANDROID_GAME_PATH + "../ygocore/pics.zip", ANDROID_GAME_PATH);
+                    File.Copy("updates/version2.0.txt", "updates/image_version1.2.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
                 }
@@ -436,6 +439,7 @@ public class Program : MonoBehaviour
             /**
              *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
              *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
+             *  部分6.0机型可能无法正常使用，如需支持需要额外判断型号：华为、OPPO、VIVO、乐视等机型
              *
              *  public boolean APIVersion() {
              *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
