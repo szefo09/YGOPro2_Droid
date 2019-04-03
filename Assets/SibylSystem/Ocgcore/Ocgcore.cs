@@ -8815,7 +8815,7 @@ public class Ocgcore : ServantWithCardDescription
     void onDuelResultConfirmed()
     {
 
-        /*if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
+        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
         {
             surrended = false;
             Program.I().room.duelEnded = false;
@@ -8823,7 +8823,7 @@ public class Ocgcore : ServantWithCardDescription
             Program.I().room.sideWaitingObserver = false;
             onExit();
             return;
-        } */
+        }
 
         if (Program.I().room.needSide == true)
         {
