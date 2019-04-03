@@ -8846,11 +8846,11 @@ public class Ocgcore : ServantWithCardDescription
         }
 
         //RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
-        surrended = false;
+        /*surrended = false;
         Program.I().room.duelEnded = false;
         Program.I().room.needSide = false;
         Program.I().room.sideWaitingObserver = false;
-        onExit();
+        onExit(); */
         return;
     }
 
