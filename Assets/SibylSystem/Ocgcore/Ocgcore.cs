@@ -8855,7 +8855,7 @@ public class Ocgcore : ServantWithCardDescription
     }
 
     void onSurrender() {
-        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false || condition != Condition.duel)
+        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false || Program.I().room.needSide == true || condition != Condition.duel)
         {
             onDuelResultConfirmed();
             return;
