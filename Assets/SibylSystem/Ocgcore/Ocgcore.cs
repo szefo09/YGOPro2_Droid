@@ -8855,6 +8855,15 @@ public class Ocgcore : ServantWithCardDescription
     }
 
     void onSurrender() {
+        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
+        {
+            surrended = false;
+            Program.I().room.duelEnded = false;
+            Program.I().room.needSide = false;
+            Program.I().room.sideWaitingObserver = false;
+            onExit();
+            return;
+        }
         RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
         return;
     }
