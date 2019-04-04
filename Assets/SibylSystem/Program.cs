@@ -368,7 +368,7 @@ public class Program : MonoBehaviour
             }
             if (File.Exists("cdb/lflist.conf"))
             {
-                GameStringManager.initialize("cdb/lflist.conf");
+                YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
             if (File.Exists("lflist.conf"))
             {
