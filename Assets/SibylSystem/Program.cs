@@ -354,21 +354,21 @@ public class Program : MonoBehaviour
             {
                 YGOSharp.CardsManager.initialize("cdb/cards.cdb");
             }
-            if (File.Exists("strings.conf"))
-            {
-                GameStringManager.initialize("strings.conf");//YGOMobile Paths
-            }
             if (File.Exists("cdb/strings.conf"))
             {
                 GameStringManager.initialize("cdb/strings.conf");
             }
-            if (File.Exists("expansions/strings.conf"))
-            {
-                GameStringManager.initialize("expansions/strings.conf");
-            }
             if (File.Exists("cdb/lflist.conf"))
             {
                 YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
+            }
+            if (File.Exists("strings.conf"))
+            {
+                GameStringManager.initialize("strings.conf");//YGOMobile Paths
+            }
+            if (File.Exists("expansions/strings.conf"))
+            {
+                GameStringManager.initialize("expansions/strings.conf");
             }
             if (File.Exists("lflist.conf"))
             {
