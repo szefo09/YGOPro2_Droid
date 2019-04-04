@@ -501,12 +501,12 @@ public class Program : MonoBehaviour
                 Directory.CreateDirectory("cdb");
             }
 
-            if(File.Exists("cdb/cards.cdb"))
+            /*if(File.Exists("cdb/cards.cdb"))
                 File.Delete("cdb/cards.cdb");
             if(File.Exists("cdb/lflist.conf"))
                 File.Delete("cdb/lflist.conf");
             if(File.Exists("cdb/strings.conf"))
-                File.Delete("cdb/strings.conf");
+                File.Delete("cdb/strings.conf");*/
 
             HttpDldFile httpDldFile = new HttpDldFile();
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/cards.cdb");
