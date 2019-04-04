@@ -497,9 +497,9 @@ public class Program : MonoBehaviour
     {
         try
         {
-            if(!Directory.Exists("cdb")) {
-                Directory.CreateDirectory("cdb");
-            }
+            //if(!Directory.Exists("cdb")) {
+            //    Directory.CreateDirectory("cdb");
+            //}
 
             if(File.Exists("cdb/cards.cdb"))
                 File.Delete("cdb/cards.cdb");
