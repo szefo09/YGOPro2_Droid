@@ -3402,8 +3402,6 @@ public class Ocgcore : ServantWithCardDescription
                 cancalable = (r.ReadByte() != 0) || finishable;
                 ES_min = r.ReadByte();
                 ES_max = r.ReadByte();
-                //ES_min = finishable ? 0 : 1; // SelectUnselectCard can actually always select 1 card
-                //ES_max = 1; // SelectUnselectCard can actually always select 1 card
                 ES_level = 0;
                 count = r.ReadByte();
                 for (int i = 0; i < count; i++)
@@ -3448,8 +3446,10 @@ public class Ocgcore : ServantWithCardDescription
                 realizeCardsForSelect();
                 cardsSelected.Clear();
                 if (ES_selectHint != "")
+                    ES_selectUnselectHint = ES_selectHint;
+                if (ES_selectUnselectHint != "")
                 {
-                    gameField.setHint(ES_selectHint + " " + ES_min.ToString() + "-" + ES_max.ToString());
+                    gameField.setHint(ES_selectUnselectHint + " " + ES_min.ToString() + "-" + ES_max.ToString());
                 }
                 else
                 {
@@ -8072,6 +8072,8 @@ public class Ocgcore : ServantWithCardDescription
     string ES_turnString = "";
 
     string ES_phaseString = "";
+
+    string ES_selectUnselectHint = "";
 
     void toDefaultHint()
     {
