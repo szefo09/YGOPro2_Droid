@@ -350,6 +350,10 @@ public class Program : MonoBehaviour
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
+            if (File.Exists("cdb/cards.cdb"))
+            {
+                YGOSharp.CardsManager.initialize("cdb/cards.cdb");
+            }
             GameStringManager.initialize("strings.conf");//YGOMobile Paths
             if (File.Exists("cdb/strings.conf"))
             {
@@ -358,6 +362,10 @@ public class Program : MonoBehaviour
             if (File.Exists("expansions/strings.conf"))
             {
                 GameStringManager.initialize("expansions/strings.conf");
+            }
+            if (File.Exists("cdb/lflist.conf"))
+            {
+                GameStringManager.initialize("cdb/lflist.conf");
             }
             YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
             YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
@@ -480,16 +488,21 @@ public class Program : MonoBehaviour
     {
         try
         {
-            if(File.Exists("cards.cdb"))
-                File.Delete("cards.cdb");
-            if(File.Exists("lflist.conf"))
-                File.Delete("lflist.conf");
-            if(File.Exists("strings.conf"))
-                File.Delete("strings.conf");
+            if(!Directory.Exists("cdb")) {
+                Directory.CreateDirectory("cdb");
+            }
+
+            if(File.Exists("cdb/cards.cdb"))
+                File.Delete("cdb/cards.cdb");
+            if(File.Exists("cdb/lflist.conf"))
+                File.Delete("cdb/lflist.conf");
+            if(File.Exists("cdb/strings.conf"))
+                File.Delete("cdb/strings.conf");
+
             HttpDldFile httpDldFile = new HttpDldFile();
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cards.cdb");
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "lflist.conf");
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "strings.conf");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/cards.cdb");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/lflist.conf");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/strings.conf");
         }
         catch (Exception e)
         {
