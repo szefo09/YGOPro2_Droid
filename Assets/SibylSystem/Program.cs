@@ -321,7 +321,7 @@ public class Program : MonoBehaviour
             byte[] bytes = www.bytes;
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
-
+/*      //选择性更新
         if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.2.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
@@ -331,7 +331,7 @@ public class Program : MonoBehaviour
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
             //File.Create(ANDROID_GAME_PATH + ".nomedia");
         }
-
+*/
         Environment.CurrentDirectory = ANDROID_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
 
@@ -340,10 +340,7 @@ public class Program : MonoBehaviour
         if (!File.Exists(GamePaths + "updates/version2.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(System.IO.File.ReadAllBytes(bytes), GamePaths);
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
         }
         Environment.CurrentDirectory = GamePaths;
         System.IO.Directory.SetCurrentDirectory(GamePaths);
@@ -445,7 +442,7 @@ public class Program : MonoBehaviour
              *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
              *          return true;
              *      } else {
-             *          return true;
+             *          return false;
              *      }
              *  }
              */
