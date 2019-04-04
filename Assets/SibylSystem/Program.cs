@@ -346,7 +346,7 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            //UpdateClient();
+            UpdateClient();
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
@@ -480,6 +480,12 @@ public class Program : MonoBehaviour
     {
         try
         {
+            if(File.Exists("cards.cdb"))
+                File.Delete("cards.cdb");
+            if(File.Exists("lflist.conf"))
+                File.Delete("lflist.conf");
+            if(File.Exists("strings.conf"))
+                File.Delete("strings.conf");
             HttpDldFile httpDldFile = new HttpDldFile();
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cards.cdb");
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "lflist.conf");
