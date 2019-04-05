@@ -190,7 +190,7 @@ public class GameTextureManager
 
     public static Texture2D phase = null;
 
-    public static bool AutoPicDownload=true;
+    public static bool AutoPicDownload;
 
     public static Texture2D rs = null;
 
