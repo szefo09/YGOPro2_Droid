@@ -302,7 +302,7 @@ public class Program : MonoBehaviour
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
