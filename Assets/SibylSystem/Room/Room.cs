@@ -496,6 +496,7 @@ public class Room : WindowServantSP
 
         Program.I().ocgcore.returnServant = Program.I().selectServer;
         needSide = false;
+        joinWithReconnect = true;
         if (Program.I().deckManager.isShowed)
         {
             Program.I().deckManager.hide();
@@ -572,12 +573,16 @@ public class Room : WindowServantSP
 
     public bool needSide = false;
 
+    public bool joinWithReconnect = false;
+
     public void StocMessage_ChangeSide(BinaryReader r)
     {
         Program.I().ocgcore.surrended = false;
         Program.I().ocgcore.returnServant = Program.I().deckManager;
         needSide = true;
-        
+        if(Program.I().ocgcore.condition != Ocgcore.Condition.duel || joinWithReconnect) { //Change side when reconnect
+            Program.I().ocgcore.onDuelResultConfirmed();
+        }
     }
 
     GameObject handres = null;
