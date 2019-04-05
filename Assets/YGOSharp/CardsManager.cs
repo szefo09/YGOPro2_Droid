@@ -22,8 +22,9 @@ namespace YGOSharp
             nullString += "欢迎使用 KoishiPro2 iOS，本软件免责声明：[url=http://koishi.222diy.gdn/lab.html][u]http://koishi.222diy.gdn/lab.html[/u][/url]";
             nullString += "\r\n\r\n";
             nullString += "KoishiPro2 iOS的用户QQ群627975038，游戏中遇到任何bug欢迎提交";
+            nullString += "\r\n\r\n";
             nullString += "更多关于电脑/安卓版KoishiPro及7210服务器的信息可加QQ群338443272";
-            nullString += "\r\n";
+            nullString += "\r\n\r\n";
             nullString += "喜欢游戏王DIY的朋友欢迎来222服QQ群642043095";
             using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
             {
