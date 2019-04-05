@@ -8611,14 +8611,7 @@ public class Ocgcore : ServantWithCardDescription
                         BinaryMaster binaryMaster = new BinaryMaster();
                         for (int i = 0; i < allCardsInSelectMessage.Count; i++)
                         {
-                            if (Config.ClientVersion>=0x133d)   
-                            {
-                                binaryMaster.writer.Write((short)allCardsInSelectMessage[i].counterSELcount);
-                            }
-                            else
-                            {
-                                binaryMaster.writer.Write((byte)allCardsInSelectMessage[i].counterSELcount);
-                            }
+                            binaryMaster.writer.Write((short)allCardsInSelectMessage[i].counterSELcount);
                         }
                         sendReturn(binaryMaster.get());
                     }
