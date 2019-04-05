@@ -19,7 +19,6 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "face_", onClickFace);
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
-        //UIHelper.registEvent(gameObject, "roomList_", onClickRoomList);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name","一秒一喵机会");
         list = UIHelper.getByName<UIPopupList>(gameObject, "history_");
         UIHelper.registEvent(gameObject,"history_", onSelected);
@@ -27,7 +26,8 @@ public class SelectServer : WindowServantSP
         inputIP = UIHelper.getByName<UIInput>(gameObject, "ip_");
         inputPort = UIHelper.getByName<UIInput>(gameObject, "port_");
         inputPsw = UIHelper.getByName<UIInput>(gameObject, "psw_");
-        inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
+        //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
+        set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
         SetActiveFalse();
     }
 
@@ -76,7 +76,7 @@ public class SelectServer : WindowServantSP
         inputIP.value = ip;
         inputPort.value = port;
         inputPsw.value = psw;
-        inputVersion.value = version;
+        //inputVersion.value = version;
     }
 
     public override void show()
@@ -143,11 +143,6 @@ public class SelectServer : WindowServantSP
         string portString = UIHelper.getByName<UIInput>(gameObject, "port_").value;
         string pswString = UIHelper.getByName<UIInput>(gameObject, "psw_").value;
         string versionString = UIHelper.getByName<UIInput>(gameObject, "version_").value;
-        if (versionString=="")  
-        {
-            UIHelper.getByName<UIInput>(gameObject, "version_").value = "0x1349";
-            versionString = "0x1349";
-        }
         KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
 
@@ -162,11 +157,6 @@ public class SelectServer : WindowServantSP
         string portString = UIHelper.getByName<UIInput>(gameObject, "port_").value;
         string pswString = "L";
         string versionString = UIHelper.getByName<UIInput>(gameObject, "version_").value;
-        if (versionString == "")
-        {
-            UIHelper.getByName<UIInput>(gameObject, "version_").value = "0x1348";
-            versionString = "0x1348";
-        }
         KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
 
