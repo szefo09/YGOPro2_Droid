@@ -1,3 +1,7 @@
+# Download game
+
+https://github.com/Unicorn369/YGOPro2_Droid/releases
+
 # You have just found ygopro v2 in Unity 3D!
 
 YGOPro v2 is a card simulation game created in Unity Engine, with same protocol to ygopro.
