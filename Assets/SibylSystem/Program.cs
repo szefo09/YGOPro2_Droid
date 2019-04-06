@@ -295,7 +295,7 @@ public class Program : MonoBehaviour
 #elif UNITY_ANDROID //Android
         /**
          *  public String GamePath(String path) {
-         *      GAME_DIR = Environment.getExternalStorageDirectory().toString(); + path;
+         *      GAME_DIR = Environment.getExternalStorageDirectory().toString() + path;
          *      return GAME_DIR;
          *  }
          */
@@ -304,7 +304,7 @@ public class Program : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
@@ -321,7 +321,17 @@ public class Program : MonoBehaviour
             byte[] bytes = www.bytes;
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
-
+/*      //选择性更新
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.2.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/update.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+            //File.Create(ANDROID_GAME_PATH + ".nomedia");
+        }
+*/
         Environment.CurrentDirectory = ANDROID_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
 
@@ -329,11 +339,8 @@ public class Program : MonoBehaviour
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
         if (!File.Exists(GamePaths + "updates/version2.0.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(System.IO.File.ReadAllBytes(bytes), GamePaths);
+            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
         }
         Environment.CurrentDirectory = GamePaths;
         System.IO.Directory.SetCurrentDirectory(GamePaths);
@@ -399,26 +406,26 @@ public class Program : MonoBehaviour
             loadResources();
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
-            if (!File.Exists("updates/image_version1.1.txt"))//用于检查更新
+            if (!File.Exists("updates/image_version1.2.txt"))//用于检查更新
             {
-                if (File.Exists("pics.zip")) {//YGOMobile内置的卡图包
+                if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.0.txt", "updates/image_version1.1.txt", true);
+                    File.Copy("updates/version2.0.txt", "updates/image_version1.2.txt", true);
                 } else {
-                    //Application.OpenURL("https://www.taptap.com/app/37972");
-                    jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
+                    jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
                 }
             }
 
             /**
              *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
              *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
+             *  部分6.0机型可能无法正常使用，如需支持需要额外判断型号：华为、OPPO、VIVO、乐视等机型
              *
              *  public boolean APIVersion() {
              *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
              *          return true;
              *      } else {
-             *          return true;
+             *          return false;
              *      }
              *  }
              */
@@ -1074,7 +1081,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Version 2.2] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.2.2] " + "FPS: " + m_FPS);
     }
 
     void Update()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using YGOSharp.OCGWrapper.Enums;
 public class Ocgcore : ServantWithCardDescription
@@ -1303,6 +1304,7 @@ public class Ocgcore : ServantWithCardDescription
                 logicalClearChain();
                 surrended = false;
                 Program.I().room.duelEnded = false;
+                Program.I().room.joinWithReconnect = false;
                 turns = 0;
                 deckReserved = false;
                 keys.Insert(0, currentMessageIndex);
@@ -1316,6 +1318,7 @@ public class Ocgcore : ServantWithCardDescription
                 isFirst = ((playertype & 0xf) > 0) ? false : true;
                 gameInfo.swaped = false;
                 isObserver = ((playertype & 0xf0) > 0) ? true : false;
+                r.ReadByte(); // duel_rule
                 life_0 = r.ReadInt32();
                 life_1 = r.ReadInt32();
                 lpLimit = life_0;
@@ -1366,7 +1369,7 @@ public class Ocgcore : ServantWithCardDescription
                 gameField.currentPhase = GameField.ph.dp;
                 result = duelResult.disLink;
                 deckReserved = false;
-                isFirst = true;
+                //isFirst = true;
                 gameInfo.swaped = false;
                 logicalClearChain();
                 surrended = false;
@@ -3233,18 +3236,32 @@ public class Ocgcore : ServantWithCardDescription
                 code = r.ReadInt32();
                 gps = r.ReadShortGPS();
                 r.ReadByte();
-                int cr = 95;
-                if (Config.ClientVersion >= 0x233c)
-                {
-                    int cp = r.ReadInt32();
-                    if (cp > 0)
-                        cr = cp;
-                }
-                desc = GameStringManager.get(cr);
+                int cr = r.ReadInt32();
                 card = GCS_cardGet(gps, false);
-                desc = desc.Replace("[%ls]", "「" + card.get_data().Name + "」");
                 if (card != null)
                 {
+                    string displayname = "「" + card.get_data().Name + "」";
+                    if (cr == 0)
+                    {
+                        desc = GameStringManager.get(200);
+                        Regex forReplaceFirst = new Regex("\\[%ls\\]");
+                        desc = forReplaceFirst.Replace(desc, GameStringManager.formatLocation(gps), 1);
+                        desc = forReplaceFirst.Replace(desc, displayname, 1);
+                    }
+                    else if (cr == 221)
+                    {
+                        desc = GameStringManager.get(221);
+                        Regex forReplaceFirst = new Regex("\\[%ls\\]");
+                        desc = forReplaceFirst.Replace(desc, GameStringManager.formatLocation(gps), 1);
+                        desc = forReplaceFirst.Replace(desc, displayname, 1);
+                        desc = desc + "\n" + GameStringManager.get(223);
+                    }
+                    else
+                    {
+                        desc = GameStringManager.get(cr);
+                        Regex forReplaceFirst = new Regex("\\[%ls\\]");
+                        desc = forReplaceFirst.Replace(desc, displayname, 1);
+                    }
                     string hin = ES_hint + "，\n" + desc;
                     RMSshow_yesOrNo("return", hin, new messageSystemValue { value = "1", hint = "yes" }, new messageSystemValue { value = "0", hint = "no" });
                     card.add_one_decoration(Program.I().mod_ocgcore_decoration_chain_selecting, 4, Vector3.zero, "chain_selecting");
@@ -3401,8 +3418,6 @@ public class Ocgcore : ServantWithCardDescription
                 cancalable = (r.ReadByte() != 0) || finishable;
                 ES_min = r.ReadByte();
                 ES_max = r.ReadByte();
-                ES_min = finishable ? 0 : 1; // SelectUnselectCard can actually always select 1 card
-                ES_max = 1; // SelectUnselectCard can actually always select 1 card
                 ES_level = 0;
                 count = r.ReadByte();
                 for (int i = 0; i < count; i++)
@@ -3419,12 +3434,13 @@ public class Ocgcore : ServantWithCardDescription
                         allCardsInSelectMessage.Add(card);
                     }
                 }
-                count = r.ReadByte();
-                for (int i = 0; i < count; i++)
+                cardsSelected.Clear();
+                int count2 = r.ReadByte();
+                for (int i = count; i < count + count2; i++)
                 {
                     code = r.ReadInt32();
                     gps = r.ReadGPS();
-                    /*card = GCS_cardGet(gps, false);
+                    card = GCS_cardGet(gps, false);
                     if (card != null)
                     {
                         card.set_code(code);
@@ -3432,16 +3448,24 @@ public class Ocgcore : ServantWithCardDescription
                         card.forSelect = true;
                         card.selectPtr = i;
                         allCardsInSelectMessage.Add(card);
-                    }*/
+                        cardsSelected.Add(card);
+                    }
                 }
                 if (cancalable && !finishable)
                 {
                     gameInfo.addHashedButton("cancleSelected", -1, superButtonType.no, InterString.Get("取消选择@ui"));
                 }
-                realizeCardsForSelect();
-                if (ES_selectHint != "")
+                if (finishable)
                 {
-                    gameField.setHint(ES_selectHint + " " + ES_min.ToString() + "-" + ES_max.ToString());
+                    gameInfo.addHashedButton("sendSelected", 0, superButtonType.yes, InterString.Get("完成选择@ui"));
+                }
+                realizeCardsForSelect();
+                cardsSelected.Clear();
+                if (ES_selectHint != "")
+                    ES_selectUnselectHint = ES_selectHint;
+                if (ES_selectUnselectHint != "")
+                {
+                    gameField.setHint(ES_selectUnselectHint + " " + ES_min.ToString() + "-" + ES_max.ToString());
                 }
                 else
                 {
@@ -5648,7 +5672,6 @@ public class Ocgcore : ServantWithCardDescription
                         }
                         break;
                     case GameMessage.SelectCard:
-                    case GameMessage.SelectUnselectCard:
                         if (cardsSelectable.Count <= ES_min)
                         {
                             autoSendCards();
@@ -5820,18 +5843,6 @@ public class Ocgcore : ServantWithCardDescription
                 real_send = true;
             }
         }
-        if (currentMessage == GameMessage.SelectUnselectCard)
-        {
-            if (cardsSelected.Count >= ES_min)
-            {
-                sendable = true;
-            }
-            if (cardsSelected.Count == ES_max || cardsSelected.Count == cardsSelectable.Count)
-            {
-                sendable = true;
-                real_send = true;
-            }
-        }
         if (currentMessage == GameMessage.SelectTribute)
         {
             int all = 0;
@@ -5878,7 +5889,7 @@ public class Ocgcore : ServantWithCardDescription
                 }
             }
         }
-        else
+        else if (currentMessage != GameMessage.SelectUnselectCard)
         {
             gameInfo.removeHashedButton("sendSelected");
         }
@@ -8078,6 +8089,8 @@ public class Ocgcore : ServantWithCardDescription
 
     string ES_phaseString = "";
 
+    string ES_selectUnselectHint = "";
+
     void toDefaultHint()
     {
         gameField.setHint(ES_turnString + ES_phaseString);
@@ -8485,7 +8498,6 @@ public class Ocgcore : ServantWithCardDescription
                 }
                 break;
             case GameMessage.SelectCard:
-            case GameMessage.SelectUnselectCard:
             case GameMessage.SelectTribute:
             case GameMessage.SelectSum:
                 if (card.forSelect)
@@ -8524,6 +8536,16 @@ public class Ocgcore : ServantWithCardDescription
                         cardsSelected.Remove(card);
                     }
                     realizeCardsForSelect();
+                }
+                break;
+            case GameMessage.SelectUnselectCard:
+                if (card.forSelect)
+                {
+                    cardsSelected.Add(card);
+                    gameInfo.removeHashedButton("sendSelected");
+                    sendSelectedCards();
+                    realize();
+                    toNearest();
                 }
                 break;
             case GameMessage.SelectChain:
@@ -8589,14 +8611,7 @@ public class Ocgcore : ServantWithCardDescription
                         BinaryMaster binaryMaster = new BinaryMaster();
                         for (int i = 0; i < allCardsInSelectMessage.Count; i++)
                         {
-                            if (Config.ClientVersion>=0x133d)   
-                            {
-                                binaryMaster.writer.Write((short)allCardsInSelectMessage[i].counterSELcount);
-                            }
-                            else
-                            {
-                                binaryMaster.writer.Write((byte)allCardsInSelectMessage[i].counterSELcount);
-                            }
+                            binaryMaster.writer.Write((short)allCardsInSelectMessage[i].counterSELcount);
                         }
                         sendReturn(binaryMaster.get());
                     }
@@ -8811,8 +8826,9 @@ public class Ocgcore : ServantWithCardDescription
 
     public Dictionary<int, int> sideReference = new Dictionary<int, int>();
 
-    void onDuelResultConfirmed()
+    public void onDuelResultConfirmed()
     {
+        Program.I().room.joinWithReconnect = false;
 
         if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
         {
