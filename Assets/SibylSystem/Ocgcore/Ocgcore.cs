@@ -448,7 +448,7 @@ public class Ocgcore : ServantWithCardDescription
             case Condition.duel:
                 SetBar(Program.I().new_bar_duel, 0, 0);
                 UIHelper.registEvent(toolBar, "input_", onChat);
-                UIHelper.registEvent(toolBar, "gg_", onDuelResultConfirmed);
+                UIHelper.registEvent(toolBar, "gg_", onSurrender);
                 UIHelper.registEvent(toolBar, "left_", on_left);
                 UIHelper.registEvent(toolBar, "right_", on_right);
                 UIHelper.registEvent(toolBar, "rush_", on_rush);
@@ -764,6 +764,21 @@ public class Ocgcore : ServantWithCardDescription
                 TcpHelper.tcpClient.Client.Shutdown(0);
                 TcpHelper.tcpClient.Close();
             }
+            TcpHelper.tcpClient = null;
+        }
+        returnTo();
+    }
+
+    public void onEmergencyExit()
+    {
+        if (TcpHelper.tcpClient != null)
+        {
+            /*if (TcpHelper.tcpClient.Connected)
+            {
+                Program.I().ocgcore.returnServant = Program.I().selectServer;
+                TcpHelper.tcpClient.Client.Shutdown(0);
+                TcpHelper.tcpClient.Close();
+            } */
             TcpHelper.tcpClient = null;
         }
         returnTo();
@@ -1303,6 +1318,7 @@ public class Ocgcore : ServantWithCardDescription
                 logicalClearChain();
                 surrended = false;
                 Program.I().room.duelEnded = false;
+                Program.I().room.joinWithReconnect = false;
                 turns = 0;
                 deckReserved = false;
                 keys.Insert(0, currentMessageIndex);
@@ -1367,7 +1383,7 @@ public class Ocgcore : ServantWithCardDescription
                 gameField.currentPhase = GameField.ph.dp;
                 result = duelResult.disLink;
                 deckReserved = false;
-                isFirst = true;
+                //isFirst = true;
                 gameInfo.swaped = false;
                 logicalClearChain();
                 surrended = false;
@@ -3402,8 +3418,6 @@ public class Ocgcore : ServantWithCardDescription
                 cancalable = (r.ReadByte() != 0) || finishable;
                 ES_min = r.ReadByte();
                 ES_max = r.ReadByte();
-                ES_min = finishable ? 0 : 1; // SelectUnselectCard can actually always select 1 card
-                ES_max = 1; // SelectUnselectCard can actually always select 1 card
                 ES_level = 0;
                 count = r.ReadByte();
                 for (int i = 0; i < count; i++)
@@ -3420,12 +3434,13 @@ public class Ocgcore : ServantWithCardDescription
                         allCardsInSelectMessage.Add(card);
                     }
                 }
-                count = r.ReadByte();
-                for (int i = 0; i < count; i++)
+                cardsSelected.Clear();
+                int count2 = r.ReadByte();
+                for (int i = count; i < count + count2; i++)
                 {
                     code = r.ReadInt32();
                     gps = r.ReadGPS();
-                    /*card = GCS_cardGet(gps, false);
+                    card = GCS_cardGet(gps, false);
                     if (card != null)
                     {
                         card.set_code(code);
@@ -3433,16 +3448,24 @@ public class Ocgcore : ServantWithCardDescription
                         card.forSelect = true;
                         card.selectPtr = i;
                         allCardsInSelectMessage.Add(card);
-                    }*/
+                        cardsSelected.Add(card);
+                    }
                 }
                 if (cancalable && !finishable)
                 {
                     gameInfo.addHashedButton("cancleSelected", -1, superButtonType.no, InterString.Get("取消选择@ui"));
                 }
-                realizeCardsForSelect();
-                if (ES_selectHint != "")
+                if (finishable)
                 {
-                    gameField.setHint(ES_selectHint + " " + ES_min.ToString() + "-" + ES_max.ToString());
+                    gameInfo.addHashedButton("sendSelected", 0, superButtonType.yes, InterString.Get("完成选择@ui"));
+                }
+                realizeCardsForSelect();
+                cardsSelected.Clear();
+                if (ES_selectHint != "")
+                    ES_selectUnselectHint = ES_selectHint;
+                if (ES_selectUnselectHint != "")
+                {
+                    gameField.setHint(ES_selectUnselectHint + " " + ES_min.ToString() + "-" + ES_max.ToString());
                 }
                 else
                 {
@@ -5649,7 +5672,6 @@ public class Ocgcore : ServantWithCardDescription
                         }
                         break;
                     case GameMessage.SelectCard:
-                    case GameMessage.SelectUnselectCard:
                         if (cardsSelectable.Count <= ES_min)
                         {
                             autoSendCards();
@@ -5821,18 +5843,6 @@ public class Ocgcore : ServantWithCardDescription
                 real_send = true;
             }
         }
-        if (currentMessage == GameMessage.SelectUnselectCard)
-        {
-            if (cardsSelected.Count >= ES_min)
-            {
-                sendable = true;
-            }
-            if (cardsSelected.Count == ES_max || cardsSelected.Count == cardsSelectable.Count)
-            {
-                sendable = true;
-                real_send = true;
-            }
-        }
         if (currentMessage == GameMessage.SelectTribute)
         {
             int all = 0;
@@ -5879,7 +5889,7 @@ public class Ocgcore : ServantWithCardDescription
                 }
             }
         }
-        else
+        else if (currentMessage != GameMessage.SelectUnselectCard)
         {
             gameInfo.removeHashedButton("sendSelected");
         }
@@ -8079,6 +8089,8 @@ public class Ocgcore : ServantWithCardDescription
 
     string ES_phaseString = "";
 
+    string ES_selectUnselectHint = "";
+
     void toDefaultHint()
     {
         gameField.setHint(ES_turnString + ES_phaseString);
@@ -8486,7 +8498,6 @@ public class Ocgcore : ServantWithCardDescription
                 }
                 break;
             case GameMessage.SelectCard:
-            case GameMessage.SelectUnselectCard:
             case GameMessage.SelectTribute:
             case GameMessage.SelectSum:
                 if (card.forSelect)
@@ -8525,6 +8536,16 @@ public class Ocgcore : ServantWithCardDescription
                         cardsSelected.Remove(card);
                     }
                     realizeCardsForSelect();
+                }
+                break;
+            case GameMessage.SelectUnselectCard:
+                if (card.forSelect)
+                {
+                    cardsSelected.Add(card);
+                    gameInfo.removeHashedButton("sendSelected");
+                    sendSelectedCards();
+                    realize();
+                    toNearest();
                 }
                 break;
             case GameMessage.SelectChain:
@@ -8590,14 +8611,7 @@ public class Ocgcore : ServantWithCardDescription
                         BinaryMaster binaryMaster = new BinaryMaster();
                         for (int i = 0; i < allCardsInSelectMessage.Count; i++)
                         {
-                            if (Config.ClientVersion>=0x133d)   
-                            {
-                                binaryMaster.writer.Write((short)allCardsInSelectMessage[i].counterSELcount);
-                            }
-                            else
-                            {
-                                binaryMaster.writer.Write((byte)allCardsInSelectMessage[i].counterSELcount);
-                            }
+                            binaryMaster.writer.Write((short)allCardsInSelectMessage[i].counterSELcount);
                         }
                         sendReturn(binaryMaster.get());
                     }
@@ -8812,8 +8826,9 @@ public class Ocgcore : ServantWithCardDescription
 
     public Dictionary<int, int> sideReference = new Dictionary<int, int>();
 
-    void onDuelResultConfirmed()
+    public void onDuelResultConfirmed()
     {
+        Program.I().room.joinWithReconnect = false;
 
         if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false)
         {
@@ -8845,7 +8860,23 @@ public class Ocgcore : ServantWithCardDescription
             return;
         }
 
+        //RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        surrended = false;
+        Program.I().room.duelEnded = false;
+        Program.I().room.needSide = false;
+        Program.I().room.sideWaitingObserver = false;
+        onEmergencyExit();
+        return;
+    }
+
+    void onSurrender() {
+        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false || Program.I().room.needSide == true || condition != Condition.duel)
+        {
+            onDuelResultConfirmed();
+            return;
+        }
         RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        return;
     }
 
     private void sendSorted()

@@ -1415,7 +1415,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: YGOPro2 Android 1.034.9
+  mText: KoishiPro2 iOS 1.034.9
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 1
@@ -1707,7 +1707,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: mText
-      value: YGOPro2 1033.D.3
+      value: KoishiPro2 1033.D.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

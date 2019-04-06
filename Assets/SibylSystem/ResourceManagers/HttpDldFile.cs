@@ -32,6 +32,14 @@ public class HttpDldFile
                 {
                     client.Timeout = 3500;
                 }
+                if (Path.GetExtension(filename).Contains("cdb"))
+                {
+                    client.Timeout = 15000;
+                }
+                if (Path.GetExtension(filename).Contains("conf"))
+                {
+                    client.Timeout = 3000;
+                }
                 client.DownloadFile(new Uri(url), filename + ".tmp");
             }
             flag = true;

@@ -302,7 +302,7 @@ public class Program : MonoBehaviour
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygocore.zip";
             var www = new WWW(filePath);
@@ -327,7 +327,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version2.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version2.2.txt"))
         {
                 string filePath = Application.streamingAssetsPath + "/ygocore.zip";
                 ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
@@ -350,17 +350,38 @@ public class Program : MonoBehaviour
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            GameStringManager.initialize("strings.conf");//YGOMobile Paths
+            if (File.Exists("cdb/cards.cdb"))
+            {
+                YGOSharp.CardsManager.initialize("cdb/cards.cdb");
+            }
             if (File.Exists("cdb/strings.conf"))
             {
                 GameStringManager.initialize("cdb/strings.conf");
+            }
+            if (File.Exists("cdb/lflist.conf"))
+            {
+                YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
+            }
+            if (File.Exists("strings.conf"))
+            {
+                GameStringManager.initialize("strings.conf");//YGOMobile Paths
+            }
+            if (File.Exists("lflist.conf"))
+            {
+                YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
+            }
+            if (File.Exists("cards.cdb"))
+            {
+                YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
+            }
+            if (File.Exists("expansions/lflist.conf"))
+            {
+                YGOSharp.BanlistManager.initialize("expansions/lflist.conf");
             }
             if (File.Exists("expansions/strings.conf"))
             {
                 GameStringManager.initialize("expansions/strings.conf");
             }
-            YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
-            YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
 
             if (Directory.Exists("expansions"))
             {
@@ -480,10 +501,21 @@ public class Program : MonoBehaviour
     {
         try
         {
+            if(!Directory.Exists("cdb")) {
+                Directory.CreateDirectory("cdb");
+            }
+
+            /*if(File.Exists("cdb/cards.cdb"))
+                File.Delete("cdb/cards.cdb");
+            if(File.Exists("cdb/lflist.conf"))
+                File.Delete("cdb/lflist.conf");
+            if(File.Exists("cdb/strings.conf"))
+                File.Delete("cdb/strings.conf");*/
+
             HttpDldFile httpDldFile = new HttpDldFile();
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", Path.Combine("cdb/", "cards.cdb"));
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", Path.Combine("config/", "lflist.conf"));
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", Path.Combine("config/", "strings.conf"));
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/cards.cdb");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/lflist.conf");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/strings.conf");
         }
         catch (Exception e)
         {

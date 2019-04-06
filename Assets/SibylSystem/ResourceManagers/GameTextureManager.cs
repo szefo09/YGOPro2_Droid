@@ -190,7 +190,7 @@ public class GameTextureManager
 
     public static Texture2D phase = null;
 
-    public static bool AutoPicDownload=true;
+    public static bool AutoPicDownload;
 
     public static Texture2D rs = null;
 
@@ -817,8 +817,8 @@ public class GameTextureManager
             if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {
                 //YGOMobile (177x254)
-                df.Download("http://koishi.222diy.gdn/smallpics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
-                path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+                df.Download("http://koishi.222diy.gdn/ygopro/pics/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
+                path = "picture/card/" + pic.code.ToString() + ".jpg";
             }
             /*if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {
