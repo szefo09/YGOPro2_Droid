@@ -755,11 +755,11 @@ public class DeckManager : ServantWithCardDescription
             }
             if (ifType(GameStringManager.get_unsafe(1075)))
             {
-                returnValue |= (UInt32)CardType.Monster + (UInt32)CardType.sp;
+                returnValue |= (UInt32)CardType.Monster + (UInt32)CardType.SpSummon;
             }
             if (ifType(GameStringManager.get_unsafe(1076)))
             {
-                returnValue |= (UInt32)CardType.Monster + (UInt32)CardType.link;
+                returnValue |= (UInt32)CardType.Monster + (UInt32)CardType.Link;
             }
         }
         if (UIPopupList_main.value == GameStringManager.get_unsafe(1313))
@@ -1383,7 +1383,7 @@ public class DeckManager : ServantWithCardDescription
                          ||
                         (MonoCardInDeckManager_.cardData.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.Xyz) > 0
                           ||
-                        (MonoCardInDeckManager_.cardData.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.link) > 0
+                        (MonoCardInDeckManager_.cardData.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.Link) > 0
                         )
                         {
                             deck.IExtra.Add(MonoCardInDeckManager_);
@@ -1427,7 +1427,7 @@ public class DeckManager : ServantWithCardDescription
                   ||
                 (data.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.Xyz) > 0
                 ||
-                (data.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.link) > 0
+                (data.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.Link) > 0
                 )
             {
                 deck.IExtra.Add(card);
@@ -1619,7 +1619,7 @@ public class DeckManager : ServantWithCardDescription
                          ||
                         (deckTemp[i].cardData.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.Xyz) > 0
                         ||
-                        (deckTemp[i].cardData.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.link) > 0
+                        (deckTemp[i].cardData.Type & (UInt32)YGOSharp.OCGWrapper.Enums.CardType.Link) > 0
                         )
                     {
                         deck.IExtra.Add(deckTemp[i]);
