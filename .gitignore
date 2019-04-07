@@ -41,6 +41,7 @@ AI_core_vs2017solution/build/android/libs/
 AI_core_vs2017solution/build/android/obj/
 
 # ygopro
+ai/
 cdb/
 config/
 deck/
