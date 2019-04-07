@@ -2940,7 +2940,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: "\u9632\u5FA1"
+  mText: "\u5B88\u5907"
   mFontSize: 27
   mFontStyle: 0
   mAlignment: 2
