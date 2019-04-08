@@ -15,7 +15,7 @@ public static class TcpHelper
     static  NetworkStream networkStream = null;
 
     static bool canjoin = true;
-    static bool roomListChecking=false;
+    static bool roomListChecking = false;
 
     public static void join(string ipString, string name, string portString, string pswString, string version)
     {
@@ -210,8 +210,7 @@ public static class TcpHelper
                 }
                 if (!roomListChecking)
                 {
-                    Program.I().cardDescription.RMSshow_none(InterString.Get("链接被断开。"));
-                    
+                    Program.I().cardDescription.RMSshow_none(InterString.Get("连接被断开。"));
                 }
             }
             else
@@ -781,7 +780,7 @@ public static class BinaryExtensions
         if ((flag & (int)Query.Link) != 0)
         {
             l3 = r.ReadInt32(); //link value
-            data.rDefense = r.ReadInt32(); //link marker
+            data.LinkMarker = r.ReadInt32();
         }
         if (((flag & (int)Query.Level) != 0) || ((flag & (int)Query.Rank) != 0) || ((flag & (int)Query.Link) != 0))
         {

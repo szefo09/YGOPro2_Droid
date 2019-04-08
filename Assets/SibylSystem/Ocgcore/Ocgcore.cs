@@ -1796,12 +1796,15 @@ public class Ocgcore : ServantWithCardDescription
                 data = r.ReadByte();
                 int data1 = data & 0x3;
                 int data2 = (data >> 2) & 0x3;
-                string res1 = (data1 == 1 ? "剪刀" : (data1 == 2 ? "布" : "石头"));
-                string res2 = (data2 == 1 ? "剪刀" : (data2 == 2 ? "布" : "石头"));
+                string scissors = InterString.Get("剪刀");
+                string rock = InterString.Get("石头");
+                string paper = InterString.Get("布");
+                string res1 = (data1 == 1 ? scissors : (data1 == 2 ? paper : rock));
+                string res2 = (data2 == 1 ? scissors : (data2 == 2 ? paper : rock));
                 if (isFirst)
-                    printDuelLog("猜拳结果：你好像出了" + res2 + data2.ToString() + "，对方好像出了" + res1 + data1.ToString());
+                    printDuelLog(InterString.Get("猜拳结果：你好像出了") + res2 + InterString.Get("，对方好像出了") + res1);
                 else
-                    printDuelLog("猜拳结果：你好像出了" + data1.ToString() + res1 + "，对方好像出了" + res2 + data2.ToString());
+                    printDuelLog(InterString.Get("猜拳结果：你好像出了") + res1 + InterString.Get("，对方好像出了") + res2);
                 break;
             case GameMessage.Attack:
                 game_card = GCS_cardGet(r.ReadGPS(), false);
@@ -2638,6 +2641,7 @@ public class Ocgcore : ServantWithCardDescription
                 true,
                 new Vector3(((float)Screen.height) / 700f, ((float)Screen.height) / 700f, ((float)Screen.height) / 700f)
                 ).GetComponent<lazyWin>();
+                UIHelper.InterGameObject(winCaculator.gameObject);
                 winCaculator.input.value = UIHelper.getTimeString();
                 UIHelper.registEvent(winCaculator.gameObject, "yes_", onSaveReplay);
                 UIHelper.registEvent(winCaculator.gameObject, "no_", onGiveUpReplay);
