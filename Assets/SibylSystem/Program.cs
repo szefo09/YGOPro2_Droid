@@ -1098,7 +1098,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.2.3] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.2.4] " + "FPS: " + m_FPS);
     }
 
     void Update()
