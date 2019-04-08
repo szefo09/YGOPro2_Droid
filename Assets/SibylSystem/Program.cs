@@ -425,11 +425,11 @@ public class Program : MonoBehaviour
             }
             YGOSharp.PacksManager.initializeSec();
             initializeALLservants();
-            if(GameTextureManager.AutoPicDownload)
+            //if(GameTextureManager.AutoPicDownload)
                 (new Thread(()=>{UpdateClient();})).Start();
             loadResources();
 
-#if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
+#if !UNITY_EDITOR && UNITY_AN6DROID //Android Java Test
             if (!File.Exists("updates/image_version1.2.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
@@ -1065,7 +1065,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.9-6] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.9-6-fix1] " + "FPS: " + m_FPS);
     }
 
     void Update()
