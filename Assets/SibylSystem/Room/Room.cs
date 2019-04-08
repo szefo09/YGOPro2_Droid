@@ -711,31 +711,31 @@ public class Room : WindowServantSP
                 switch (flag)
                 {
                     case 1: // DECKERROR_LFLIST
-                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "（数量不符合禁限卡表）", null);
+                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "\r\n" + InterString.Get("（数量不符合禁限卡表）"), null);
                         break;
                     case 2: // DECKERROR_OCGONLY
-                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "（OCG独有卡，不能在当前设置使用）", null);
+                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "\r\n" + InterString.Get("（OCG独有卡，不能在当前设置使用）"), null);
                         break;
                     case 3: // DECKERROR_TCGONLY
-                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "（TCG独有卡，不能在当前设置使用）", null);
+                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "\r\n" + InterString.Get("（TCG独有卡，不能在当前设置使用）"), null);
                         break;
                     case 4: // DECKERROR_UNKNOWNCARD
                         if (code < 100000000)
-                            RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "（服务器无法识别此卡，可能是服务器未更新）", null);
+                            RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "\r\n" + InterString.Get("（服务器无法识别此卡，可能是服务器未更新）"), null);
                         else
-                            RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "（服务器无法识别此卡，可能是服务器不支持先行卡或此先行卡已正式更新）", null);
+                            RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "\r\n" + InterString.Get("（服务器无法识别此卡，可能是服务器不支持先行卡或此先行卡已正式更新）"), null);
                         break;
                     case 5: // DECKERROR_CARDCOUNT
-                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "（数量过多）", null);
+                        RMSshow_onlyYes("", InterString.Get("卡组非法，请检查：[?]", YGOSharp.CardsManager.Get(code).Name) + "\r\n" + InterString.Get("（数量过多）"), null);
                         break;
                     case 6: // DECKERROR_MAINCOUNT
-                        RMSshow_onlyYes("", "主卡组数量应为40-60张", null);
+                        RMSshow_onlyYes("", InterString.Get("主卡组数量应为40-60张"), null);
                         break;
                     case 7: // DECKERROR_EXTRACOUNT
-                        RMSshow_onlyYes("", "额外卡组数量应为0-15张", null);
+                        RMSshow_onlyYes("", InterString.Get("额外卡组数量应为0-15张"), null);
                         break;
                     case 8: // DECKERROR_SIDECOUNT
-                        RMSshow_onlyYes("", "副卡组数量应为0-15", null);
+                        RMSshow_onlyYes("", InterString.Get("副卡组数量应为0-15"), null);
                         break;
                     default:
                         RMSshow_onlyYes("", GameStringManager.get_unsafe(1406), null);
@@ -752,7 +752,7 @@ public class Room : WindowServantSP
                 code = r.ReadInt32();
                 //string hexOutput = "0x"+String.Format("{0:X}", code);
                 //Program.I().selectServer.set_version(hexOutput);
-                //RMSshow_none(InterString.Get("你输入的版本号和服务器不一致,[7CFC00]YGOPro2已经智能切换版本号[-]，请重新链接。"));
+                //RMSshow_none(InterString.Get("你输入的版本号和服务器不一致,[7CFC00]YGOPro2已经智能切换版本号[-]，请重新连接。"));
                 break;
             default:
                 break;

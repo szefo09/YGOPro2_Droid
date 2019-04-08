@@ -210,8 +210,7 @@ public static class TcpHelper
                 }
                 if (!roomListChecking)
                 {
-                    Program.I().cardDescription.RMSshow_none(InterString.Get("链接被断开。"));
-                    
+                    Program.I().cardDescription.RMSshow_none(InterString.Get("连接被断开。"));
                 }
             }
             else
