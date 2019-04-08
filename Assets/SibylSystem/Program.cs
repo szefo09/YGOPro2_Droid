@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Threading;
 
 public class Program : MonoBehaviour
 {
@@ -356,7 +357,7 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            UpdateClient();
+            //UpdateClient();
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
@@ -372,6 +373,7 @@ public class Program : MonoBehaviour
             {
                 YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
+            (new Thread(()=>{UpdateClient();})).Start();
             if (File.Exists("strings.conf"))
             {
                 GameStringManager.initialize("strings.conf");//YGOMobile Paths
