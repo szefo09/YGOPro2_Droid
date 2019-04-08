@@ -373,7 +373,6 @@ public class Program : MonoBehaviour
             {
                 YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
-            (new Thread(()=>{UpdateClient();})).Start();
             if (File.Exists("strings.conf"))
             {
                 GameStringManager.initialize("strings.conf");//YGOMobile Paths
@@ -426,6 +425,8 @@ public class Program : MonoBehaviour
             }
             YGOSharp.PacksManager.initializeSec();
             initializeALLservants();
+            if(GameTextureManager.AutoPicDownload)
+                (new Thread(()=>{UpdateClient();})).Start();
             loadResources();
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
