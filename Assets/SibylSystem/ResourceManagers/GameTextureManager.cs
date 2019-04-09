@@ -249,7 +249,7 @@ public class GameTextureManager
             }
             catch (Exception e)
             {
-                Debug.Log("erroe 1" + e.ToString());
+                Debug.Log("error 1" + e.ToString());
             }
         }
     }
@@ -1036,4 +1036,3 @@ public class GameTextureManager
         main.Start();
     }
 }
-

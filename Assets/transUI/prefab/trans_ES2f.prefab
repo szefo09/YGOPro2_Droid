@@ -161,7 +161,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125396}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -495, y: -126, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 410700}
@@ -273,7 +273,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163322}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071067}
-  m_LocalPosition: {x: -2, y: -86.055, z: 0}
+  m_LocalPosition: {x: -1.5, y: -86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 462324}
@@ -377,7 +377,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 225
   mHeight: 78
-  mDepth: 3
+  mDepth: 2
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
@@ -394,7 +394,7 @@ MonoBehaviour:
   mEffectStyle: 1
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
-  mEffectDistance: {x: 2, y: 2}
+  mEffectDistance: {x: 1, y: 1}
   mOverflow: 0
   mMaterial: {fileID: 0}
   mApplyGradient: 1
@@ -456,12 +456,12 @@ MonoBehaviour:
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 457
-  mHeight: 7
-  mDepth: 3
+  mHeight: 8
+  mDepth: 2
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 65.28571
+  aspectRatio: 57.125
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -638,7 +638,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 390
   mHeight: 180
-  mDepth: 15
+  mDepth: 10
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
@@ -702,13 +702,13 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 79
+  mWidth: 80
   mHeight: 6
-  mDepth: 3
+  mDepth: 2
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 13.166667
+  aspectRatio: 13.333333
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -740,7 +740,7 @@ MonoBehaviour:
   contentRect: {fileID: 0}
   dragEffect: 2
   momentumAmount: 35
-  scale: {x: 2, y: 2, z: 0}
+  scale: {x: 1, y: 1, z: 0}
   scrollWheelFactor: 0
 --- !u!114 &11465794
 MonoBehaviour:
@@ -774,7 +774,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 222
   mHeight: 78
-  mDepth: 3
+  mDepth: 2
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
