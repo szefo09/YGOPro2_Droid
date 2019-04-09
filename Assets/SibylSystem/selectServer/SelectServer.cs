@@ -7,11 +7,15 @@ using System.Threading;
 public class SelectServer : WindowServantSP
 {
     UIPopupList list;
+    UIPopupList serversList;
 
     UIInput inputIP;
     UIInput inputPort;
     UIInput inputPsw;
     UIInput inputVersion;
+
+    UISprite inputIP_;
+    UISprite inputPort_;
 
     public override void initialize()
     {
@@ -19,16 +23,110 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "face_", onClickFace);
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
-        UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name","一秒一喵机会");
+        serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
+        serversList.fontSize = 20;
+        serversList.value = Config.Get("serversPicker", "[OCG]Koishi");
+        UIHelper.registEvent(gameObject, "server", pickServer);
+        UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
+        //UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "昵称不能为空";
         list = UIHelper.getByName<UIPopupList>(gameObject, "history_");
-        UIHelper.registEvent(gameObject,"history_", onSelected);
-        name = Config.Get("name", "一秒一喵机会");
+        UIHelper.registEvent(gameObject, "history_", onSelected);
+        name = Config.Get("name", "YGOPro2 User");
         inputIP = UIHelper.getByName<UIInput>(gameObject, "ip_");
+        inputIP_ = UIHelper.getByName<UISprite>(gameObject, "ip_");
+        //inputIP.defaultText = "服务器IP 或 域名";
         inputPort = UIHelper.getByName<UIInput>(gameObject, "port_");
+        inputPort_ = UIHelper.getByName<UISprite>(gameObject, "port_");
+        //inputPort.defaultText = "端口";
         inputPsw = UIHelper.getByName<UIInput>(gameObject, "psw_");
+        //inputPsw.defaultText = "房间密码";
         //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
         SetActiveFalse();
+    }
+
+    private void pickServer()
+    {
+        string server = serversList.value;
+        switch (server)
+        {
+            case "[OCG]Mercury233":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
+                Config.Set("serversPicker", "[OCG]Mercury233");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[OCG]Koishi":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
+                Config.Set("serversPicker", "[OCG]Koishi");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[TCG]Koishi":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
+                Config.Set("serversPicker", "[TCG]Koishi");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[222DIY]Koishi":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
+                Config.Set("serversPicker", "[222DIY]Koishi");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[轮抽服]2Pick":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
+                Config.Set("serversPicker", "[轮抽服]2Pick");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[OCG&TCG]한국서버":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "cygopro.fun25.co.kr";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
+                Config.Set("serversPicker", "[OCG&TCG]한국서버");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            default:
+            {
+                Config.Set("serversPicker", "[Custom]");
+
+                list.enabled = true;
+                inputIP_.enabled = true;
+                inputPort_.enabled = true;
+                break;
+            }
+        }
+
     }
 
     void onSelected()
