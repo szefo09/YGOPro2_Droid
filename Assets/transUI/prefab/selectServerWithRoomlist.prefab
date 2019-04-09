@@ -568,7 +568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &159702
 GameObject:
   m_ObjectHideFlags: 1
@@ -945,7 +945,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 60.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 423970}
@@ -1199,7 +1199,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 105, y: 0, z: 0}
+  m_LocalPosition: {x: 100, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 447572}
@@ -1212,7 +1212,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 176992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 122, y: 2, z: 0}
+  m_LocalPosition: {x: 266, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 402964}
@@ -1253,7 +1253,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155260}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 121, y: 0, z: 0}
+  m_LocalPosition: {x: 163, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442912}
@@ -1352,7 +1352,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 162226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -71, y: 11, z: 0}
+  m_LocalPosition: {x: -113, y: 11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 431974}
@@ -1546,7 +1546,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 220, y: -65, z: 0}
+  m_LocalPosition: {x: 220, y: -72, z: 0}
   m_LocalScale: {x: 1.4325861, y: 1.4325869, z: 1.4325869}
   m_Children:
   - {fileID: 445872}
@@ -1604,7 +1604,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 198752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30, y: -65, z: 0}
+  m_LocalPosition: {x: -40, y: -65, z: 0}
   m_LocalScale: {x: 1.4325861, y: 1.4325869, z: 1.4325869}
   m_Children:
   - {fileID: 407478}
@@ -1755,7 +1755,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 124.15951, y: 32, z: 0}
+  m_Size: {x: 206.0071, y: 32, z: 0}
   m_Center: {x: -14.210312, y: 0, z: 0}
 --- !u!65 &6517900
 BoxCollider:
@@ -1887,8 +1887,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 23.99976, y: 24, z: 0}
-  m_Center: {x: 61.096924, y: 0, z: 0}
+  m_Size: {x: 24, y: 24, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6563474
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -2105,17 +2105,17 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 0.40392157}
   mPivot: 0
-  mWidth: 119
+  mWidth: 202
   mHeight: 22
   mDepth: 21
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 5.409091
+  aspectRatio: 9.181818
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: 
+  mText: "\u623F\u95F4\u5BC6\u7801"
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 1
@@ -2582,7 +2582,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: '[TCG&OCG]Szefoserver'
+  mText: '[OCG]Koishi'
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 0
@@ -2688,13 +2688,13 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 152
+  mWidth: 236
   mHeight: 34
   mDepth: 20
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 4.470588
+  aspectRatio: 6.9411764
   mType: 1
   mFillDirection: 4
   mFillAmount: 1
@@ -2948,13 +2948,13 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 146
+  mWidth: 24
   mHeight: 24
   mDepth: 100
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 6.0833335
+  aspectRatio: 1
 --- !u!114 &11435380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2995,7 +2995,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: Komeiji Koishi
+  mText: "\u6635\u79F0\u4E0D\u80FD\u4E3A\u7A7A"
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 1
@@ -3281,8 +3281,8 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: 'Server Picker:'
-  mFontSize: 26
+  mText: "\u9009\u62E9\u670D\u52A1\u5668\uFF1A"
+  mFontSize: 18
   mFontStyle: 0
   mAlignment: 3
   mEncoding: 1
@@ -3609,7 +3609,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 173134}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
@@ -3659,7 +3659,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 173134}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac5060295fbd39b4a88d20d0c83d925e, type: 3}
   m_Name: 
@@ -4012,10 +4012,13 @@ MonoBehaviour:
   position: 0
   alignment: 1
   items:
-  - '[TCG+OCG]Szefoserver'
-  - '[TCG]Koishi'
   - '[OCG]Mercury233'
-  - Custom
+  - '[OCG]Koishi'
+  - '[TCG]Koishi'
+  - '[222DIY]Koishi'
+  - "[\u8F6E\u62BD\u670D]2Pick"
+  - "[OCG&TCG]\uD55C\uAD6D\uC11C\uBC84"
+  - '[Custom]'
   padding: {x: 4, y: 4}
   textColor: {r: 1, g: 1, b: 1, a: 1}
   backgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -4033,7 +4036,7 @@ MonoBehaviour:
     mMethodName: function
     mParameters: []
     oneShot: 0
-  mSelectedItem: '[TCG+OCG]Szefoserver'
+  mSelectedItem: '[OCG]Mercury233'
   mPanel: {fileID: 0}
   mBackground: {fileID: 0}
   mHighlight: {fileID: 0}
@@ -4186,7 +4189,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: szefoserver.ddns.net
+  mText: "\u670D\u52A1\u5668IP \u6216 \u57DF\u540D"
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 1
@@ -4341,7 +4344,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: 7210
+  mText: "\u7AEF\u53E3"
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 1
