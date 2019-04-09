@@ -14,20 +14,18 @@ public class SelectServer : WindowServantSP
     UIInput inputPsw;
     UIInput inputVersion;
 
+    UISprite inputIP_;
+    UISprite inputPort_;
+
     public override void initialize()
     {
         createWindow(Program.I().new_ui_selectServer);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "face_", onClickFace);
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
-        UIHelper.registEvent(gameObject, "roomList_", onClickRoomList); // 可有可无的选项
-        UIHelper.registEvent(gameObject, "quickSingle_", onQuickSingle);// 好像没什么卵用
-        UIHelper.registEvent(gameObject, "quickMatch_", onQuickMatch);  // 好像没什么卵用
-        UIHelper.registEvent(gameObject, "quickAI_", onQuickAI);        // 好像没什么卵用
-        UIHelper.registEvent(gameObject, "quickTag_", onQuickTag);      // 好像没什么卵用
         serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
         serversList.fontSize = 20;
-        serversList.value = Config.Get("serversPicker", "[TCG+OCG]Szefo");
+        serversList.value = Config.Get("serversPicker", "[OCG]Koishi");
         UIHelper.registEvent(gameObject, "server", pickServer);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
         //UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "昵称不能为空";
@@ -35,8 +33,10 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "history_", onSelected);
         name = Config.Get("name", "YGOPro2 User");
         inputIP = UIHelper.getByName<UIInput>(gameObject, "ip_");
+        inputIP_ = UIHelper.getByName<UISprite>(gameObject, "ip_");
         //inputIP.defaultText = "服务器IP 或 域名";
         inputPort = UIHelper.getByName<UIInput>(gameObject, "port_");
+        inputPort_ = UIHelper.getByName<UISprite>(gameObject, "port_");
         //inputPort.defaultText = "端口";
         inputPsw = UIHelper.getByName<UIInput>(gameObject, "psw_");
         //inputPsw.defaultText = "房间密码";
@@ -44,6 +44,7 @@ public class SelectServer : WindowServantSP
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
         SetActiveFalse();
     }
+
     private void pickServer()
     {
         string server = serversList.value;
@@ -54,6 +55,10 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
                 Config.Set("serversPicker", "[OCG]Mercury233");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
                 break;
             }
             case "[OCG]Koishi":
@@ -61,6 +66,10 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
                 Config.Set("serversPicker", "[OCG]Koishi");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
                 break;
             }
             case "[TCG]Koishi":
@@ -68,6 +77,10 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                 Config.Set("serversPicker", "[TCG]Koishi");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
                 break;
             }
             case "[222DIY]Koishi":
@@ -75,6 +88,10 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
                 Config.Set("serversPicker", "[222DIY]Koishi");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
                 break;
             }
             case "[轮抽服]2Pick":
@@ -82,6 +99,10 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
                 Config.Set("serversPicker", "[轮抽服]2Pick");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
                 break;
             }
             case "[OCG&TCG]한국서버":
@@ -89,58 +110,23 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "cygopro.fun25.co.kr";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
                 Config.Set("serversPicker", "[OCG&TCG]한국서버");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
                 break;
             }
             default:
             {
                 Config.Set("serversPicker", "[Custom]");
+
+                list.enabled = true;
+                inputIP_.enabled = true;
+                inputPort_.enabled = true;
                 break;
             }
         }
 
-    }
-
-    public void onQuickSingle()
-    {
-        if (!isShowed)
-        {
-            return;
-        }
-        onQuick("");
-    }
-    public void onQuickAI()
-    {
-        if (!isShowed)
-        {
-            return;
-        }
-        onQuick("AI");
-    }
-    public void onQuickTag()
-    {
-        if (!isShowed)
-        {
-            return;
-        }
-        onQuick("T");
-    }
-
-    public void onQuickMatch()
-    {
-        if (!isShowed)
-        {
-            return;
-        }
-        onQuick("M");
-    }
-    private void onQuick(string psw)
-    {
-        string Name = UIHelper.getByName<UIInput>(gameObject, "name_").value;
-        string ipString = UIHelper.getByName<UIInput>(gameObject, "ip_").value;
-        string portString = UIHelper.getByName<UIInput>(gameObject, "port_").value;
-        string pswString = psw;
-        string versionString = UIHelper.getByName<UIInput>(gameObject, "version_").value;
-        KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
 
     void onSelected()
@@ -284,25 +270,22 @@ public class SelectServer : WindowServantSP
         {
             if (name != "")
             {
-                if (pswString != "L")
+                string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
+                list.items.Remove(fantasty);
+                list.items.Insert(0, fantasty);
+                list.value = fantasty;
+                if (list.items.Count>5) 
                 {
-                    string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
-                    list.items.Remove(fantasty);
-                    list.items.Insert(0, fantasty);
-                    list.value = fantasty;
-                    if (list.items.Count > 5)
-                    {
-                        list.items.RemoveAt(list.items.Count - 1);
-                    }
-                    string all = "";
-                    for (int i = 0; i < list.items.Count; i++)
-                    {
-                        all += list.items[i] + "\r\n";
-                    }
-                    File.WriteAllText("config/hosts.conf", all);
-                    printFile(false);
+                    list.items.RemoveAt(list.items.Count - 1);
                 }
-                (new Thread(() => { TcpHelper.join(ipString, name, portString, pswString, versionString); })).Start();
+                string all = "";
+                for (int i = 0; i < list.items.Count; i++)
+                {
+                    all += list.items[i] + "\r\n";
+                }
+                File.WriteAllText("config/hosts.conf", all);
+                printFile(false);
+                (new Thread(() => { TcpHelper.join(ipString, name, portString, pswString,versionString); })).Start();
             }
             else
             {

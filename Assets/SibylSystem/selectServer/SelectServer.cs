@@ -160,7 +160,7 @@ public class SelectServer : WindowServantSP
         KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
 
-    public void KF_onlineGame(string Name,string ipString, string portString, string versionString, string pswString="")
+    public void KF_onlineGame(string Name, string ipString, string portString, string versionString, string pswString = "")
     {
         name = Name;
         Config.Set("name", name);
