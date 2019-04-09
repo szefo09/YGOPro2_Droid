@@ -15,7 +15,7 @@ public static class TcpHelper
     static  NetworkStream networkStream = null;
 
     static bool canjoin = true;
-    static bool roomListChecking=false;
+    static bool roomListChecking = false;
 
     public static void join(string ipString, string name, string portString, string pswString, string version)
     {
