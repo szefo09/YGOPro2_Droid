@@ -1211,6 +1211,7 @@ public class Program : MonoBehaviour
     public static bool MonsterCloud = false;
 
     public static float fieldSize = 1;
+    public static bool longField = false;
 
     void OnApplicationQuit()
     {
