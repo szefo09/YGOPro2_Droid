@@ -1320,7 +1320,6 @@ public class DeckManager : ServantWithCardDescription
                         card.cardData = cardPicLoader_.data;
                         card.gameObject.layer = 16;
                         deck.IMain.Add(card);
-                        deckDirty = true;
                         cardInDragging = card;
                         card.beginDrag();
                     }
@@ -1339,7 +1338,8 @@ public class DeckManager : ServantWithCardDescription
             }
             else
             {
-                deckDirty = true;
+                if (cardInDragging.getIfAlive())
+                    deckDirty = true;
                 ArrangeObjectDeck(true);
                 ShowObjectDeck();
             }
