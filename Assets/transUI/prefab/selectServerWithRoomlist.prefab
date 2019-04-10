@@ -2637,10 +2637,10 @@ MonoBehaviour:
   position: 0
   alignment: 1
   items:
-  - '[OCG]Mercury233'
   - '[OCG]Koishi'
+  - '[OCG]Mercury233'
   - '[TCG]Koishi'
-  - '[222DIY]Koishi'
+  - '[Custom]YGOPro 222DIY'
   - "[\u8F6E\u62BD\u670D]2Pick"
   - "[OCG&TCG]\uD55C\uAD6D\uC11C\uBC84"
   - '[Custom]'
@@ -2661,7 +2661,7 @@ MonoBehaviour:
     mMethodName: function
     mParameters: []
     oneShot: 0
-  mSelectedItem: '[OCG]Mercury233'
+  mSelectedItem: '[OCG]Koishi'
   mPanel: {fileID: 0}
   mBackground: {fileID: 0}
   mHighlight: {fileID: 0}

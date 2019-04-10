@@ -50,22 +50,22 @@ public class SelectServer : WindowServantSP
         string server = serversList.value;
         switch (server)
         {
-            case "[OCG]Mercury233":
+            case "[OCG]Koishi":
             {
-                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
-                Config.Set("serversPicker", "[OCG]Mercury233");
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
+                Config.Set("serversPicker", "[OCG]Koishi");
 
                 list.enabled = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
             }
-            case "[OCG]Koishi":
+            case "[OCG]Mercury233":
             {
-                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
-                Config.Set("serversPicker", "[OCG]Koishi");
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
+                Config.Set("serversPicker", "[OCG]Mercury233");
 
                 list.enabled = false;
                 inputIP_.enabled = false;
@@ -83,11 +83,11 @@ public class SelectServer : WindowServantSP
                 inputPort_.enabled = false;
                 break;
             }
-            case "[222DIY]Koishi":
+            case "[Custom]YGOPro 222DIY":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
-                Config.Set("serversPicker", "[222DIY]Koishi");
+                Config.Set("serversPicker", "[Custom]YGOPro 222DIY");
 
                 list.enabled = false;
                 inputIP_.enabled = false;
