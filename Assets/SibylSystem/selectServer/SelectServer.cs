@@ -24,24 +24,38 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "face_", onClickFace);
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
         serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
-        serversList.fontSize = 20;
-        serversList.value = Config.Get("serversPicker", "[OCG]Koishi");
+        //serversList.fontSize = 30;
+        serversList.value = Config.Get("serversPicker", "[Custom]");
         UIHelper.registEvent(gameObject, "server", pickServer);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
-        //UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "昵称不能为空";
         list = UIHelper.getByName<UIPopupList>(gameObject, "history_");
         UIHelper.registEvent(gameObject, "history_", onSelected);
         name = Config.Get("name", "YGOPro2 User");
         inputIP = UIHelper.getByName<UIInput>(gameObject, "ip_");
-        inputIP_ = UIHelper.getByName<UISprite>(gameObject, "ip_");
-        //inputIP.defaultText = "服务器IP 或 域名";
         inputPort = UIHelper.getByName<UIInput>(gameObject, "port_");
-        inputPort_ = UIHelper.getByName<UISprite>(gameObject, "port_");
-        //inputPort.defaultText = "端口";
         inputPsw = UIHelper.getByName<UIInput>(gameObject, "psw_");
-        //inputPsw.defaultText = "房间密码";
+        inputIP_ = UIHelper.getByName<UISprite>(gameObject, "ip_");
+        inputPort_ = UIHelper.getByName<UISprite>(gameObject, "port_");
         //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
+
+        if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
+        {}
+        else //如果非要改成其他语言的话
+        {
+            UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "Name cannot be blank";
+            inputIP.defaultText = "IP address or domain name";
+            inputPort.defaultText = "Port";
+            inputPsw.defaultText = "Room password";
+        }
+        //方便免修改 [selectServerWithRoomlist.prefab]
+        serversList.items.Add("[OCG]Mercury233");
+        serversList.items.Add("[OCG]Koishi");
+        serversList.items.Add("[TCG]Koishi");
+        serversList.items.Add("[轮抽服]2Pick");
+        serversList.items.Add("[OCG&TCG]한국서버");
+        serversList.items.Add("[Custom]");
+
         SetActiveFalse();
     }
 
@@ -77,17 +91,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                 Config.Set("serversPicker", "[TCG]Koishi");
-
-                list.enabled = false;
-                inputIP_.enabled = false;
-                inputPort_.enabled = false;
-                break;
-            }
-            case "[222DIY]Koishi":
-            {
-                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
-                Config.Set("serversPicker", "[222DIY]Koishi");
 
                 list.enabled = false;
                 inputIP_.enabled = false;

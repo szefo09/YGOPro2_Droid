@@ -9139,7 +9139,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -9705,7 +9705,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.122172
+  aspectRatio: 1.1625
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -13731,7 +13731,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -14220,7 +14220,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -18624,7 +18624,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
