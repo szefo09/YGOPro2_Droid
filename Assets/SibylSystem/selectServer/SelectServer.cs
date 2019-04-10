@@ -24,8 +24,8 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "face_", onClickFace);
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
         serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
-        serversList.fontSize = 20;
-        serversList.value = Config.Get("serversPicker", "[OCG]Koishi");
+        serversList.fontSize = 30;
+        serversList.value = Config.Get("serversPicker", "[Custom]");
         UIHelper.registEvent(gameObject, "server", pickServer);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
         //UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "昵称不能为空";
@@ -42,6 +42,15 @@ public class SelectServer : WindowServantSP
         //inputPsw.defaultText = "房间密码";
         //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
+        //方便免修改 [selectServerWithRoomlist.prefab]
+        serversList.items.Add("[OCG]Mercury233");
+        serversList.items.Add("[OCG]Koishi");
+        serversList.items.Add("[TCG]Koishi");
+        serversList.items.Add("[222DIY]Koishi");
+        serversList.items.Add("[轮抽服]2Pick");
+        serversList.items.Add("[OCG&TCG]한국서버");
+        serversList.items.Add("[Custom]");
+
         SetActiveFalse();
     }
 
