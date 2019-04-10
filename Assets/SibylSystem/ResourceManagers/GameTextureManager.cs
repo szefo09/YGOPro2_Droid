@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using UnityEngine;
+using YGOSharp.OCGWrapper.Enums;
 
 public enum GameTextureType
 {
@@ -190,7 +191,7 @@ public class GameTextureManager
 
     public static Texture2D phase = null;
 
-    public static bool AutoPicDownload=true;
+    public static bool AutoPicDownload;
 
     public static Texture2D rs = null;
 
@@ -219,7 +220,7 @@ public class GameTextureManager
                         pic = waitLoadStack.Pop();
                         try
                         {
-                            pic.pCard = (YGOSharp.CardsManager.Get((int)pic.code).Type & (int)game_type.TYPE_PENDULUM) > 0;
+                            pic.pCard = (YGOSharp.CardsManager.Get((int)pic.code).Type & (int)CardType.Pendulum) > 0;
                         }
                         catch (Exception e)
                         {
@@ -248,7 +249,7 @@ public class GameTextureManager
             }
             catch (Exception e)
             {
-                Debug.Log("erroe 1" + e.ToString());
+                Debug.Log("error 1" + e.ToString());
             }
         }
     }
@@ -817,8 +818,8 @@ public class GameTextureManager
             if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {
                 //YGOMobile (177x254)
-                df.Download("http://koishi.222diy.gdn/smallpics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
-                path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+                df.Download("http://koishi.222diy.gdn/ygopro/pics/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
+                path = "picture/card/" + pic.code.ToString() + ".jpg";
             }
             /*if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {

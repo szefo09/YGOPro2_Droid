@@ -9691,21 +9691,21 @@ MonoBehaviour:
   bottomAnchor:
     target: {fileID: 484650}
     relative: 0
-    absolute: -3
+    absolute: 25
   topAnchor:
     target: {fileID: 484650}
     relative: 1
-    absolute: 3
+    absolute: -25
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 744
-  mHeight: 696
+  mHeight: 640
   mDepth: -100
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.0689656
+  aspectRatio: 1.122172
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
@@ -19341,7 +19341,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: "\u81EA\u52A8\u4E0B\u8F7D\u7F3A\u5931\u5361\u56FE"
+  mText: "\u81EA\u52A8\u4E0B\u8F7D\u5361\u56FE\u548C\u65B0\u5361"
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 0

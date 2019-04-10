@@ -109,11 +109,6 @@ public class RoomList : WindowServantSP
         string portString = UIHelper.getByName<UIInput>(Program.I().selectServer.gameObject, "port_").value;
         string pswString = roomPsw;
         string versionString = UIHelper.getByName<UIInput>(Program.I().selectServer.gameObject, "version_").value;
-        if (versionString == "")
-        {
-            UIHelper.getByName<UIInput>(Program.I().selectServer.gameObject, "version_").value = "0x1348";
-            versionString = "0x1348";
-        }
         Program.I().roomList.hide();
         Program.I().selectServer.KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
