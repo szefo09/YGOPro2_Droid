@@ -83,11 +83,11 @@ public class SelectServer : WindowServantSP
                     inputPort_.enabled = false;
                     break;
                 }
-            case "[Custom]YGOPro 222DIY":
+            case "[DIY]YGOPro 222DIY":
                 {
                     UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
-                    Config.Set("serversPicker", "[Custom]YGOPro 222DIY");
+                    Config.Set("serversPicker", "[DIY]YGOPro 222DIY");
 
                     //list.enabled = false;
                     inputIP_.enabled = false;
