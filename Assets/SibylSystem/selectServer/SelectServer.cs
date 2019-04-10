@@ -25,7 +25,12 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
         serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
         //serversList.fontSize = 30;
-        serversList.value = Config.Get("serversPicker", "[Custom]");
+        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
+        {
+            serversList.value = Config.Get("serversPicker", "[自定义]");
+        } else {
+            serversList.value = Config.Get("serversPicker", "[Custom]");
+        }
         UIHelper.registEvent(gameObject, "server", pickServer);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
         list = UIHelper.getByName<UIPopupList>(gameObject, "history_");
@@ -39,7 +44,7 @@ public class SelectServer : WindowServantSP
         //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
 
-        if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
+        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
         {}
         else //如果非要改成其他语言的话
         {
@@ -54,7 +59,13 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("[TCG]Koishi");
         serversList.items.Add("[轮抽服]2Pick");
         serversList.items.Add("[OCG&TCG]한국서버");
-        serversList.items.Add("[Custom]");
+        serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
+        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
+        {
+            serversList.items.Add("[自定义]");
+        } else {
+            serversList.items.Add("[Custom]");
+        }
 
         SetActiveFalse();
     }
@@ -119,9 +130,25 @@ public class SelectServer : WindowServantSP
                 inputPort_.enabled = false;
                 break;
             }
+            case "[OCG&TCG]YGOhollow (JP)":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "ygosvrjp.tk";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
+                Config.Set("serversPicker", "[OCG&TCG]YGOhollow (JP)");
+
+                list.enabled = false;
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
             default:
             {
-                Config.Set("serversPicker", "[Custom]");
+                if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
+                {
+                    Config.Set("serversPicker", "[自定义]");
+                } else {
+                    Config.Set("serversPicker", "[Custom]");
+                }
 
                 list.enabled = true;
                 inputIP_.enabled = true;
