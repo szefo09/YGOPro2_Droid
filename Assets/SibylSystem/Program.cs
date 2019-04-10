@@ -1166,6 +1166,8 @@ public class Program : MonoBehaviour
     {
         preWid = Screen.width;
         preheight = Screen.height;
+        //if (setting != null)
+        //    setting.setScreenSizeValue();
         Program.notGo(fixScreenProblems);
         Program.go(500, fixScreenProblems);
     }
@@ -1177,8 +1179,24 @@ public class Program : MonoBehaviour
 #endif
     }
 
+    public static void PrintToChat(object o)
+    {
+        try
+        {
+            instance.cardDescription.mLog(o.ToString());
+        }
+        catch
+        {
+            DEBUGLOG(o);
+        }
+    }
+
     void gameStart()
     {
+        if (UIHelper.shouldMaximize())
+        {
+            UIHelper.MaximizeWindow();
+        }
         backGroundPic.show();
         shiftToServant(menu);
     }
@@ -1188,6 +1206,7 @@ public class Program : MonoBehaviour
     public static bool MonsterCloud = false;
 
     public static float fieldSize = 1;
+    public static bool longField = false;
 
     void OnApplicationQuit()
     {
@@ -1223,6 +1242,10 @@ public class Program : MonoBehaviour
 
     #endregion
 
+    public static void gugugu()
+    {
+        PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
+    }
     //递归创建目录
     private static void DirPaths(string filefullpath)
     {
