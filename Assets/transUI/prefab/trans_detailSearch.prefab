@@ -2614,7 +2614,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -3219,7 +3219,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -3458,7 +3458,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -4262,7 +4262,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -5103,7 +5103,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
@@ -5342,7 +5342,7 @@ MonoBehaviour:
   atlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
   bitmapFont: {fileID: 0}
   trueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
-  fontSize: 16
+  fontSize: 24
   fontStyle: 0
   backgroundSprite: Button
   highlightSprite: Button
