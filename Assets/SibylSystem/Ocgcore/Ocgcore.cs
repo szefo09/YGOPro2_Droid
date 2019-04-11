@@ -449,7 +449,7 @@ public class Ocgcore : ServantWithCardDescription
             case Condition.duel:
                 SetBar(Program.I().new_bar_duel, 0, 0);
                 UIHelper.registEvent(toolBar, "input_", onChat);
-                UIHelper.registEvent(toolBar, "gg_", onDuelResultConfirmed);
+                UIHelper.registEvent(toolBar, "gg_", onSurrender);
                 UIHelper.registEvent(toolBar, "left_", on_left);
                 UIHelper.registEvent(toolBar, "right_", on_right);
                 UIHelper.registEvent(toolBar, "rush_", on_rush);
@@ -765,6 +765,21 @@ public class Ocgcore : ServantWithCardDescription
                 TcpHelper.tcpClient.Client.Shutdown(0);
                 TcpHelper.tcpClient.Close();
             }
+            TcpHelper.tcpClient = null;
+        }
+        returnTo();
+    }
+
+    public void onEmergencyExit()
+    {
+        if (TcpHelper.tcpClient != null)
+        {
+            /*if (TcpHelper.tcpClient.Connected)
+            {
+                Program.I().ocgcore.returnServant = Program.I().selectServer;
+                TcpHelper.tcpClient.Client.Shutdown(0);
+                TcpHelper.tcpClient.Close();
+            } */
             TcpHelper.tcpClient = null;
         }
         returnTo();
@@ -8894,7 +8909,23 @@ public class Ocgcore : ServantWithCardDescription
             return;
         }
 
+        //RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        surrended = false;
+        Program.I().room.duelEnded = false;
+        Program.I().room.needSide = false;
+        Program.I().room.sideWaitingObserver = false;
+        onEmergencyExit();
+        return;
+    }
+
+    void onSurrender() {
+        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false || Program.I().room.needSide == true || condition != Condition.duel)
+        {
+            onDuelResultConfirmed();
+            return;
+        }
         RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        return;
     }
 
     private void sendSorted()

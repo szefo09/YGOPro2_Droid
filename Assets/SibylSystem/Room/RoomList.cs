@@ -88,6 +88,10 @@ public class RoomList : WindowServantSP
         {
             onSelected();
         }
+        else
+        {
+            Program.PrintToChat(InterString.Get("抱歉！您尚未选择房间。"));
+        }
     }
 
     void onSelected()
