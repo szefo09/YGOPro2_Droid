@@ -14,6 +14,8 @@ public class RoomList : WindowServantSP
         createWindow(Program.I().new_ui_RoomList);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "refresh_", onRefresh);
+        //UIHelper.getByName(gameObject, "join").SetActive(false);
+        UIHelper.registEvent(gameObject, "join_", onJoin);
         roomPSWLabel = UIHelper.getByName<UILabel>(gameObject, "roomNameLabel");
         hideAI =UIHelper.getByName<UIToggle>(gameObject, "hideAIrooms_").value = UIHelper.fromStringToBool(Config.Get("hideAIrooms_", "1"));
         hideStarted=UIHelper.getByName<UIToggle>(gameObject, "hideStarted_").value = UIHelper.fromStringToBool(Config.Get("hideStarted_", "1"));
@@ -44,10 +46,12 @@ public class RoomList : WindowServantSP
         listOfRooms.Clear();
         listOfRooms.AddRange(roomList);
         printFile();
+        Program.I().selectServer.onHide(true);
     }
     public void onClickExit()
     {
         hide();
+        Program.I().selectServer.onHide(false);
     }
     public override void hide()
     {
@@ -77,6 +81,15 @@ public class RoomList : WindowServantSP
     }
 
     string selectedString = string.Empty;
+
+    void onJoin()
+    {
+        if (roomPSWLabel.text != "")
+        {
+            onSelected();
+        }
+    }
+
     void onSelected()
     {
         if (!isShowed)
@@ -99,7 +112,7 @@ public class RoomList : WindowServantSP
         else
         {
             roomPSWLabel.text = "";
-        } 
+        }
     }
 
     void JoinRoom(string selectedString,string roomPsw)
