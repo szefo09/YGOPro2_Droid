@@ -54,10 +54,12 @@ public class SelectServer : WindowServantSP
             inputPsw.defaultText = "Room password";
         }
         //方便免修改 [selectServerWithRoomlist.prefab]
-        serversList.items.Add("[OCG]Mercury233");
         serversList.items.Add("[OCG]Koishi");
+        serversList.items.Add("[OCG]Mercury233");
         serversList.items.Add("[TCG]Koishi");
         serversList.items.Add("[轮抽服]2Pick");
+        serversList.items.Add("[DIY]YGOPro 222DIY");
+        serversList.items.Add("[AI]Doom Bots of Doom");
         serversList.items.Add("[OCG&TCG]한국서버");
         serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
@@ -103,13 +105,23 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                     Config.Set("serversPicker", "[TCG]Koishi");
 
-<<<<<<< HEAD
                     //list.enabled = false;
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
                     break;
                 }
-            case "[DIY]YGOPro 222DIY":
+            case "[轮抽服]2Pick":
+                {
+                    UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
+                    UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
+                    Config.Set("serversPicker", "[轮抽服]2Pick");
+
+                    //list.enabled = false;
+                    inputIP_.enabled = false;
+                    inputPort_.enabled = false;
+                    break;
+                }
+             case "[DIY]YGOPro 222DIY":
                 {
                     UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
@@ -120,18 +132,11 @@ public class SelectServer : WindowServantSP
                     inputPort_.enabled = false;
                     break;
                 }
-=======
-                list.enabled = false;
-                inputIP_.enabled = false;
-                inputPort_.enabled = false;
-                break;
-            }
->>>>>>> 0123822fa2b5d3cd43b9eae157e3b89e95b61c1b
-            case "[轮抽服]2Pick":
+             case "[AI]Doom Bots of Doom":
                 {
-                    UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
-                    UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
-                    Config.Set("serversPicker", "[轮抽服]2Pick");
+                    UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                    UIHelper.getByName<UIInput>(gameObject, "port_").value = "573";
+                    Config.Set("serversPicker", "[AI]Doom Bots of Doom");
 
                     //list.enabled = false;
                     inputIP_.enabled = false;
@@ -144,16 +149,6 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
                     Config.Set("serversPicker", "[OCG&TCG]한국서버");
 
-<<<<<<< HEAD
-                    //list.enabled = false;
-                    inputIP_.enabled = false;
-                    inputPort_.enabled = false;
-                    break;
-                }
-            default:
-                {
-                    Config.Set("serversPicker", "[Custom]");
-=======
                 list.enabled = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
@@ -178,7 +173,6 @@ public class SelectServer : WindowServantSP
                 } else {
                     Config.Set("serversPicker", "[Custom]");
                 }
->>>>>>> 0123822fa2b5d3cd43b9eae157e3b89e95b61c1b
 
                     list.enabled = true;
                     inputIP_.enabled = true;
