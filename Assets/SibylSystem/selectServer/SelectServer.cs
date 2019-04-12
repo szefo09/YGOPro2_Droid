@@ -58,7 +58,7 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("[OCG]Mercury233");
         serversList.items.Add("[TCG]Koishi");
         serversList.items.Add("[轮抽服]2Pick");
-        serversList.items.Add("[DIY]YGOPro 222DIY");
+        //serversList.items.Add("[DIY]YGOPro 222DIY");
         serversList.items.Add("[AI]Doom Bots of Doom");
         serversList.items.Add("[OCG&TCG]한국서버");
         serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
@@ -121,7 +121,7 @@ public class SelectServer : WindowServantSP
                     inputPort_.enabled = false;
                     break;
                 }
-             case "[DIY]YGOPro 222DIY":
+             /*case "[DIY]YGOPro 222DIY":
                 {
                     UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
@@ -131,7 +131,7 @@ public class SelectServer : WindowServantSP
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
                     break;
-                }
+                } */
              case "[AI]Doom Bots of Doom":
                 {
                     UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
