@@ -301,7 +301,6 @@ public class Program : MonoBehaviour
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
@@ -1053,10 +1052,14 @@ public class Program : MonoBehaviour
             Screen.SetResolution(1300, 700, false);
         }
         QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 144;
         #elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
         Screen.SetResolution(1280, 720, true);
-        //Application.targetFrameRate = -1;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
         #endif
 
         mouseParticle = Instantiate(new_mouse);
