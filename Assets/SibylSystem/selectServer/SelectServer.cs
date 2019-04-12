@@ -60,8 +60,8 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("[轮抽服]2Pick");
         //serversList.items.Add("[DIY]YGOPro 222DIY");
         serversList.items.Add("[AI]Doom Bots of Doom");
-        serversList.items.Add("[OCG&TCG]한국서버");
-        serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
+        //serversList.items.Add("[OCG&TCG]한국서버");
+        //serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
         {
             serversList.items.Add("[自定义]");
@@ -143,7 +143,7 @@ public class SelectServer : WindowServantSP
                     inputPort_.enabled = false;
                     break;
                 }
-            case "[OCG&TCG]한국서버":
+            /*case "[OCG&TCG]한국서버":
                 {
                     UIHelper.getByName<UIInput>(gameObject, "ip_").value = "cygopro.fun25.co.kr";
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
@@ -164,7 +164,7 @@ public class SelectServer : WindowServantSP
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
-            }
+            } */
             default:
             {
                 if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
