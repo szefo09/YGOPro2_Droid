@@ -313,6 +313,11 @@ public class SelectServer : WindowServantSP
         KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
 
+    public void onHide(bool Bool)
+    {
+        gameObject.SetActive(!Bool);
+    }
+
     public void KF_onlineGame(string Name, string ipString, string portString, string versionString, string pswString = "")
     {
         name = Name;
