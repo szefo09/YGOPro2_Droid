@@ -139,6 +139,7 @@ public class Program : MonoBehaviour
     public GameObject New_winCaculator;
     public GameObject New_winCaculatorRecord;
     public GameObject New_ocgcore_placeSelector;
+    public GameObject DeckCode_input;
     #endregion
 
     #region Initializement
