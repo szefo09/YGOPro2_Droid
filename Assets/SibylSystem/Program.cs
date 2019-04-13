@@ -528,6 +528,7 @@ public class Program : MonoBehaviour
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/cards.cdb");
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/lflist.conf");
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/strings.conf");
+            PrintToChat(InterString.Get("卡片数据更新完毕。"));
         }
         catch (Exception e)
         {
