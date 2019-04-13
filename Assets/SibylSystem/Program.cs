@@ -360,31 +360,33 @@ public class Program : MonoBehaviour
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            if (File.Exists("cdb/cards.cdb"))
+            if (File.Exists("cdb/cards.cdb")) //downloaded datas
             {
                 YGOSharp.CardsManager.initialize("cdb/cards.cdb");
+            }
+            else if (File.Exists("cards.cdb"))  //default datas
+            {
+                YGOSharp.CardsManager.initialize("cards.cdb");
             }
             if (File.Exists("cdb/strings.conf"))
             {
                 GameStringManager.initialize("cdb/strings.conf");
             }
+            else if (File.Exists("strings.conf"))
+            {
+                GameStringManager.initialize("strings.conf");
+            }
             if (File.Exists("cdb/lflist.conf"))
             {
                 YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
-            if (File.Exists("strings.conf"))
+            else if (File.Exists("lflist.conf"))
             {
-                GameStringManager.initialize("strings.conf");//YGOMobile Paths
+                YGOSharp.BanlistManager.initialize("lflist.conf");
             }
-            if (File.Exists("lflist.conf"))
-            {
-                YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
-            }
-            if (File.Exists("cards.cdb"))
-            {
-                YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
-            }
-            /*
+
+            /* Expansions folder is not currently used, so not loading.
+
             if (File.Exists("expansions/lflist.conf"))
             {
                 YGOSharp.BanlistManager.initialize("expansions/lflist.conf");
