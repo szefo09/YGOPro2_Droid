@@ -193,7 +193,7 @@ public class selectDeck : WindowServantSP
                 try
                 {
                     YGOSharp.Deck deck;
-                    if(DeckManager.FromBase64toCodedDeck(result[0].value, out deck))
+                    if(!DeckManager.FromBase64toCodedDeck(result[0].value, out deck))
                     {
                         RMSshow_none(InterString.Get("卡组代码无效。"));
                         return;
