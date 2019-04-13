@@ -36,6 +36,7 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "server", pickServer);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
         list = UIHelper.getByName<UIPopupList>(gameObject, "history_");
+        list.enabled = true;
         UIHelper.registEvent(gameObject, "history_", onSelected);
         name = Config.Get("name", "YGOPro2 User");
         inputIP = UIHelper.getByName<UIInput>(gameObject, "ip_");
@@ -176,11 +177,11 @@ public class SelectServer : WindowServantSP
                     Config.Set("serversPicker", "[Custom]");
                 }
 
-                    list.enabled = true;
-                    inputIP_.enabled = true;
-                    inputPort_.enabled = true;
-                    break;
-                }
+                list.enabled = true;
+                inputIP_.enabled = true;
+                inputPort_.enabled = true;
+                break;
+            }
         }
 
     }
