@@ -1577,7 +1577,7 @@ public class DeckManager : ServantWithCardDescription
     }
 
     public static string convertDeckToBase64(YGOSharp.Deck deck) {
-        List<byte> array_list = List<byte>();
+        List<byte> array_list = new List<byte>();
         writeInt32ToList(array_list, deck.Main.Count + deck.Extra.Count);
         writeInt32ToList(array_list, deck.Side.Count);
         for (int i = 0; i < deck.Main.Count; i++)
