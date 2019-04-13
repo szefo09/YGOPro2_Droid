@@ -1530,6 +1530,79 @@ public class DeckManager : ServantWithCardDescription
         }
     }
 
+    public static bool FromBase64toCodedDeck(string base64, out YGOSharp.Deck deck) {
+        deck = new YGOSharp.Deck();
+        bool res = true;
+        try
+        {
+            byte[] buffer = Convert.FromBase64String(base64);
+            int offset = 0;
+            int mainc = BitConverter.ToInt32(buffer, offset);
+            offset += 4;
+            int sidec = BitConverter.ToInt32(buffer, offset);
+            offset += 4;
+            for(int i = 0; i < mainc; ++i) {
+                int code = BitConverter.ToInt32(buffer, offset);
+                offset += 4;
+                if (code > 100)
+                {
+                    YGOSharp.Card card = YGOSharp.CardsManager.Get(code);
+                    if (card.Id > 0 && card.IsExtraCard())
+                    {
+                        deck.Extra.Add(code);
+                        deck.Deck_O.Extra.Add(code);
+                    }
+                    else
+                    {
+                        deck.Main.Add(code);
+                        deck.Deck_O.Main.Add(code);
+                    }
+                }
+            }
+            for(int i = 0; i < sidec; ++i) {
+                int code = BitConverter.ToInt32(buffer, offset);
+                offset += 4;
+                if (code > 100)
+                {
+                    deck.Side.Add(code);
+                    deck.Deck_O.Side.Add(code);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            res = false;
+        }
+        return res;
+    }
+
+    public static string convertDeckToBase64(YGOSharp.Deck deck) {
+        List<byte> array_list = new List<byte>();
+        writeInt32ToList(array_list, deck.Main.Count + deck.Extra.Count);
+        writeInt32ToList(array_list, deck.Side.Count);
+        for (int i = 0; i < deck.Main.Count; i++)
+        {
+            writeInt32ToList(array_list, deck.Main[i]);
+        }
+        for (int i = 0; i < deck.Extra.Count; i++)
+        {
+            writeInt32ToList(array_list, deck.Extra[i]);
+        }
+        for (int i = 0; i < deck.Side.Count; i++)
+        {
+            writeInt32ToList(array_list, deck.Side[i]);
+        }
+        byte[] buffer = array_list.ToArray();
+        return Convert.ToBase64String(buffer);
+    }
+
+    private static void writeInt32ToList(List<byte> array_list, int value) {
+        byte[] int_buffer = BitConverter.GetBytes(value);
+        for(int i = 0; i < 4; ++i) {
+            array_list.Add(int_buffer[i]);
+        }
+    }
+
     public YGOSharp.Deck getRealDeck()
     {
         if (canSave)
