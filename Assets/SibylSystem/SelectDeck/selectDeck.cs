@@ -215,10 +215,11 @@ public class selectDeck : WindowServantSP
                     }
                     System.IO.File.WriteAllText("deck/" + superScrollView.selectedString + ".ydk", value, System.Text.Encoding.UTF8);
                     printSelected();
+                    RMSshow_none(InterString.Get("卡组代码加载成功。"));
                 }
                 catch (Exception)
                 {
-                    RMSshow_none(InterString.Get("卡组代码无效。"));
+                    RMSshow_none(InterString.Get("卡组代码加载失败。"));
                 }
             }
         }
