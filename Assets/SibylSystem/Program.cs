@@ -384,6 +384,7 @@ public class Program : MonoBehaviour
             {
                 YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
             }
+            /*
             if (File.Exists("expansions/lflist.conf"))
             {
                 YGOSharp.BanlistManager.initialize("expansions/lflist.conf");
@@ -407,6 +408,7 @@ public class Program : MonoBehaviour
                     }
                 }
             }
+             */
 
             if (Directory.Exists("pack"))
             {
