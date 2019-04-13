@@ -1596,7 +1596,7 @@ public class DeckManager : ServantWithCardDescription
         return Convert.ToBase64String(buffer);
     }
 
-    private void writeInt32ToList(List<byte> array_list, int value) {
+    private static void writeInt32ToList(List<byte> array_list, int value) {
         byte[] int_buffer = BitConverter.GetBytes(value);
         for(int i = 0; i < 4; ++i) {
             array_list.Add(int_buffer[i]);
