@@ -17,6 +17,8 @@ public class SelectServer : WindowServantSP
     UISprite inputIP_;
     UISprite inputPort_;
 
+    static bool EditIpAndPort;
+
     public override void initialize()
     {
         createWindow(Program.I().new_ui_selectServer);
@@ -81,7 +83,7 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
                 Config.Set("serversPicker", "[OCG]Mercury233");
 
-                list.enabled = false;
+                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -92,7 +94,7 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
                 Config.Set("serversPicker", "[OCG]Koishi");
 
-                list.enabled = false;
+                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -103,7 +105,7 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                 Config.Set("serversPicker", "[TCG]Koishi");
 
-                list.enabled = false;
+                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -114,7 +116,7 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
                 Config.Set("serversPicker", "[轮抽服]2Pick");
 
-                list.enabled = false;
+                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -125,7 +127,7 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
                 Config.Set("serversPicker", "[OCG&TCG]한국서버");
 
-                list.enabled = false;
+                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -136,7 +138,7 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
                 Config.Set("serversPicker", "[OCG&TCG]YGOhollow (JP)");
 
-                list.enabled = false;
+                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -150,7 +152,7 @@ public class SelectServer : WindowServantSP
                     Config.Set("serversPicker", "[Custom]");
                 }
 
-                list.enabled = true;
+                EditIpAndPort = true;
                 inputIP_.enabled = true;
                 inputPort_.enabled = true;
                 break;
@@ -201,8 +203,11 @@ public class SelectServer : WindowServantSP
         catch (Exception)
         {
         }
-        inputIP.value = ip;
-        inputPort.value = port;
+        if (EditIpAndPort)
+        {
+            inputIP.value = ip;
+            inputPort.value = port;
+        }
         inputPsw.value = psw;
         //inputVersion.value = version;
     }

@@ -12,7 +12,7 @@ We use Yu-Gi-Oh card game only to test our engine, and the game is not for comme
 
 # How to compile the game?
 
-1. Download Unity 5.6.7f1 (https://unity3d.com/cn/get-unity/download/archive).
+1. Download Unity 5.6.7 (https://unity3d.com/get-unity/download/archive).
 
 2. Clone the repository.
 
