@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using YGOSharp;
 using YGOSharp.OCGWrapper.Enums;
 
@@ -327,17 +328,151 @@ public class GameStringHelper
         return re;
     }
 
+    public static string getSearchResult(YGOSharp.Card data)
+    {
+        string re = "";
+
+        try
+        {
+            if ((data.Type & 0x1) > 0)
+            {
+                re += "[ff8000]";
+
+                if ((data.Type & (int)CardType.Link) == 0)
+                {
+                    if ((data.Type & (int)CardType.Xyz) > 0)
+                    {
+                        re += race(data.Race) + fen + attribute(data.Attribute) + fen + data.Level.ToString() + "[sup]☆[/sup]";
+                    }
+                    else
+                    {
+                        re += race(data.Race) + fen + attribute(data.Attribute) + fen + data.Level.ToString() + "[sup]★[/sup]";
+                    }
+                }
+                else
+                {
+                    re += race(data.Race) + fen + attribute(data.Attribute);
+                }
+
+                if (data.LScale > 0) re += fen + data.LScale.ToString() + "[sup]P[/sup]";
+                re += "\n";
+                if (data.Attack < 0)
+                {
+                    re += "[sup]ATK[/sup]?  ";
+                }
+                else
+                {
+                    if (data.rAttack > 0)
+                    {
+                        int pos = data.Attack - data.rAttack;
+                        if (pos > 0)
+                        {
+                            re += "[sup]ATK[/sup]" + data.Attack.ToString() + "(↑" + pos.ToString() + ")  ";
+                        }
+                        if (pos < 0)
+                        {
+                            re += "[sup]ATK[/sup]" + data.Attack.ToString() + "(↓" + (-pos).ToString() + ")  ";
+                        }
+                        if (pos == 0)
+                        {
+                            re += "[sup]ATK[/sup]" + data.Attack.ToString() + "  ";
+                        }
+                    }
+                    else
+                    {
+                        re += "[sup]ATK[/sup]" + data.Attack.ToString() + "  ";
+                    }
+                }
+                if ((data.Type & (int)CardType.Link) == 0)
+                {
+                    if (data.Defense < 0)
+                    {
+                        re += "[sup]DEF[/sup]?";
+                    }
+                    else
+                    {
+                        if (data.rAttack > 0)
+                        {
+                            int pos = data.Defense - data.rDefense;
+                            if (pos > 0)
+                            {
+                                re += "[sup]DEF[/sup]" + data.Defense.ToString() + "(↑" + pos.ToString() + ")";
+                            }
+                            if (pos < 0)
+                            {
+                                re += "[sup]DEF[/sup]" + data.Defense.ToString() + "(↓" + (-pos).ToString() + ")";
+                            }
+                            if (pos == 0)
+                            {
+                                re += "[sup]DEF[/sup]" + data.Defense.ToString();
+                            }
+                        }
+                        else
+                        {
+                            re += "[sup]DEF[/sup]" + data.Defense.ToString();
+                        }
+                    }
+                }
+                else
+                {
+                    re += "[sup]LINK[/sup]" + data.Level.ToString();
+                }
+            }
+            else if ((data.Type & 0x2) > 0)
+            {
+                re += "[7FFF00]";
+                re += secondType(data.Type);
+                if (data.LScale > 0) re += fen + data.LScale.ToString() + "[sup]P[/sup]";
+            }
+            else if ((data.Type & 0x4) > 0)
+            {
+                re += "[dda0dd]";
+                re += secondType(data.Type);
+            }
+            else
+            {
+                re += "[ff8000]";
+            }
+            if (data.Alias > 0)
+            {
+                if (data.Alias != data.Id)
+                {
+                    string name = YGOSharp.CardsManager.Get(data.Alias).Name;
+                    if (name != data.Name)
+                    {
+                        re += "\n[" + YGOSharp.CardsManager.Get(data.Alias).Name + "]";
+                    }
+                }
+            }
+            re += "[-]";
+        }
+        catch (Exception e)
+        {
+        }
+        return re;
+    }
+
     public static string getSetName(long Setcode)
     {
-        string returnValue = "";
+        var returnValue = new List<string>();
+        int lastBaseType = 0xfff;
         for (int i = 0; i < GameStringManager.xilies.Count; i++)
         {
-            if (YGOSharp.CardsManager.IfSetCard(GameStringManager.xilies[i].hashCode, Setcode))
+            int currentHash = GameStringManager.xilies[i].hashCode;
+            if (YGOSharp.CardsManager.IfSetCard(currentHash, Setcode))
             {
-                returnValue = GameStringManager.xilies[i].content + " ";
+                if ((lastBaseType & currentHash) == lastBaseType)
+                    returnValue.RemoveAt(returnValue.Count - 1);
+                lastBaseType = currentHash & 0xfff;
+                string[] setArray = GameStringManager.xilies[i].content.Split('\t');
+                string setString = setArray[0];
+                //if (setArray.Length > 1)
+                //{
+                //    setString += "[sup]" + setArray[1] + "[/sup]";
+                //}
+                returnValue.Add(setString);
             }
         }
-
-        return returnValue;
+        return String.Join("|", returnValue.ToArray());
     }
 }
