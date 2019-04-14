@@ -364,7 +364,7 @@ public class Program : MonoBehaviour
             {
                 YGOSharp.CardsManager.initialize("cdb/cards.cdb");
             }
-            else if (File.Exists("cards.cdb"))  //default datas
+            if (File.Exists("cards.cdb"))  //default datas
             {
                 YGOSharp.CardsManager.initialize("cards.cdb");
             }
@@ -372,7 +372,7 @@ public class Program : MonoBehaviour
             {
                 GameStringManager.initialize("cdb/strings.conf");
             }
-            else if (File.Exists("strings.conf"))
+            if (File.Exists("strings.conf"))
             {
                 GameStringManager.initialize("strings.conf");
             }
@@ -380,7 +380,7 @@ public class Program : MonoBehaviour
             {
                 YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
-            else if (File.Exists("lflist.conf"))
+            if (File.Exists("lflist.conf"))
             {
                 YGOSharp.BanlistManager.initialize("lflist.conf");
             }
