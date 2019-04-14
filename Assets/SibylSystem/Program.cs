@@ -362,24 +362,11 @@ public class Program : MonoBehaviour
             Config.initialize("config/config.conf");
             if (File.Exists("cdb/cards.cdb")) //downloaded datas
             {
-                try 
-                {
-                    YGOSharp.CardsManager.initialize("cdb/cards.cdb");
-                }
-                catch (System.Exception e) //broken file
-                {
-                    File.Delete("cdb/cards.cdb"); //will be downloaded again later
-                }
+                YGOSharp.CardsManager.initialize("cdb/cards.cdb");
             }
             if (File.Exists("cards.cdb"))  //default datas
             {
-                try 
-                {
-                    YGOSharp.CardsManager.initialize("cards.cdb");
-                }
-                catch (System.Exception e) //broken file
-                {
-                }
+                YGOSharp.CardsManager.initialize("cards.cdb");
             }
             if (File.Exists("cdb/strings.conf"))
             {
