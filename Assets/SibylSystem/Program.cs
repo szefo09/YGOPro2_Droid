@@ -360,29 +360,32 @@ public class Program : MonoBehaviour
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            if (File.Exists("cdb/cards.cdb")) //downloaded datas
+            bool database_ok = false;
+            bool string_ok = false;
+            bool lflist_ok = false;
+            if (!database_ok && File.Exists("cdb/cards.cdb")) //downloaded datas
             {
-                YGOSharp.CardsManager.initialize("cdb/cards.cdb");
+                database_ok = YGOSharp.CardsManager.initialize("cdb/cards.cdb");
             }
-            if (File.Exists("cards.cdb"))  //default datas
+            if (!database_ok && File.Exists("cards.cdb"))  //default datas
             {
-                YGOSharp.CardsManager.initialize("cards.cdb");
+                database_ok = YGOSharp.CardsManager.initialize("cards.cdb");
             }
-            if (File.Exists("cdb/strings.conf"))
+            if (!string_ok && File.Exists("cdb/strings.conf"))
             {
-                GameStringManager.initialize("cdb/strings.conf");
+                string_ok = GameStringManager.initialize("cdb/strings.conf");
             }
-            if (File.Exists("strings.conf"))
+            if (!string_ok && File.Exists("strings.conf"))
             {
-                GameStringManager.initialize("strings.conf");
+                string_ok = GameStringManager.initialize("strings.conf");
             }
-            if (File.Exists("cdb/lflist.conf"))
+            if (!lflist_ok && File.Exists("cdb/lflist.conf"))
             {
-                YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
+                lflist_ok = YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
-            if (File.Exists("lflist.conf"))
+            if (!lflist_ok && File.Exists("lflist.conf"))
             {
-                YGOSharp.BanlistManager.initialize("lflist.conf");
+                lflist_ok = YGOSharp.BanlistManager.initialize("lflist.conf");
             }
 
             /* Expansions folder is not currently used, so not loading.
