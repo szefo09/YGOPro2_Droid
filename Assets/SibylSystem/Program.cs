@@ -405,13 +405,7 @@ public class Program : MonoBehaviour
                     {
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                         {
-                            try 
-                            {
-                                YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
-                            }
-                            catch (System.Exception e) //broken file
-                            {
-                            }
+                            YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
                         }
                     }
                 }
