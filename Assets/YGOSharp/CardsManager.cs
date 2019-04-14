@@ -16,7 +16,7 @@ namespace YGOSharp
 
         public static string nullString = "";
 
-        internal static void initialize(string databaseFullPath)
+        internal static bool initialize(string databaseFullPath)
         {
             nullName = InterString.Get("未知卡片");
             nullString = "";
@@ -27,21 +27,28 @@ namespace YGOSharp
             nullString += "更多关于电脑/安卓版KoishiPro及7210服务器的信息可加QQ群338443272";
             nullString += "\r\n\r\n";
             nullString += "喜欢游戏王DIY的朋友欢迎来222服QQ群642043095";
-            using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
-            {
-                connection.Open();
-
-                using (IDbCommand command = new SqliteCommand("SELECT datas.*, texts.* FROM datas,texts WHERE datas.id=texts.id;", connection))
+            bool success = true;
+            try {
+                using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
                 {
-                    using (IDataReader reader = command.ExecuteReader())
+                    connection.Open();
+
+                    using (IDbCommand command = new SqliteCommand("SELECT datas.*, texts.* FROM datas,texts WHERE datas.id=texts.id;", connection))
                     {
-                        while (reader.Read())
+                        using (IDataReader reader = command.ExecuteReader())
                         {
-                            LoadCard(reader);
+                            while (reader.Read())
+                            {
+                                LoadCard(reader);
+                            }
                         }
                     }
                 }
             }
+            catch (System.Exception e) {
+                success = false;
+            }
+            return success;
         }
 
         internal static Card GetCard(int id)
