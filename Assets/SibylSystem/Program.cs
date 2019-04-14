@@ -532,15 +532,31 @@ public class Program : MonoBehaviour
                 File.Delete("cdb/strings.conf");*/
 
             HttpDldFile httpDldFile = new HttpDldFile();
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/cards.cdb");
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/lflist.conf");
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/strings.conf");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/_cards.cdb");
+            if(YGOSharp.CardsManager.initialize("cdb/_cards.cdb", true)) {
+                ReplaceFile("cdb/cards.cdb", "cdb/_cards.cdb");
+            }
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/_lflist.conf");
+            if(YGOSharp.BanlistManager.initialize("cdb/_lflist.conf", true)) {
+                ReplaceFile("cdb/lflist.conf","cdb/_lflist.conf");
+            }
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/_strings.conf");
+            if(GameStringManager.initialize("cdb/_strings.conf", true)) {
+                ReplaceFile("cdb/strings.conf","cdb/_strings.conf");
+            }
             //PrintToChat(InterString.Get("卡片数据更新完毕。"));
         }
         catch (Exception e)
         {
             Debug.Log("UPDATE ERROR: " + e.ToString());
         }
+    }
+
+    private void ReplaceFile(string oldfile, string newfile) {
+        if(File.Exists(oldfile)) {
+            File.Delete(oldfile);
+        }
+        File.Move(newfile, oldfile);
     }
 
     public GameObject mouseParticle;
