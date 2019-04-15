@@ -536,15 +536,27 @@ public class Program : MonoBehaviour
             if(YGOSharp.CardsManager.initialize("cdb/_cards.cdb", true)) {
                 ReplaceFile("cdb/cards.cdb", "cdb/_cards.cdb");
             }
+            else
+            {
+                PrintToChat(InterString.Get("卡片数据库更新失败。"));
+            }
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/_lflist.conf");
             if(YGOSharp.BanlistManager.initialize("cdb/_lflist.conf", true)) {
                 ReplaceFile("cdb/lflist.conf","cdb/_lflist.conf");
+            }
+            else
+            {
+                PrintToChat(InterString.Get("禁止/限制卡表文件更新失败。"));
             }
             httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/_strings.conf");
             if(GameStringManager.initialize("cdb/_strings.conf", true)) {
                 ReplaceFile("cdb/strings.conf","cdb/_strings.conf");
             }
-            //PrintToChat(InterString.Get("卡片数据更新完毕。"));
+            else
+            {
+                PrintToChat(InterString.Get("字段信息文件更新失败。"));
+            }
+            PrintToChat(InterString.Get("卡片数据更新完毕。"));
         }
         catch (Exception e)
         {
