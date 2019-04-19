@@ -95,7 +95,7 @@ public class Menu : WindowServantSP
         Program.I().quit();
         Program.Running = false;
         TcpHelper.SaveRecord();
-#if !UNITY_EDITOR || UNITY_ANDROID // IL2CPP 使用此方法才能退出
+#if !UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE // IL2CPP 使用此方法才能退出
         Application.Quit();
 #elif
         Process.GetCurrentProcess().Kill();
