@@ -20,8 +20,8 @@ ifndef RESCOMP
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = ../../obj/Windows/x86_64/sqlite3
-  TARGETDIR  = ../../bin/x86_64
+  OBJDIR     = ../../obj/gmake.windows/x86_64/sqlite3
+  TARGETDIR  = ../../bin/gmake.windows/x86_64
   TARGET     = $(TARGETDIR)/sqlite3.dll
   DEFINES   +=
   INCLUDES  +=
@@ -29,7 +29,7 @@ ifeq ($(config),release)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -Os -static-libgcc
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -s -shared -Wl,--out-implib="../../bin/x86_64/libsqlite3.a"
+  ALL_LDFLAGS   += $(LDFLAGS) -s -shared -Wl,--out-implib="../../bin/gmake.windows/x86_64/libsqlite3.a"
   LDDEPS    +=
   LIBS      += $(LDDEPS)
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
@@ -42,8 +42,8 @@ ifeq ($(config),release)
 endif
 
 ifeq ($(config),release32)
-  OBJDIR     = ../../obj/Windows/x86/sqlite3
-  TARGETDIR  = ../../bin/x86
+  OBJDIR     = ../../obj/gmake.windows/x86/sqlite3
+  TARGETDIR  = ../../bin/gmake.windows/x86
   TARGET     = $(TARGETDIR)/sqlite3.dll
   DEFINES   +=
   INCLUDES  +=
@@ -51,7 +51,7 @@ ifeq ($(config),release32)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -Os -m32 -static-libgcc
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -s -shared -Wl,--out-implib="../../bin/x86_64/libsqlite3.a" -m32 -L/usr/lib32
+  ALL_LDFLAGS   += $(LDFLAGS) -s -shared -Wl,--out-implib="../../bin/gmake.windows/x86/libsqlite3.a" -m32 -L/usr/lib32
   LDDEPS    +=
   LIBS      += $(LDDEPS)
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
@@ -124,7 +124,7 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -MMD -MP $(DEFINES) $(INCLUDES) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
-$(OBJDIR)/sqlite3.o: ../../ocgcore/sqlite3.c
+$(OBJDIR)/sqlite3.o: ../../ocgcore/sqlite3/sqlite3.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
