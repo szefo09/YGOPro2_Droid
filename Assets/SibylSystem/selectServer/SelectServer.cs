@@ -58,7 +58,7 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("[OCG]Koishi");
         serversList.items.Add("[TCG]Koishi");
         serversList.items.Add("[轮抽服]2Pick");
-        serversList.items.Add("[OCG&TCG]한국서버");
+        serversList.items.Add("[OCG&TCG]한국서버 (KR)");
         serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
         {
@@ -82,7 +82,7 @@ public class SelectServer : WindowServantSP
                 Config.Set("serversPicker", "[OCG]Mercury233");
 
                 inputIP_.enabled = false;
-                inputPort_.enabled = false;
+                inputPort_.enabled = true;
                 break;
             }
             case "[OCG]Koishi":
@@ -115,11 +115,11 @@ public class SelectServer : WindowServantSP
                 inputPort_.enabled = false;
                 break;
             }
-            case "[OCG&TCG]한국서버":
+            case "[OCG&TCG]한국서버 (KR)":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "cygopro.fun25.co.kr";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
-                Config.Set("serversPicker", "[OCG&TCG]한국서버");
+                Config.Set("serversPicker", "[OCG&TCG]한국서버 (KR)");
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
