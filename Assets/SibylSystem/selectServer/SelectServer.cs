@@ -17,8 +17,6 @@ public class SelectServer : WindowServantSP
     UISprite inputIP_;
     UISprite inputPort_;
 
-    static bool EditIpAndPort;
-
     public override void initialize()
     {
         createWindow(Program.I().new_ui_selectServer);
@@ -83,7 +81,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
                 Config.Set("serversPicker", "[OCG]Mercury233");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -94,7 +91,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
                 Config.Set("serversPicker", "[OCG]Koishi");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -105,7 +101,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                 Config.Set("serversPicker", "[TCG]Koishi");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -116,7 +111,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
                 Config.Set("serversPicker", "[轮抽服]2Pick");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -127,7 +121,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
                 Config.Set("serversPicker", "[OCG&TCG]한국서버");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -138,7 +131,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
                 Config.Set("serversPicker", "[OCG&TCG]YGOhollow (JP)");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -152,7 +144,6 @@ public class SelectServer : WindowServantSP
                     Config.Set("serversPicker", "[Custom]");
                 }
 
-                EditIpAndPort = true;
                 inputIP_.enabled = true;
                 inputPort_.enabled = true;
                 break;
@@ -171,6 +162,7 @@ public class SelectServer : WindowServantSP
 
     private void readString(string str)
     {
+/*
         str = str.Substring(1, str.Length - 1);
         string version = "", remain = "";
         string[] splited;
@@ -209,6 +201,8 @@ public class SelectServer : WindowServantSP
             inputPort.value = port;
         }
         inputPsw.value = psw;
+*/
+        inputPsw.value = str;
         //inputVersion.value = version;
     }
 
@@ -229,11 +223,11 @@ public class SelectServer : WindowServantSP
     void printFile(bool first)
     {
         list.Clear();
-        if (File.Exists("config/hosts.conf") == false)
+        if (File.Exists("config/passwords.conf") == false)
         {
-            File.Create("config/hosts.conf").Close();
+            File.Create("config/passwords.conf").Close();
         }
-        string txtString = File.ReadAllText("config/hosts.conf");
+        string txtString = File.ReadAllText("config/passwords.conf");
         string[] lines = txtString.Replace("\r", "").Split("\n");
         for (int i = 0; i < lines.Length; i++)
         {
@@ -310,11 +304,12 @@ public class SelectServer : WindowServantSP
         {
             if (name != "")
             {
-                string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
+                //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
+                string fantasty = pswString;
                 list.items.Remove(fantasty);
                 list.items.Insert(0, fantasty);
                 list.value = fantasty;
-                if (list.items.Count>5) 
+                if (list.items.Count > 5)
                 {
                     list.items.RemoveAt(list.items.Count - 1);
                 }
@@ -323,9 +318,9 @@ public class SelectServer : WindowServantSP
                 {
                     all += list.items[i] + "\r\n";
                 }
-                File.WriteAllText("config/hosts.conf", all);
+                File.WriteAllText("config/passwords.conf", all);
                 printFile(false);
-                (new Thread(() => { TcpHelper.join(ipString, name, portString, pswString,versionString); })).Start();
+                (new Thread(() => { TcpHelper.join(ipString, name, portString, pswString, versionString); })).Start();
             }
             else
             {

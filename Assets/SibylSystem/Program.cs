@@ -301,7 +301,7 @@ public class Program : MonoBehaviour
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
@@ -321,7 +321,7 @@ public class Program : MonoBehaviour
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
 /*      //选择性更新
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.2.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/image_version1.3.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
             var www = new WWW(filePath);
@@ -336,7 +336,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version2.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version2.3.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
@@ -400,20 +400,24 @@ public class Program : MonoBehaviour
                 }
             }
 
-            fileInfos = (new DirectoryInfo("pack")).GetFiles();
-            //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();
-            for (int i = 0; i < fileInfos.Length; i++)
+            if (Directory.Exists("pack"))
             {
-                if (fileInfos[i].Name.Length > 3)
+                fileInfos = (new DirectoryInfo("pack")).GetFiles();
+                //fileInfos = (new DirectoryInfo("pack" + AppLanguage.LanguageDir())).GetFiles();
+                for (int i = 0; i < fileInfos.Length; i++)
                 {
-                    if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 3, 3) == ".db")
+                    if (fileInfos[i].Name.Length > 3)
                     {
-                        YGOSharp.PacksManager.initialize("pack/" + fileInfos[i].Name);
-                        //YGOSharp.PacksManager.initialize("pack" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
+                        if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 3, 3) == ".db")
+                        {
+                            YGOSharp.PacksManager.initialize("pack/" + fileInfos[i].Name);
+                            //YGOSharp.PacksManager.initialize("pack" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
+                        }
                     }
                 }
+                YGOSharp.PacksManager.initializeSec();
             }
-            YGOSharp.PacksManager.initializeSec();
+
             initializeALLservants();
             loadResources();
 
@@ -422,10 +426,10 @@ public class Program : MonoBehaviour
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.0.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/version2.3.txt", "updates/image_version1.2.txt", true);
                 } else if (File.Exists(ANDROID_GAME_PATH + "../ygocore/pics.zip")) {
                     jo.Call("doExtractZipFile", ANDROID_GAME_PATH + "../ygocore/pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.0.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/version2.3.txt", "updates/image_version1.2.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
                 }
@@ -1035,7 +1039,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.2.7] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3] " + "FPS: " + m_FPS);
     }
 
     void Update()
