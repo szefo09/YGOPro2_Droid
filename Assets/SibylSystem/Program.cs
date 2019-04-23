@@ -301,7 +301,7 @@ public class Program : MonoBehaviour
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.0.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
@@ -321,7 +321,7 @@ public class Program : MonoBehaviour
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
 /*      //选择性更新
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.2.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/image_version1.3.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
             var www = new WWW(filePath);
@@ -336,7 +336,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version2.0.txt"))
+        if (!File.Exists(GamePaths + "updates/version2.3.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
@@ -355,7 +355,6 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            //UpdateClient();
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
@@ -399,8 +398,9 @@ public class Program : MonoBehaviour
                         }
                     }
                 }
+                YGOSharp.PacksManager.initializeSec();
             }
-            YGOSharp.PacksManager.initializeSec();
+
             initializeALLservants();
             loadResources();
 
@@ -409,7 +409,7 @@ public class Program : MonoBehaviour
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.0.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/version2.3.txt", "updates/image_version1.2.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
                 }
@@ -483,71 +483,6 @@ public class Program : MonoBehaviour
                 zf.IsStreamOwner = true;
                 zf.Close();
             }
-        }
-    }
-    private void UpdateClient()
-    {
-        try
-        {
-            WWW w = new WWW("https://api.github.com/repos/szefo09/updateYGOPro2/contents/");
-            while (!w.isDone)
-            {
-                if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(w.error))
-                {
-                    throw new Exception("No Internet connection!");
-                }
-            }
-            List<ApiFile> toDownload = new List<ApiFile>();
-            List<ApiFile> apiFromGit = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(w.text);
-            if (!File.Exists("updates/SHAs.txt"))
-            {
-                Directory.CreateDirectory("updates");
-                toDownload.AddRange(apiFromGit);
-            }
-
-            if (File.Exists("updates/SHAs.txt"))
-            {
-                List<ApiFile> local = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<ApiFile>>(File.ReadAllText("updates/SHAs.txt"));
-                foreach (ApiFile file in apiFromGit)
-                {
-                    if (local.FirstOrDefault(x => x.name == file.name)==null || file.sha != local.FirstOrDefault(x => x.name == file.name).sha)
-                    {
-                        toDownload.Add(file);
-                    }
-                }
-                foreach (ApiFile f in local)
-                {
-                    if (apiFromGit.FirstOrDefault(x => x.name == f.name) == null || f.name != apiFromGit.FirstOrDefault(x => x.name == f.name).name)
-                    {
-                        if (File.Exists("cdb/" + f.name))
-                        {
-                            File.Delete("cdb/" + f.name);
-                        }
-                        if (File.Exists("config/" + f.name))
-                        {
-                            File.Delete("config/" + f.name);
-                        }
-
-                    }
-                }
-            }
-            HttpDldFile httpDldFile = new HttpDldFile();
-            foreach (var dl in toDownload)
-            {
-                if (Path.GetExtension(dl.name) == ".cdb" && !(Application.internetReachability == NetworkReachability.NotReachable))
-                {
-                    httpDldFile.Download(dl.download_url, Path.Combine("cdb/", dl.name));
-                }
-                if (Path.GetExtension(dl.name) == ".conf" && !(Application.internetReachability == NetworkReachability.NotReachable))
-                {
-                    httpDldFile.Download(dl.download_url, Path.Combine("config/", dl.name));
-                }
-            }
-            File.WriteAllText("updates/SHAs.txt", w.text);
-        }
-        catch (Exception e)
-        {
-            File.Delete("updates/SHAs.txt");
         }
     }
 
@@ -1084,7 +1019,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.2.7] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3.0] " + "FPS: " + m_FPS);
     }
 
     void Update()
@@ -1248,27 +1183,6 @@ public class Program : MonoBehaviour
     public static void gugugu()
     {
         PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
-    }
-    //递归创建目录
-    private static void DirPaths(string filefullpath)
-    {
-        if (!File.Exists(filefullpath))
-        {
-            string dirpath = filefullpath.Substring(0, filefullpath.LastIndexOf("/"));
-            string[] paths = dirpath.Split("/");
-            if (paths.Length > 1)
-            {
-                string path = paths[0];
-                for (int i = 1; i < paths.Length; i++)
-                {
-                    path += "/" + paths[i];
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                }
-            }
-        }
     }
 
 }
