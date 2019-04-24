@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 432674}
   - component: {fileID: 11475334}
   m_Layer: 18
-  m_Name: Label
+  m_Name: '!default'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 442912}
   - component: {fileID: 11401100}
   m_Layer: 18
-  m_Name: Label
+  m_Name: '!default'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 406588}
   - component: {fileID: 11435380}
   m_Layer: 18
-  m_Name: Label
+  m_Name: '!default'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 442160}
   - component: {fileID: 11473318}
   m_Layer: 18
-  m_Name: Label
+  m_Name: '!default'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2781,7 +2781,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: f775853fdfd14bb47934543e95c3bae3, type: 3}
   mFont: {fileID: 0}
-  mText: "\u670D\u52A1\u5668IP \u6216 \u57DF\u540D"
+  mText: "\u670D\u52A1\u5668IP\u6216\u57DF\u540D"
   mFontSize: 18
   mFontStyle: 0
   mAlignment: 1

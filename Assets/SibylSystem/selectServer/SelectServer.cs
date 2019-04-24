@@ -44,15 +44,6 @@ public class SelectServer : WindowServantSP
         //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
 
-        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-        {}
-        else //如果非要改成其他语言的话
-        {
-            UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "Name cannot be blank";
-            inputIP.defaultText = "IP address or domain name";
-            inputPort.defaultText = "Port";
-            inputPsw.defaultText = "Room password";
-        }
         //方便免修改 [selectServerWithRoomlist.prefab]
         serversList.items.Add("[OCG]Mercury233");
         serversList.items.Add("[OCG]Koishi");
