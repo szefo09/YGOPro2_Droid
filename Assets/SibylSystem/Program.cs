@@ -302,7 +302,7 @@ public class Program : MonoBehaviour
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.4.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
@@ -337,7 +337,7 @@ public class Program : MonoBehaviour
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version2.3.txt"))
+        if (!File.Exists(GamePaths + "updates/version2.4.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
@@ -440,7 +440,7 @@ public class Program : MonoBehaviour
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.3.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/version2.4.txt", "updates/image_version1.2.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
                 }
