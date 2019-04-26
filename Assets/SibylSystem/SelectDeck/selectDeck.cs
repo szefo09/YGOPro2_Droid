@@ -32,12 +32,6 @@ public class selectDeck : WindowServantSP
         UIHelper.registEvent(gameObject, "copy_", onCopy);
         UIHelper.registEvent(gameObject, "rename_", onRename);
         UIHelper.registEvent(gameObject, "code_", onCode);
-        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-        {
-            UIHelper.getByName<UILabel>(gameObject, "!default").text = "搜索卡组";
-        } else {
-            UIHelper.getByName<UILabel>(gameObject, "!default").text = "Search";
-        }
         searchInput = UIHelper.getByName<UIInput>(gameObject, "search_");
         superScrollView.install();
         for (int i = 0; i < quickCards.Length; i++)

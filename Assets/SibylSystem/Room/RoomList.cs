@@ -90,7 +90,7 @@ public class RoomList : WindowServantSP
         }
         else
         {
-            Program.PrintToChat(InterString.Get("抱歉！您尚未选择房间。"));
+            Program.PrintToChat(InterString.Get("请选择房间！！！"));
         }
     }
 

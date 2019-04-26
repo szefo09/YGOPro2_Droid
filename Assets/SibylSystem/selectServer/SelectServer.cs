@@ -17,8 +17,6 @@ public class SelectServer : WindowServantSP
     UISprite inputIP_;
     UISprite inputPort_;
 
-    static bool EditIpAndPort;
-
     public override void initialize()
     {
         createWindow(Program.I().new_ui_selectServer);
@@ -47,15 +45,6 @@ public class SelectServer : WindowServantSP
         //inputVersion = UIHelper.getByName<UIInput>(gameObject, "version_");
         set_version("0x" + String.Format("{0:X}", Config.ClientVersion));
 
-        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-        {}
-        else //如果非要改成其他语言的话
-        {
-            UIHelper.getByName<UIInput>(gameObject, "name_").defaultText = "Name cannot be blank";
-            inputIP.defaultText = "IP address or domain name";
-            inputPort.defaultText = "Port";
-            inputPsw.defaultText = "Room password";
-        }
         //方便免修改 [selectServerWithRoomlist.prefab]
         serversList.items.Add("[OCG]Koishi");
         serversList.items.Add("[OCG]Mercury233");
@@ -86,8 +75,7 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
                     Config.Set("serversPicker", "[OCG]Koishi");
 
-                    EditIpAndPort = false;
-                    inputIP_.enabled = false;
+                    inputIP_.enabled = true;
                     inputPort_.enabled = false;
                     break;
                 }
@@ -97,8 +85,7 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
                     Config.Set("serversPicker", "[OCG]Mercury233");
 
-                    EditIpAndPort = false;
-                    inputIP_.enabled = false;
+                    inputIP_.enabled = true;
                     inputPort_.enabled = false;
                     break;
                 }
@@ -108,7 +95,6 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                     Config.Set("serversPicker", "[TCG]Koishi");
 
-                    EditIpAndPort = false;
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
                     break;
@@ -119,7 +105,6 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
                     Config.Set("serversPicker", "[轮抽服]2Pick");
 
-                    EditIpAndPort = false;
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
                     break;
@@ -130,7 +115,6 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "222";
                     Config.Set("serversPicker", "[DIY]YGOPro 222DIY");
 
-                    EditIpAndPort = false;
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
                     break;
@@ -141,7 +125,6 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "573";
                     Config.Set("serversPicker", "[AI]Doom Bots of Doom");
 
-                    EditIpAndPort = false;
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
                     break;
@@ -150,9 +133,8 @@ public class SelectServer : WindowServantSP
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "cygopro.fun25.co.kr";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "17225";
-                Config.Set("serversPicker", "[OCG&TCG]한국서버");
+                Config.Set("serversPicker", "[OCG&TCG]한국서버 (KR)");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -163,7 +145,6 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
                 Config.Set("serversPicker", "[OCG&TCG]YGOhollow (JP)");
 
-                EditIpAndPort = false;
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
@@ -177,7 +158,6 @@ public class SelectServer : WindowServantSP
                     Config.Set("serversPicker", "[Custom]");
                 }
 
-                list.enabled = true;
                 inputIP_.enabled = true;
                 inputPort_.enabled = true;
                 break;
@@ -196,43 +176,46 @@ public class SelectServer : WindowServantSP
 
     private void readString(string str)
     {
-        //str = str.Substring(1, str.Length - 1);
-        //string version = "", remain = "";
-        //string[] splited;
-        //splited = str.Split(")");
-        //try
-        //{
-        //    version = splited[0];
-        //    remain = splited[1];
-        //}
-        //catch (Exception)
-        //{
-        //}
-        //splited = remain.Split(":");
-        //string ip = "";
-        //try
-        //{
-        //    ip = splited[0];
-        //    remain = splited[1];
-        //}
-        //catch (Exception)
-        //{
-        //}
-        //splited = remain.Split(" ");
-        //string psw = "", port = "";
-        //try
-        //{
-        //    port = splited[0];
-        //    psw = splited[1];
-        //}
-        //catch (Exception)
-        //{
-        //}
-        //if (EditIpAndPort)
-        //{
-        //    inputIP.value = ip;
-        //    inputPort.value = port;
-        //}
+/*
+        str = str.Substring(1, str.Length - 1);
+        string version = "", remain = "";
+        string[] splited;
+        splited = str.Split(")");
+        try
+        {
+            version = splited[0];
+            remain = splited[1];
+        }
+        catch (Exception)
+        {
+        }
+        splited = remain.Split(":");
+        string ip = "";
+        try
+        {
+            ip = splited[0];
+            remain = splited[1];
+        }
+        catch (Exception)
+        {
+        }
+        splited = remain.Split(" ");
+        string psw = "", port = "";
+        try
+        {
+            port = splited[0];
+            psw = splited[1];
+        }
+        catch (Exception)
+        {
+        }
+        if (EditIpAndPort)
+        {
+            inputIP.value = ip;
+            inputPort.value = port;
+        }
+        inputPsw.value = psw;
+*/
         inputPsw.value = str;
         //inputVersion.value = version;
     }
@@ -335,6 +318,7 @@ public class SelectServer : WindowServantSP
         {
             if (name != "")
             {
+                //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
                 string fantasty = pswString;
                 list.items.Remove(fantasty);
                 list.items.Insert(0, fantasty);
