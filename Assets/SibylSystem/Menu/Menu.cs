@@ -95,9 +95,9 @@ public class Menu : WindowServantSP
         Program.I().quit();
         Program.Running = false;
         TcpHelper.SaveRecord();
-#if !UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE // IL2CPP 使用此方法才能退出
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE) // IL2CPP 使用此方法才能退出
         Application.Quit();
-#elif
+#else
         Process.GetCurrentProcess().Kill();
 #endif
     }
@@ -134,11 +134,11 @@ public class Menu : WindowServantSP
 
     void onClickJoinQQ()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        Application.OpenURL("https://jq.qq.com/?_wv=1027&k=50MZVQA");
-#elif UNITY_ANDROID //Android
+#if !UNITY_EDITOR && UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
         jo.Call("doJoinQQGroup", "UHm3h3hSrmgp-iYqMiZcc2zO5J1Q8OyW");
+#else
+        Application.OpenURL("https://jq.qq.com/?_wv=1027&k=50MZVQA");
 #endif
     }
 
