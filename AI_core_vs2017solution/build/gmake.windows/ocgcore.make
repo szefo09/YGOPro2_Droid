@@ -23,7 +23,7 @@ ifeq ($(config),release)
   OBJDIR     = ../../obj/gmake.windows/x86_64/ocgcore
   TARGETDIR  = ../../bin/gmake.windows/x86_64
   TARGET     = $(TARGETDIR)/ocgcore.dll
-  DEFINES   +=
+  DEFINES   += -DLUA_COMPAT_5_2
   INCLUDES  += -I../../ocgcore/lua -I../../ocgcore/sqlite3
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -Os -static-libgcc
@@ -45,7 +45,7 @@ ifeq ($(config),release32)
   OBJDIR     = ../../obj/gmake.windows/x86/ocgcore
   TARGETDIR  = ../../bin/gmake.windows/x86
   TARGET     = $(TARGETDIR)/ocgcore.dll
-  DEFINES   +=
+  DEFINES   += -DLUA_COMPAT_5_2
   INCLUDES  += -I../../ocgcore/lua -I../../ocgcore/sqlite3
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -Os -m32 -static-libgcc
@@ -94,6 +94,7 @@ OBJECTS := \
 	$(OBJDIR)/ltablib.o \
 	$(OBJDIR)/ltm.o \
 	$(OBJDIR)/lundump.o \
+	$(OBJDIR)/lutf8lib.o \
 	$(OBJDIR)/lvm.o \
 	$(OBJDIR)/lzio.o \
 	$(OBJDIR)/card.o \
@@ -289,6 +290,10 @@ $(OBJDIR)/ltm.o: ../../ocgcore/lua/ltm.c
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/lundump.o: ../../ocgcore/lua/lundump.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/lutf8lib.o: ../../ocgcore/lua/lutf8lib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

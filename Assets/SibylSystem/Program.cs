@@ -278,9 +278,9 @@ public class Program : MonoBehaviour
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygocore/";//YGOMobile Path
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
-    public static bool ANDROID_API_M = true;
+    public static bool ANDROID_API_N = true;
 #elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
-    public static bool ANDROID_API_M = false;
+    public static bool ANDROID_API_N = false;
 #endif
 
     void initialize()
@@ -418,10 +418,10 @@ public class Program : MonoBehaviour
             /**
              *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
              *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
-             *  部分6.0机型可能无法正常使用，如需支持需要额外判断型号：华为、OPPO、VIVO、乐视等机型
+             *  由于部分国产手机系统不够原生，就算是Android 6.0也用不起，只好抛弃能正常使用的手机，改为只支持：Android 7.+
              *
              *  public boolean APIVersion() {
-             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
              *          return true;
              *      } else {
              *          return false;
@@ -431,9 +431,9 @@ public class Program : MonoBehaviour
             bool API_SUPPORT = jo.Call<bool>("APIVersion");
 
             if (API_SUPPORT == true) {
-                ANDROID_API_M = true;
+                ANDROID_API_N = true;
             } else {
-                ANDROID_API_M = false;
+                ANDROID_API_N = false;
             }
 #endif
         });
