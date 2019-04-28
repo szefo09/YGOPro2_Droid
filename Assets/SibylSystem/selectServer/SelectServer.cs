@@ -193,6 +193,8 @@ public class SelectServer : WindowServantSP
         }
         inputPsw.value = psw;
 */
+        //确保密码为空时，退出后密码依旧保持为空
+        str = str.Substring(5, str.Length - 5);
         inputPsw.value = str;
         //inputVersion.value = version;
     }
@@ -296,7 +298,7 @@ public class SelectServer : WindowServantSP
             if (name != "")
             {
                 //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
-                string fantasty = pswString;
+                string fantasty = "psw: " + pswString;
                 list.items.Remove(fantasty);
                 list.items.Insert(0, fantasty);
                 list.value = fantasty;
