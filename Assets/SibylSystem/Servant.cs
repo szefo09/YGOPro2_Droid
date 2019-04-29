@@ -798,7 +798,7 @@ public class Servant
         UIInput inputHttp = UIHelper.getByName<UIInput>(currentMSwindow_Face, "input_");
         //如果使用自定义url，而不是QQ头像，请修改url，改为：string url = inputHttp.value;
         string url = "http://q1.qlogo.cn/headimg_dl?dst_uin=" + inputHttp.value + "&spec=100";
-        string face = "texture/face/" + nameFace + ".jpg";
+        string face = "textures/face/" + nameFace + ".jpg";
         //开始下载
         HttpDldFile df = new HttpDldFile();
         df.Download(url, face);
