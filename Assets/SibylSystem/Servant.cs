@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using YGOSharp.OCGWrapper.Enums;
 
 public class Servant
@@ -391,7 +392,11 @@ public class Servant
 
     public string currentMShash;
 
+    public string nameFace;
+
     private GameObject currentMSwindow = null;
+
+    private GameObject currentMSwindow_Face = null;
 
     public class messageSystemValue
     {
@@ -779,10 +784,32 @@ public class Servant
             true,
             new Vector3(((float)Screen.height) / 700f, ((float)Screen.height) / 700f, ((float)Screen.height) / 700f)
             );
+        nameFace = name;
+        currentMSwindow_Face = currentMSwindow;
         UIHelper.InterGameObject(currentMSwindow);
         UIHelper.getByName<UITexture>(currentMSwindow, "face_").mainTexture = UIHelper.getFace(name);
-        UIHelper.registEvent(currentMSwindow, "yes_", ES_RMSpremono, new messageSystemValue());
+        UIHelper.registEvent(currentMSwindow, "exit_", ES_RMSpremono, new messageSystemValue());
+        UIHelper.registEvent(currentMSwindow, "yes_", DownloadFace);
     }
 
+    public void DownloadFace()
+    {
+        //获取QQ号
+        UIInput inputHttp = UIHelper.getByName<UIInput>(currentMSwindow_Face, "input_");
+        //如果使用自定义url，而不是QQ头像，请修改url，改为：string url = inputHttp.value;
+        string url = "http://q1.qlogo.cn/headimg_dl?dst_uin=" + inputHttp.value + "&spec=100";
+        string face = "texture/face/" + nameFace + ".jpg";
+        //开始下载
+        HttpDldFile df = new HttpDldFile();
+        df.Download(url, face);
+        //刷新头像
+        if (File.Exists(face))
+        {
+            Texture2D Face = UIHelper.getTexture2D(face);
+            UIHelper.faces.Remove(nameFace);//防止bug，先删除再添加
+            UIHelper.faces.Add(nameFace, Face);
+            UIHelper.getByName<UITexture>(currentMSwindow_Face, "face_").mainTexture = Face;
+        }
+    }
     #endregion
 }
