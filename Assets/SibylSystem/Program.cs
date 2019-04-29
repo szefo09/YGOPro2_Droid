@@ -320,8 +320,8 @@ public class Program : MonoBehaviour
             byte[] bytes = www.bytes;
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
-/*      //选择性更新
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/image_version1.3.txt"))
+/*      //选择性更新(用于额外打补丁)
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.1.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
             var www = new WWW(filePath);
@@ -1019,7 +1019,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3.0] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3.1] " + "FPS: " + m_FPS);
     }
 
     void Update()

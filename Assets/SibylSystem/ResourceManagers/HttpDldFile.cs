@@ -54,6 +54,10 @@ public class HttpDldFile
         }
         catch (Exception)
         {
+            if (File.Exists(filename + ".tmp"))
+            {
+                File.Delete(filename + ".tmp");
+            }
             flag = false;
         }
         return flag;
