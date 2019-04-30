@@ -392,11 +392,7 @@ public class Servant
 
     public string currentMShash;
 
-    public string nameFace;
-
     private GameObject currentMSwindow = null;
-
-    private GameObject currentMSwindow_Face = null;
 
     public class messageSystemValue
     {
@@ -769,6 +765,12 @@ public class Servant
         Program.I().cardDescription.mLog(hint);
     }
 
+    UIInput inputUrl;
+
+    public string nameFace;
+
+    private GameObject currentMSwindow_Face = null;
+
     public void RMSshow_face(string hashCode, string name)  
     {
         RMSshow_clear();
@@ -787,6 +789,7 @@ public class Servant
         nameFace = name;
         currentMSwindow_Face = currentMSwindow;
         UIHelper.InterGameObject(currentMSwindow);
+        inputUrl = UIHelper.getByName<UIInput>(currentMSwindow, "input_");
         UIHelper.getByName<UITexture>(currentMSwindow, "face_").mainTexture = UIHelper.getFace(name);
         UIHelper.registEvent(currentMSwindow, "exit_", ES_RMSpremono, new messageSystemValue());
         UIHelper.registEvent(currentMSwindow, "yes_", DownloadFace);
@@ -794,14 +797,19 @@ public class Servant
 
     public void DownloadFace()
     {
-        //获取QQ号
-        UIInput inputHttp = UIHelper.getByName<UIInput>(currentMSwindow_Face, "input_");
-        //如果使用自定义url，而不是QQ头像，请修改url，改为：string url = inputHttp.value;
-        string url = "http://q1.qlogo.cn/headimg_dl?dst_uin=" + inputHttp.value + "&spec=100";
+        string url = "http://q1.qlogo.cn/headimg_dl?dst_uin=" + inputUrl.value + "&spec=100";
         string face = "texture/face/" + nameFace + ".jpg";
         //开始下载
         HttpDldFile df = new HttpDldFile();
-        df.Download(url, face);
+        if (inputUrl.value.Substring(0, 4) == "http")
+        {
+            url = inputUrl.value;
+            df.Download(url, face);         //使用自定义Url
+        }
+        else
+        {
+            df.Download(url, face);         //使用QQ头像
+        }
         //刷新头像
         if (File.Exists(face))
         {
