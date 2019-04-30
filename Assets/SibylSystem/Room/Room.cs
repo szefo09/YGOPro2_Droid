@@ -444,7 +444,6 @@ public class Room : WindowServantSP
             else if (Regex.IsMatch(roomname, @"(\w{1,}[,^]{1}T[,#])?(?(1)|(^T[#,]))"))
             {
                 tags.Add("[D14291][TAG] ");
-
             }
         }
         else

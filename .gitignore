@@ -13,6 +13,7 @@ ExportedObj/
 .consulo/
 *.csproj
 *.unityproj
+Library_
 *.sln
 *.suo
 *.tmp
@@ -52,6 +53,7 @@ replay/
 sound/
 texture/
 textures/
+update/
 updates/
 cards.cdb
 lflist.conf
