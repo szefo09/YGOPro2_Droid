@@ -321,7 +321,7 @@ public class Program : MonoBehaviour
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
 /*      //选择性更新(用于额外打补丁)
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.1.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.2.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
             var www = new WWW(filePath);
@@ -422,14 +422,14 @@ public class Program : MonoBehaviour
             loadResources();
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
-            if (!File.Exists("updates/image_version1.2.txt"))//用于检查更新
+            if (!File.Exists("updates/image_version1.3.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.3.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/version2.3.txt", "updates/image_version1.3.txt", true);
                 } else if (File.Exists(ANDROID_GAME_PATH + "../ygocore/pics.zip")) {
                     jo.Call("doExtractZipFile", ANDROID_GAME_PATH + "../ygocore/pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.3.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/version2.3.txt", "updates/image_version1.3.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
                 }
@@ -1039,7 +1039,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3.1] " + "FPS: " + m_FPS);
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3.2] " + "FPS: " + m_FPS);
     }
 
     void Update()
