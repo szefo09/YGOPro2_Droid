@@ -756,6 +756,7 @@ public class Servant
         UIHelper.InterGameObject(currentMSwindow);
         UIHelper.trySetLableText(currentMSwindow, "hint_", hint);
         UIHelper.registEvent(currentMSwindow, "input_", ES_RMSpremono, null, "yes_");
+        UIHelper.registEvent(currentMSwindow, "exit_", ES_RMSpremono, new messageSystemValue());
         UIHelper.getByName<UIInput>(currentMSwindow, "input_").value = default_;
         Program.go(100, () => { UIHelper.getByName<UIInput>(currentMSwindow, "input_").isSelected = true; });
     }
@@ -801,7 +802,7 @@ public class Servant
         string face = "textures/face/" + nameFace + ".jpg";
         //开始下载
         HttpDldFile df = new HttpDldFile();
-        if (inputUrl.value.Substring(0, 4) == "http")
+        if (inputUrl.value.Length >= 4 && inputUrl.value.Substring(0, 4) == "http")
         {
             url = inputUrl.value;
             df.Download(url, face);         //使用自定义Url

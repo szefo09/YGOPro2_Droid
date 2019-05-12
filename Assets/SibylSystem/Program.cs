@@ -301,7 +301,7 @@ public class Program : MonoBehaviour
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.9.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
@@ -321,7 +321,7 @@ public class Program : MonoBehaviour
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
 /*      //选择性更新(用于额外打补丁)
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.3.2.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.9-fix1.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
             var www = new WWW(filePath);
@@ -405,13 +405,13 @@ public class Program : MonoBehaviour
             loadResources();
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
-            if (!File.Exists("updates/image_version1.3.txt"))//用于检查更新
+            if (!File.Exists("updates/image_0.1.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.3.txt", "updates/image_version1.3.txt", true);
+                    File.Copy("updates/ver_1.034.9.txt", "updates/image_0.1.txt", true);
                 } else {
-                    jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
+                    jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/closeup_mobile/releases/download/0.1/pics.zip");
                 }
             }
 
@@ -1019,7 +1019,9 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 2.3.2] " + "FPS: " + m_FPS);
+        string FPS = m_FPS.ToString();
+        try { FPS = FPS.Substring(0, 5); } catch{}
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.9] " + "FPS: " + FPS);
     }
 
     void Update()

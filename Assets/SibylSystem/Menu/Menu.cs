@@ -145,16 +145,16 @@ public class Menu : WindowServantSP
     void onClickDownload()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        Application.OpenURL("https://github.com/Unicorn369/pro2_android_closeup/releases/tag/1.0");
+        Application.OpenURL("https://github.com/Unicorn369/closeup_mobile/releases/tag/0.1");
 #elif UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        if (!File.Exists("updates/closeup_version1.4.txt")) {//用于检查更新
-            if (File.Exists("closeup_version1.4.zip")) {//如果有则直接解压
-                jo.Call("doExtractZipFile", "closeup_version1.4.zip", Program.ANDROID_GAME_PATH);
-            } else if (File.Exists("updates/closeup_version1.3.txt")){//如果有则下载更新包
-                jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/up_closeup_version1.4.zip");
+        if (!File.Exists("updates/closeup_0.1.txt")) {//用于检查更新
+            if (File.Exists("closeup_0.1.zip")) {//如果有则直接解压
+                jo.Call("doExtractZipFile", "closeup_0.1.zip", Program.ANDROID_GAME_PATH);
+            } else if (File.Exists("updates/closeup_0.1.txt")){//如果有则下载更新包
+                jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/closeup_mobile/releases/download/0.1/closeup_0.1.zip");
             } else {//否则下载并解压，锁定目录：ANDROID_GAME_PATH
-                jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/closeup_version1.4.zip");
+                jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/closeup_mobile/releases/download/0.1/closeup_0.1.zip");
             }
         } else {
             jo.Call("showToast", "已是最新，无需再次下载！");

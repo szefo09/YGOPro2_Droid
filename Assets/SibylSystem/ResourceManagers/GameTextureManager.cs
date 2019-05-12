@@ -827,6 +827,18 @@ public class GameTextureManager
                 df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");
                 path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }
+            LoadCardPicture(pic, path);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("e 2" + e.ToString());
+        }
+    }
+
+    private static void LoadCardPicture(PictureResource pic, string path)
+    {
+        try
+        {
             if (!File.Exists(path))
             {
                 if (pic.code > 0)

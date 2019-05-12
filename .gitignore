@@ -13,7 +13,6 @@ ExportedObj/
 .consulo/
 *.csproj
 *.unityproj
-Library_
 *.sln
 *.suo
 *.tmp
@@ -49,6 +48,7 @@ deck/
 expansions/
 pack/
 picture/
+puzzle/
 replay/
 sound/
 texture/
@@ -62,4 +62,5 @@ commamd.shell
 AI_core_vs2017solution/core.VC.db
 AI_core_vs2017solution/core.VC.VC.opendb
 AI_core_vs2017solution/System.Servicemodel.Faltexception.dll
+[Ll]ibrary_/
 Assets/StreamingAssets/update.zip*
