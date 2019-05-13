@@ -23,6 +23,7 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "face_", onClickFace);
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
+        UIHelper.registEvent(gameObject, "clearPsw_", onClearPsw);
         serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
         //serversList.fontSize = 30;
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
@@ -216,8 +217,24 @@ public class SelectServer : WindowServantSP
         }
         inputPsw.value = psw;
 */
+        //确保密码为空时，退出后密码依旧保持为空
+        str = str.Substring(5, str.Length - 5);
         inputPsw.value = str;
         //inputVersion.value = version;
+    }
+
+    void onClearPsw()
+    {
+        string PswString = File.ReadAllText("config/passwords.conf");
+        string[] lines = PswString.Replace("\r", "").Split("\n");
+        for (int i = 0; i < lines.Length; i++)
+        {
+            list.RemoveItem(lines[i]);//清空list
+        }
+        FileStream stream = new FileStream("config/passwords.conf", FileMode.Truncate, FileAccess.ReadWrite);//清空文件内容
+        stream.Close();
+        inputPsw.value = "";
+        Program.PrintToChat(InterString.Get("房间密码已清空"));
     }
 
     public override void show()
@@ -319,7 +336,7 @@ public class SelectServer : WindowServantSP
             if (name != "")
             {
                 //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
-                string fantasty = pswString;
+                string fantasty = "psw: " + pswString;
                 list.items.Remove(fantasty);
                 list.items.Insert(0, fantasty);
                 list.value = fantasty;

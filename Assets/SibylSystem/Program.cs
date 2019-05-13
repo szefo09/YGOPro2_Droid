@@ -279,9 +279,9 @@ public class Program : MonoBehaviour
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygocore/";//YGOMobile Path
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
-    public static bool ANDROID_API_M = true;
+    public static bool ANDROID_API_N = true;
 #elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
-    public static bool ANDROID_API_M = false;
+    public static bool ANDROID_API_N = false;
 #endif
 
     void initialize()
@@ -321,8 +321,8 @@ public class Program : MonoBehaviour
             byte[] bytes = www.bytes;
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
-/*      //选择性更新
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/image_version1.3.txt"))
+/*      //选择性更新(用于额外打补丁)
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.9-fix1.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/update.zip";
             var www = new WWW(filePath);
@@ -435,24 +435,24 @@ public class Program : MonoBehaviour
                 (new Thread(()=>{UpdateClient();})).Start();
             loadResources();
 
-#if !UNITY_EDITOR && UNITY_AN6DROID //Android Java Test
-            if (!File.Exists("updates/image_version1.2.txt"))//用于检查更新
+#if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
+            if (!File.Exists("updates/image_0.1.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.4.txt", "updates/image_version1.2.txt", true);
+                    File.Copy("updates/ver_1.034.9.txt", "updates/image_0.1.txt", true);
                 } else {
-                    jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/pro2_android_closeup/releases/download/1.0/pics.zip");
+                    jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/closeup_mobile/releases/download/0.1/pics.zip");
                 }
             }
 
             /**
              *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
              *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
-             *  部分6.0机型可能无法正常使用，如需支持需要额外判断型号：华为、OPPO、VIVO、乐视等机型
+             *  由于部分国产手机系统不够原生，就算是Android 6.0也用不起，只好抛弃能正常使用的手机，改为只支持：Android 7.+
              *
              *  public boolean APIVersion() {
-             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
              *          return true;
              *      } else {
              *          return false;
@@ -462,9 +462,9 @@ public class Program : MonoBehaviour
             bool API_SUPPORT = jo.Call<bool>("APIVersion");
 
             if (API_SUPPORT == true) {
-                ANDROID_API_M = true;
+                ANDROID_API_N = true;
             } else {
-                ANDROID_API_M = false;
+                ANDROID_API_N = false;
             }
 #endif
         });
@@ -1104,7 +1104,9 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.9-A] " + "FPS: " + m_FPS);
+        string FPS = m_FPS.ToString();
+        try { FPS = FPS.Substring(0, 5); } catch{}
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.9-A] " + "FPS: " + FPS);
     }
 
     void Update()
