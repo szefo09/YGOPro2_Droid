@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.IO;
 
@@ -49,7 +50,7 @@ public class MatchObject : JSONObject {
 }
 
 public class MyCardHelper {
-	string username;
+	string username = null;
 	int userid = 0;
 	public bool login(string name, string password, out string fail_reason) {
 		try { 
@@ -86,7 +87,7 @@ public class MyCardHelper {
 
 	public string requestMatch(string match_type, out string fail_reason) {
 		string ret;
-		if (!username || !userid) {
+		if (username == null || !userid) {
 			fail_reason = "Not logged in";
 			return null;
 		}
