@@ -328,7 +328,7 @@ public class SelectServer : WindowServantSP
         }
         Program.PrintToChat(InterString.Get("正在请求匹配。匹配类型: ") + match_type);
         string pswString = mycard.requestMatch(match_type, out fail_reason);
-        if (!pswString) { 
+        if (pswString == null) { 
             Program.PrintToChat(InterString.Get("匹配请求失败。原因: ") + fail_reason);
             return;
         }
