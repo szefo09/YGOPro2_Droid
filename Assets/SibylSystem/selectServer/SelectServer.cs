@@ -318,7 +318,7 @@ public class SelectServer : WindowServantSP
     }
 
 	void startMyCard(string name, string password, string match_type = "entertain") {
-		mycard = new MyCardHelper();
+		MyCardHelper mycard = new MyCardHelper();
 		Program.PrintToChat(InterString.Get("正在登录至MyCard。"));
         string fail_reason;
         bool res = mycard.login(name, password, out fail_reason);
