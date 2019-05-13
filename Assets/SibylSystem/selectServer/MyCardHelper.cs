@@ -51,7 +51,7 @@ public class MatchObject : JSONObject {
 
 public class MyCardHelper {
 	string username = null;
-	int userid = 0;
+	int userid = -1;
 	public bool login(string name, string password, out string fail_reason) {
 		try { 
 			LoginRequest data = new LoginRequest(name, password);
@@ -87,7 +87,7 @@ public class MyCardHelper {
 
 	public string requestMatch(string match_type, out string fail_reason) {
 		string ret;
-		if (username == null || !userid) {
+		if (username == null || userid < 0) {
 			fail_reason = "Not logged in";
 			return null;
 		}
