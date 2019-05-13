@@ -65,7 +65,7 @@ public class MyCardHelper {
 					return false;
 				}
 			}
-			else if (www.responseCode >= 400)
+			if (www.responseCode >= 400)
 			{ 
 				fail_reason = "Login failed";
 				return false;
@@ -102,7 +102,7 @@ public class MyCardHelper {
 					return null;
 				}
 			}
-			else if (www.responseCode >= 400)
+			if (www.responseCode >= 400)
 			{ 
 				fail_reason = "Match failed";
 				return null;
