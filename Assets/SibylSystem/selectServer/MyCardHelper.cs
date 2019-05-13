@@ -57,11 +57,13 @@ public class MyCardHelper {
 			string data_str = data.Stringify();
 			UnityWebRequest www = UnityWebRequest.Post("https://api.moecube.com/accounts/signin", data_str);
 			www.SetRequestHeader("Content-Type", "application/json");
-			yield return www.SendWebRequest();
-			if (www.isNetworkError || www.isHttpError)
-			{
-				fail_reason = www.error;
-				return false;
+			www.SendWebRequest();
+			while (!www.isDone) { 
+				if (www.isNetworkError || www.isHttpError)
+				{
+					fail_reason = www.error;
+					return false;
+				}
 			}
 			else if (www.responseCode >= 400)
 			{ 
@@ -92,11 +94,13 @@ public class MyCardHelper {
 			string auth_str = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
 			UnityWebRequest www = UnityWebRequest.Post("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, new WWWForm());
 			www.SetRequestHeader("Authorization", "Basic " + auth_str);
-			yield return www.SendWebRequest();
-			if (www.isNetworkError || www.isHttpError)
-			{
-				fail_reason = www.error;
-				return null;
+			www.SendWebRequest();
+			while (!www.isDone) { 
+				if (www.isNetworkError || www.isHttpError)
+				{
+					fail_reason = www.error;
+					return null;
+				}
 			}
 			else if (www.responseCode >= 400)
 			{ 
