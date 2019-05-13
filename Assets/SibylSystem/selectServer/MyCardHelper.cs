@@ -90,11 +90,7 @@ public class MyCardHelper {
 			fail_reason = "Not logged in";
 			return null;
 		}
-		try {			if (www.isNetworkError || www.isHttpError)
-			{
-				fail_reason = www.error;
-				return null;
-			}
+		try {
 			string auth_str = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
 			UnityWebRequest www = UnityWebRequest.Post("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, new WWWForm());
 			www.SetRequestHeader("Authorization", "Basic " + auth_str);
