@@ -47,7 +47,7 @@ public class MyCardHelper {
 	public bool login(string name, string password, out string fail_reason) {
 		try { 
 			LoginRequest data = new LoginRequest();
-			data.account = username;
+			data.account = name;
 			data.password = password;
 			string data_str = JsonUtility.ToJson(data);
 			Dictionary<String, String> header_list = new Dictionary<String, String>();
