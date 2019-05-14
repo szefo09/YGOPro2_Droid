@@ -49,7 +49,7 @@ public class MatchObject : JSONObject {
 	public string password;
 }
 
-public class MyCardHelper {
+public class MyCardHelper : MonoBehaviour {
 	string username = null;
 	int userid = -1;
 	public bool login(string name, string password, out string fail_reason) {
@@ -92,9 +92,9 @@ public class MyCardHelper {
 			return null;
 		}
 		try {
-			string auth_str = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
+			string auth_str = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
 			UnityWebRequest www = UnityWebRequest.Post("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, new WWWForm());
-			www.SetRequestHeader("Authorization", "Basic " + auth_str);
+			www.SetRequestHeader("Authorization", auth_str);
 			www.SendWebRequest();
 			while (!www.isDone) { 
 				if (www.isNetworkError || www.isHttpError)
