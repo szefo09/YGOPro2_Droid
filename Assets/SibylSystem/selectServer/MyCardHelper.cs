@@ -87,6 +87,7 @@ public class MyCardHelper : MonoBehaviour {
 			string auth_str = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
 			Dictionary<String, String> header_list = new Dictionary<String, String>();
 			header_list.Add("Authorization", auth_str);
+			header_list.Add("Content-Type", "application/x-www-form-urlencoded");
 			byte meta = new byte[1];
 			WWW www = new WWW("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, meta, header_list);
 			while (!www.isDone) { 
