@@ -48,7 +48,7 @@ public class MatchObject : JSONObject {
 	public string password;
 }
 
-public class MyCardHelper : MonoBehaviour {
+public class MyCardHelper {
 	string username = null;
 	int userid = -1;
 	public bool login(string name, string password, out string fail_reason) {
