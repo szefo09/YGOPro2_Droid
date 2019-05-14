@@ -4,14 +4,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 
-public class JSONObject { 
-	public string Stringify()
-	{
-		return JsonUtility.ToJson(this);
-	}
-}
-
-public class LoginUserObject : JSONObject {
+[Serializable]
+public class LoginUserObject {
 	public int id;
 	public string username;
 	public string name;
@@ -27,13 +21,15 @@ public class LoginUserObject : JSONObject {
 	public string updated_at;
 	public string token;
 }
-public class LoginObject : JSONObject {
+
+[Serializable]
+public class LoginObject {
 	public LoginUserObject user;
 	public string token;
-	public string message;
 }
 
-public class LoginRequest : JSONObject {
+[Serializable]
+public class LoginRequest {
 	public string account;
 	public string password;
 	public LoginRequest(string user, string pass) {
@@ -42,7 +38,8 @@ public class LoginRequest : JSONObject {
 	}
 }
 
-public class MatchObject : JSONObject {
+[Serializable]
+public class MatchObject {
 	public string address;
 	public int port;
 	public string password;
@@ -53,8 +50,10 @@ public class MyCardHelper {
 	int userid = -1;
 	public bool login(string name, string password, out string fail_reason) {
 		try { 
-			LoginRequest data = new LoginRequest(name, password);
-			string data_str = data.Stringify();
+			LoginRequest data = new LoginRequest();
+			data.account = username;
+			data.password = password;
+			string data_str = JsonUtility.ToJson(data);
 			Dictionary<String, String> header_list = new Dictionary<String, String>();
 			header_list.Add("Content-Type", "application/json");
 			byte[] data_bytes = Encoding.UTF8.GetBytes(data_str);
