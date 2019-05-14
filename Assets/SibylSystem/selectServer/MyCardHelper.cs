@@ -87,7 +87,8 @@ public class MyCardHelper : MonoBehaviour {
 			string auth_str = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
 			Dictionary<String, String> header_list = new Dictionary<String, String>();
 			header_list.Add("Authorization", auth_str);
-			WWW www = new WWW("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, new WWWForm(), header_list);
+			byte meta = new byte[1];
+			WWW www = new WWW("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, meta, header_list);
 			while (!www.isDone) { 
 				if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(www.error))
 				{
@@ -102,6 +103,7 @@ public class MyCardHelper : MonoBehaviour {
 			fail_reason = e.Message;
 			return null;
 		}
+		fail_reason = null;
 		return ret;
 	}
 }
