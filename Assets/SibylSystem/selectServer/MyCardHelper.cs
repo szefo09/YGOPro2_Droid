@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Networking;
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -56,28 +55,21 @@ public class MyCardHelper : MonoBehaviour {
 		try { 
 			LoginRequest data = new LoginRequest(name, password);
 			string data_str = data.Stringify();
-			UnityWebRequest www = UnityWebRequest.Post("https://api.moecube.com/accounts/signin", data_str);
-			www.SetRequestHeader("Content-Type", "application/json");
-			www.SendWebRequest();
+			Dictionary<String, String> header_list = new Dictionary<String, String>();
+			header_list.Add("Content-Type", "application/json");
+			byte[] data_bytes = Encoding.UTF8.GetBytes(data_str);
+			WWW www = new WWW("https://api.moecube.com/accounts/signin", data_bytes, header_list);
 			while (!www.isDone) { 
-				if (www.isNetworkError || www.isHttpError)
+				if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(www.error))
 				{
 					fail_reason = www.error;
 					return false;
 				}
 			}
-			if (www.responseCode >= 400)
-			{ 
-				fail_reason = "Login failed";
-				return false;
-			}
-			else
-			{
-				string result = www.downloadHandler.text;
-				LoginObject result_object = JsonUtility.FromJson<LoginObject>(result);
-				username = result_object.user.username;
-				userid = result_object.user.id;
-			}
+			string result = www.text;
+			LoginObject result_object = JsonUtility.FromJson<LoginObject>(result);
+			username = result_object.user.username;
+			userid = result_object.user.id;
 		} catch (Exception e) {
 			fail_reason = e.Message;
 			return false;
@@ -93,27 +85,19 @@ public class MyCardHelper : MonoBehaviour {
 		}
 		try {
 			string auth_str = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + userid));
-			UnityWebRequest www = UnityWebRequest.Post("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, new WWWForm());
-			www.SetRequestHeader("Authorization", auth_str);
-			www.SendWebRequest();
+			Dictionary<String, String> header_list = new Dictionary<String, String>();
+			header_list.Add("Authorization", auth_str);
+			WWW www = new WWW("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, new WWWForm(), header_list);
 			while (!www.isDone) { 
-				if (www.isNetworkError || www.isHttpError)
+				if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(www.error))
 				{
 					fail_reason = www.error;
 					return null;
 				}
 			}
-			if (www.responseCode >= 400)
-			{ 
-				fail_reason = "Match failed";
-				return null;
-			}
-			else
-			{
-				string result = www.downloadHandler.text;
-				MatchObject result_object = JsonUtility.FromJson<MatchObject>(result);
-				ret = result_object.password;
-			}
+			string result = www.text;
+			MatchObject result_object = JsonUtility.FromJson<MatchObject>(result);
+			ret = result_object.password;
 		} catch (Exception e) {
 			fail_reason = e.Message;
 			return null;
