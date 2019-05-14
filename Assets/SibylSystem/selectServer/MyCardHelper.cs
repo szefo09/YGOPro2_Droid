@@ -32,10 +32,6 @@ public class LoginObject {
 public class LoginRequest {
 	public string account;
 	public string password;
-	public LoginRequest(string user, string pass) {
-		this.account = user;
-		this.password = pass;
-	}
 }
 
 [Serializable]
