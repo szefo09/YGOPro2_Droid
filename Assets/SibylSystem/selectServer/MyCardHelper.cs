@@ -74,6 +74,7 @@ public class MyCardHelper : MonoBehaviour {
 			fail_reason = e.Message;
 			return false;
 		}
+		fail_reason = null;
 		return true;
 	}
 
@@ -88,7 +89,7 @@ public class MyCardHelper : MonoBehaviour {
 			Dictionary<String, String> header_list = new Dictionary<String, String>();
 			header_list.Add("Authorization", auth_str);
 			header_list.Add("Content-Type", "application/x-www-form-urlencoded");
-			byte meta = new byte[1];
+			byte[] meta = new byte[1];
 			WWW www = new WWW("https://api.mycard.moe/ygopro/match?locale=zh-CN&arena=" + match_type, meta, header_list);
 			while (!www.isDone) { 
 				if (Application.internetReachability == NetworkReachability.NotReachable || !string.IsNullOrEmpty(www.error))
