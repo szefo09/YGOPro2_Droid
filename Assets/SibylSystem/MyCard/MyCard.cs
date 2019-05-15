@@ -7,7 +7,7 @@ using System.Threading;
 public class MyCard : WindowServantSP
 {
     public bool isMatching = false;
-    public bool isRequesting;
+    public bool isRequesting = false;
     const string mycard_ip = "tiramisu.mycard.moe";
     const string athletic_port = "8911";
     const string entertain_port = "7911";
@@ -99,7 +99,7 @@ public class MyCard : WindowServantSP
             if (e.GetType() != typeof(ThreadAbortException)) { 
                 Program.PrintToChat(InterString.Get("未知错误: ") + e.Message);
             } else { 
-                Program.PrintToChat("匹配已中断。");
+                Program.PrintToChat(InterString.Get("匹配已中断。"));
             }
             isRequesting = false;
         }
@@ -113,8 +113,13 @@ public class MyCard : WindowServantSP
             RMSshow_onlyYes("", InterString.Get("用户名或密码为空。"), null);
             return;
         }
-        saveUser();
+		if (isRequesting) 
+        {
+			terminateThread();
+		}
+		saveUser();
         isRequesting = true;
+        Program.PrintToChat(InterString.Get("已开始匹配。"));
         requestThread = new Thread(() =>
         {
             matchThread(username, password, match_type);
