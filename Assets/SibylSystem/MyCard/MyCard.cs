@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-public class SelectServer : WindowServantSP
+public class MyCard : WindowServantSP
 {
-    UIPopupList list;
+	public bool isMatchingWithMyCard = false;
+	UIPopupList list;
     UIPopupList serversList;
 
     UIInput inputIP;
@@ -351,8 +352,7 @@ public class SelectServer : WindowServantSP
                 }
                 File.WriteAllText("config/passwords.conf", all);
                 printFile(false);
-				Program.I().mycard.isMatchingWithMyCard = false;
-				(new Thread(() => { TcpHelper.join(ipString, name, portString, pswString, versionString); })).Start();
+                (new Thread(() => { TcpHelper.join(ipString, name, portString, pswString, versionString); })).Start();
             }
             else
             {
