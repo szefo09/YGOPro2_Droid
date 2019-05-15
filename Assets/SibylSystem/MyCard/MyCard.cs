@@ -43,7 +43,7 @@ public class MyCard : WindowServantSP
 
     public void terminateThread()
     { 
-        if (!isRequesting && requestThread = null)
+        if (!isRequesting && requestThread == null)
         {
             return;
         }
@@ -96,7 +96,7 @@ public class MyCard : WindowServantSP
             (new Thread(() => { TcpHelper.join(mycard_ip, username, match_type == "athletic" ? athletic_port : entertain_port, pswString, "0x" + String.Format("{0:X}", Config.ClientVersion)); })).Start();
             isRequesting = false;
         } catch (Exception e) {
-            if (e != ThreadAbortException) { 
+            if (e.GetType() != ThreadAbortException) { 
                 Program.PrintToChat(InterString.Get("未知错误: ") + e.Message);
             } else { 
                 Program.PrintToChat("匹配已中断。");
@@ -106,8 +106,8 @@ public class MyCard : WindowServantSP
     }
 
     void startMatch(string match_type) {
-        const string username = inputUsername.value;
-        const string password = inputPsw.value;
+        string username = inputUsername.value;
+        string password = inputPsw.value;
         if (username == "" || password == "")
         { 
             RMSshow_onlyYes("", InterString.Get("用户名或密码为空。"), null);
