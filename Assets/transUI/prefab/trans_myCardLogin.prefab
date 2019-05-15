@@ -438,7 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4264781928393420}
   m_Layer: 18
-  m_Name: joinMatch
+  m_Name: joinAthletic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,7 +504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4165608831123920}
   m_Layer: 18
-  m_Name: joinDuel
+  m_Name: joinEntertain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1461,7 +1461,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.4545455
+  aspectRatio: 1.3580247
   mType: 0
   mFillDirection: 4
   mFillAmount: 1
