@@ -7,11 +7,12 @@ namespace YGOSharp
     {
         public static List<Banlist> Banlists { get; private set; }
 
-        public static void initialize(string fileName)
+        public static bool initialize(string fileName, bool test = false)
         {
-            Banlists = new List<Banlist>();
+            List<Banlist> new_list = new List<Banlist>();
             Banlist current = null;
             StreamReader reader = new StreamReader(fileName);
+            bool success = true;
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
@@ -25,7 +26,7 @@ namespace YGOSharp
                     {
                         current = new Banlist();
                         current.Name = line.Substring(1, line.Length - 1);
-                        Banlists.Add(current);
+                        new_list.Add(current);
                         continue;
                     }
                     if (!line.Contains(" "))
@@ -39,13 +40,18 @@ namespace YGOSharp
                 }
                 catch (System.Exception e)  
                 {
+                    success = false;
                     UnityEngine.Debug.Log(line);
                     UnityEngine.Debug.Log(e);
                 }
             }
             current = new Banlist();
             current.Name ="N/A";
-            Banlists.Add(current);
+            new_list.Add(current);
+            if(!test) {
+                Banlists = new_list;
+            }
+            return (success && new_list.Count > 1);
         }
 
         public static int GetIndex(uint hash)

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using YGOSharp.OCGWrapper.Enums;
+
 public class Servant
 {
     public GameObject gameObject;
@@ -301,6 +304,7 @@ public class Servant
             false,
             Program.ui_main_2d
             );
+        UIHelper.InterGameObject(toolBar);
         fixScreenProblem();
     }
 
@@ -655,7 +659,7 @@ public class Servant
         sp.width = 470;
         for (int i = 0; i < options.Count; i++)
         {
-            Vector2 v = ui_helper.get_hang_lie(i, 5);
+            Vector2 v = UIHelper.get_hang_lie(i, 5);
             float hang = v.x;
             float lie = v.y;
             GameObject btn = create
@@ -692,14 +696,24 @@ public class Servant
         UIHelper.registEvent(currentMSwindow, "atk_", ES_RMSpremono, atk);
         UIHelper.registEvent(currentMSwindow, "def_", ES_RMSpremono, def);
 
+        UITexture atkpic = UIHelper.getByName<UITexture>(currentMSwindow, "atkPic_");
+        UIButton defbutton = UIHelper.getByName<UIButton>(currentMSwindow, "def_");
+        if (Int32.Parse(atk.value) == (int)CardPosition.FaceUpDefence)
+        {
+            atkpic.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+            defbutton.transform.localPosition = new Vector3(72.8f, 2f, 0f);
+        }
+        else
+        {
+            atkpic.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            defbutton.transform.localPosition = new Vector3(62.8f, 0f, 0f);
+        }
+
         cardPicLoader cardPicLoader_ = currentMSwindow.AddComponent<cardPicLoader>();
         cardPicLoader_.code = code;
-        cardPicLoader_.uiTexture = UIHelper.getByName<UITexture>(currentMSwindow, "atkPic_");
+        cardPicLoader_.uiTexture = atkpic;
         cardPicLoader_ = currentMSwindow.AddComponent<cardPicLoader>();
-        if (Int32.Parse(def.value) != 8)
-            cardPicLoader_.code = code;
-        else
-            cardPicLoader_.code = 0;
+        cardPicLoader_.code = (Int32.Parse(def.value) == (int)CardPosition.FaceDownDefence) ? 0 : code;
         cardPicLoader_.uiTexture = UIHelper.getByName<UITexture>(currentMSwindow, "defPic_");
     }
 
@@ -742,6 +756,7 @@ public class Servant
         UIHelper.InterGameObject(currentMSwindow);
         UIHelper.trySetLableText(currentMSwindow, "hint_", hint);
         UIHelper.registEvent(currentMSwindow, "input_", ES_RMSpremono, null, "yes_");
+        UIHelper.registEvent(currentMSwindow, "exit_", ES_RMSpremono, new messageSystemValue());
         UIHelper.getByName<UIInput>(currentMSwindow, "input_").value = default_;
         Program.go(100, () => { UIHelper.getByName<UIInput>(currentMSwindow, "input_").isSelected = true; });
     }
@@ -750,6 +765,12 @@ public class Servant
     {
         Program.I().cardDescription.mLog(hint);
     }
+
+    UIInput inputUrl;
+
+    public string nameFace;
+
+    private GameObject currentMSwindow_Face = null;
 
     public void RMSshow_face(string hashCode, string name)  
     {
@@ -766,10 +787,38 @@ public class Servant
             true,
             new Vector3(((float)Screen.height) / 700f, ((float)Screen.height) / 700f, ((float)Screen.height) / 700f)
             );
+        nameFace = name;
+        currentMSwindow_Face = currentMSwindow;
         UIHelper.InterGameObject(currentMSwindow);
+        inputUrl = UIHelper.getByName<UIInput>(currentMSwindow, "input_");
         UIHelper.getByName<UITexture>(currentMSwindow, "face_").mainTexture = UIHelper.getFace(name);
-        UIHelper.registEvent(currentMSwindow, "yes_", ES_RMSpremono, new messageSystemValue());
+        UIHelper.registEvent(currentMSwindow, "exit_", ES_RMSpremono, new messageSystemValue());
+        UIHelper.registEvent(currentMSwindow, "yes_", DownloadFace);
     }
 
+    public void DownloadFace()
+    {
+        string url = "http://q1.qlogo.cn/headimg_dl?dst_uin=" + inputUrl.value + "&spec=100";
+        string face = "textures/face/" + nameFace + ".jpg";
+        //开始下载
+        HttpDldFile df = new HttpDldFile();
+        if (inputUrl.value.Length >= 4 && inputUrl.value.Substring(0, 4) == "http")
+        {
+            url = inputUrl.value;
+            df.Download(url, face);         //使用自定义Url
+        }
+        else
+        {
+            df.Download(url, face);         //使用QQ头像
+        }
+        //刷新头像
+        if (File.Exists(face))
+        {
+            Texture2D Face = UIHelper.getTexture2D(face);
+            UIHelper.faces.Remove(nameFace);//防止bug，先删除再添加
+            UIHelper.faces.Add(nameFace, Face);
+            UIHelper.getByName<UITexture>(currentMSwindow_Face, "face_").mainTexture = Face;
+        }
+    }
     #endregion
 }

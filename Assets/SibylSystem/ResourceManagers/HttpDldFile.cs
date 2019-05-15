@@ -19,7 +19,10 @@ public class HttpDldFile
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
             }
-
+            if (File.Exists(filename + ".tmp"))
+            {
+                File.Delete(filename + ".tmp");
+            }
             using (var client = new TimeoutWebClient())
             {
                 ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
@@ -34,7 +37,7 @@ public class HttpDldFile
                 }
                 if (Path.GetExtension(filename).Contains("cdb"))
                 {
-                    client.Timeout = 15000;
+                    client.Timeout = 30000;
                 }
                 if (Path.GetExtension(filename).Contains("conf"))
                 {
@@ -51,6 +54,10 @@ public class HttpDldFile
         }
         catch (Exception)
         {
+            if (File.Exists(filename + ".tmp"))
+            {
+                File.Delete(filename + ".tmp");
+            }
             flag = false;
         }
         return flag;

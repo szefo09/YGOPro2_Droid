@@ -14,6 +14,8 @@ public class RoomList : WindowServantSP
         createWindow(Program.I().new_ui_RoomList);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "refresh_", onRefresh);
+        //UIHelper.getByName(gameObject, "join").SetActive(false);
+        UIHelper.registEvent(gameObject, "join_", onJoin);
         roomPSWLabel = UIHelper.getByName<UILabel>(gameObject, "roomNameLabel");
         hideAI =UIHelper.getByName<UIToggle>(gameObject, "hideAIrooms_").value = UIHelper.fromStringToBool(Config.Get("hideAIrooms_", "1"));
         hideStarted=UIHelper.getByName<UIToggle>(gameObject, "hideStarted_").value = UIHelper.fromStringToBool(Config.Get("hideStarted_", "1"));
@@ -44,10 +46,12 @@ public class RoomList : WindowServantSP
         listOfRooms.Clear();
         listOfRooms.AddRange(roomList);
         printFile();
+        Program.I().selectServer.onHide(true);
     }
     public void onClickExit()
     {
         hide();
+        Program.I().selectServer.onHide(false);
     }
     public override void hide()
     {
@@ -77,6 +81,19 @@ public class RoomList : WindowServantSP
     }
 
     string selectedString = string.Empty;
+
+    void onJoin()
+    {
+        if (roomPSWLabel.text != "")
+        {
+            onSelected();
+        }
+        else
+        {
+            Program.PrintToChat(InterString.Get("请选择房间！！！"));
+        }
+    }
+
     void onSelected()
     {
         if (!isShowed)
@@ -99,7 +116,7 @@ public class RoomList : WindowServantSP
         else
         {
             roomPSWLabel.text = "";
-        } 
+        }
     }
 
     void JoinRoom(string selectedString,string roomPsw)
@@ -109,11 +126,6 @@ public class RoomList : WindowServantSP
         string portString = UIHelper.getByName<UIInput>(Program.I().selectServer.gameObject, "port_").value;
         string pswString = roomPsw;
         string versionString = UIHelper.getByName<UIInput>(Program.I().selectServer.gameObject, "version_").value;
-        if (versionString == "")
-        {
-            UIHelper.getByName<UIInput>(Program.I().selectServer.gameObject, "version_").value = "0x1349";
-            versionString = "0x1349";
-        }
         Program.I().roomList.hide();
         Program.I().selectServer.KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }

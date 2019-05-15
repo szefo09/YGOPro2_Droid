@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Threading;
 
 public class Program : MonoBehaviour
 {
@@ -278,9 +279,9 @@ public class Program : MonoBehaviour
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygocore/";//YGOMobile Path
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
-    public static bool ANDROID_API_M = true;
+    public static bool ANDROID_API_N = true;
 #elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
-    public static bool ANDROID_API_M = false;
+    public static bool ANDROID_API_N = false;
 #endif
 
     void initialize()
@@ -295,16 +296,15 @@ public class Program : MonoBehaviour
 #elif UNITY_ANDROID //Android
         /**
          *  public String GamePath(String path) {
-         *      GAME_DIR = Environment.getExternalStorageDirectory().toString(); + path;
+         *      GAME_DIR = Environment.getExternalStorageDirectory().toString() + path;
          *      return GAME_DIR;
          *  }
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.2.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/version2.4.txt"))
         {
-            string filePath = Application.streamingAssetsPath + "/ygocore.zip";
+            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
             while (!www.isDone) { }
             byte[] bytes = www.bytes;
@@ -321,16 +321,26 @@ public class Program : MonoBehaviour
             byte[] bytes = www.bytes;
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
-
+/*      //选择性更新(用于额外打补丁)
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.9-fix1.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/update.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+            //File.Create(ANDROID_GAME_PATH + ".nomedia");
+        }
+*/
         Environment.CurrentDirectory = ANDROID_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
 
 #elif UNITY_IPHONE //iPhone
         string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/version2.2.txt"))
+        if (!File.Exists(GamePaths + "updates/version2.4.txt"))
         {
-                string filePath = Application.streamingAssetsPath + "/ygocore.zip";
-                ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
+            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
         }
         Environment.CurrentDirectory = GamePaths;
         System.IO.Directory.SetCurrentDirectory(GamePaths);
@@ -346,34 +356,39 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            UpdateClient();
             InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            if (File.Exists("cdb/cards.cdb"))
+            bool database_ok = false;
+            bool string_ok = false;
+            bool lflist_ok = false;
+            if (!database_ok && File.Exists("cdb/cards.cdb")) //downloaded datas
             {
-                YGOSharp.CardsManager.initialize("cdb/cards.cdb");
+                database_ok = YGOSharp.CardsManager.initialize("cdb/cards.cdb");
             }
-            if (File.Exists("cdb/strings.conf"))
+            if (!database_ok && File.Exists("cards.cdb"))  //default datas
             {
-                GameStringManager.initialize("cdb/strings.conf");
+                database_ok = YGOSharp.CardsManager.initialize("cards.cdb");
             }
-            if (File.Exists("cdb/lflist.conf"))
+            if (!string_ok && File.Exists("cdb/strings.conf"))
             {
-                YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
+                string_ok = GameStringManager.initialize("cdb/strings.conf");
             }
-            if (File.Exists("strings.conf"))
+            if (!string_ok && File.Exists("strings.conf"))
             {
-                GameStringManager.initialize("strings.conf");//YGOMobile Paths
+                string_ok = GameStringManager.initialize("strings.conf");
             }
-            if (File.Exists("lflist.conf"))
+            if (!lflist_ok && File.Exists("cdb/lflist.conf"))
             {
-                YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
+                lflist_ok = YGOSharp.BanlistManager.initialize("cdb/lflist.conf");
             }
-            if (File.Exists("cards.cdb"))
+            if (!lflist_ok && File.Exists("lflist.conf"))
             {
-                YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
+                lflist_ok = YGOSharp.BanlistManager.initialize("lflist.conf");
             }
+
+            /* Expansions folder is not currently used, so not loading.
+
             if (File.Exists("expansions/lflist.conf"))
             {
                 YGOSharp.BanlistManager.initialize("expansions/lflist.conf");
@@ -397,6 +412,7 @@ public class Program : MonoBehaviour
                     }
                 }
             }
+             */
 
             if (Directory.Exists("pack"))
             {
@@ -411,41 +427,44 @@ public class Program : MonoBehaviour
                         }
                     }
                 }
+                YGOSharp.PacksManager.initializeSec();
             }
-            YGOSharp.PacksManager.initializeSec();
+
             initializeALLservants();
+            //if(GameTextureManager.AutoPicDownload)
+                (new Thread(()=>{UpdateClient();})).Start();
             loadResources();
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
-            if (!File.Exists("updates/image_version1.1.txt"))//用于检查更新
+            if (!File.Exists("updates/image_0.1.txt"))//用于检查更新
             {
-                if (File.Exists("pics.zip")) {//YGOMobile内置的卡图包
+                if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/version2.0.txt", "updates/image_version1.1.txt", true);
+                    File.Copy("updates/ver_1.034.9.txt", "updates/image_0.1.txt", true);
                 } else {
-                    //Application.OpenURL("https://www.taptap.com/app/37972");
-                    jo.Call("showToast", "没有发现卡图包，是否未安装YGOMobile");
+                    jo.Call("doDownloadZipFile", "https://github.com/Unicorn369/closeup_mobile/releases/download/0.1/pics.zip");
                 }
             }
 
             /**
              *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
              *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
+             *  由于部分国产手机系统不够原生，就算是Android 6.0也用不起，只好抛弃能正常使用的手机，改为只支持：Android 7.+
              *
              *  public boolean APIVersion() {
-             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
              *          return true;
              *      } else {
-             *          return true;
+             *          return false;
              *      }
              *  }
              */
             bool API_SUPPORT = jo.Call<bool>("APIVersion");
 
             if (API_SUPPORT == true) {
-                ANDROID_API_M = true;
+                ANDROID_API_N = true;
             } else {
-                ANDROID_API_M = false;
+                ANDROID_API_N = false;
             }
 #endif
         });
@@ -513,14 +532,43 @@ public class Program : MonoBehaviour
                 File.Delete("cdb/strings.conf");*/
 
             HttpDldFile httpDldFile = new HttpDldFile();
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/cards.cdb");
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/lflist.conf");
-            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/strings.conf");
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/cards.cdb", "cdb/_cards.cdb");
+            if(YGOSharp.CardsManager.initialize("cdb/_cards.cdb", true)) {
+                ReplaceFile("cdb/cards.cdb", "cdb/_cards.cdb");
+            }
+            else
+            {
+                PrintToChat(InterString.Get("卡片数据库更新失败。"));
+            }
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/lflist.conf", "cdb/_lflist.conf");
+            if(YGOSharp.BanlistManager.initialize("cdb/_lflist.conf", true)) {
+                ReplaceFile("cdb/lflist.conf","cdb/_lflist.conf");
+            }
+            else
+            {
+                PrintToChat(InterString.Get("禁止/限制卡表文件更新失败。"));
+            }
+            httpDldFile.Download("http://koishi.222diy.gdn/ygopro/strings.conf", "cdb/_strings.conf");
+            if(GameStringManager.initialize("cdb/_strings.conf", true)) {
+                ReplaceFile("cdb/strings.conf","cdb/_strings.conf");
+            }
+            else
+            {
+                PrintToChat(InterString.Get("字段信息文件更新失败。"));
+            }
+            PrintToChat(InterString.Get("卡片数据更新完毕。"));
         }
         catch (Exception e)
         {
             Debug.Log("UPDATE ERROR: " + e.ToString());
         }
+    }
+
+    private void ReplaceFile(string oldfile, string newfile) {
+        if(File.Exists(oldfile)) {
+            File.Delete(oldfile);
+        }
+        File.Move(newfile, oldfile);
     }
 
     public GameObject mouseParticle;
@@ -1024,10 +1072,14 @@ public class Program : MonoBehaviour
             Screen.SetResolution(1300, 700, false);
         }
         QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 144;
         #elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
         Screen.SetResolution(1280, 720, true);
-        //Application.targetFrameRate = -1;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
         #endif
 
         mouseParticle = Instantiate(new_mouse);
@@ -1052,7 +1104,9 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        GUI.Label(new Rect(10, 5, 200, 200), "[Version 2.2] " + "FPS: " + m_FPS);
+        string FPS = m_FPS.ToString();
+        try { FPS = FPS.Substring(0, 5); } catch{}
+        GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.9-A-test9] " + "FPS: " + FPS);
     }
 
     void Update()
@@ -1137,6 +1191,8 @@ public class Program : MonoBehaviour
     {
         preWid = Screen.width;
         preheight = Screen.height;
+        //if (setting != null)
+        //    setting.setScreenSizeValue();
         Program.notGo(fixScreenProblems);
         Program.go(500, fixScreenProblems);
     }
@@ -1148,8 +1204,24 @@ public class Program : MonoBehaviour
 #endif
     }
 
+    public static void PrintToChat(object o)
+    {
+        try
+        {
+            instance.cardDescription.mLog(o.ToString());
+        }
+        catch
+        {
+            DEBUGLOG(o);
+        }
+    }
+
     void gameStart()
     {
+        if (UIHelper.shouldMaximize())
+        {
+            UIHelper.MaximizeWindow();
+        }
         backGroundPic.show();
         shiftToServant(menu);
     }
@@ -1159,6 +1231,7 @@ public class Program : MonoBehaviour
     public static bool MonsterCloud = false;
 
     public static float fieldSize = 1;
+    public static bool longField = false;
 
     void OnApplicationQuit()
     {
@@ -1194,26 +1267,9 @@ public class Program : MonoBehaviour
 
     #endregion
 
-    //递归创建目录
-    private static void DirPaths(string filefullpath)
+    public static void gugugu()
     {
-        if (!File.Exists(filefullpath))
-        {
-            string dirpath = filefullpath.Substring(0, filefullpath.LastIndexOf("/"));
-            string[] paths = dirpath.Split("/");
-            if (paths.Length > 1)
-            {
-                string path = paths[0];
-                for (int i = 1; i < paths.Length; i++)
-                {
-                    path += "/" + paths[i];
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                }
-            }
-        }
+        PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
     }
 
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using UnityEngine;
+using YGOSharp.OCGWrapper.Enums;
 
 public enum GameTextureType
 {
@@ -219,7 +220,7 @@ public class GameTextureManager
                         pic = waitLoadStack.Pop();
                         try
                         {
-                            pic.pCard = (YGOSharp.CardsManager.Get((int)pic.code).Type & (int)game_type.TYPE_PENDULUM) > 0;
+                            pic.pCard = (YGOSharp.CardsManager.Get((int)pic.code).Type & (int)CardType.Pendulum) > 0;
                         }
                         catch (Exception e)
                         {
@@ -248,7 +249,7 @@ public class GameTextureManager
             }
             catch (Exception e)
             {
-                Debug.Log("erroe 1" + e.ToString());
+                Debug.Log("error 1" + e.ToString());
             }
         }
     }
@@ -260,7 +261,7 @@ public class GameTextureManager
             if (File.Exists("picture/closeup/" + pic.code.ToString() + ".png"))
             {
                 string path = "picture/closeup/" + pic.code.ToString() + ".png";
-                if (Program.ANDROID_API_M) {
+                if (Program.ANDROID_API_N) {
                     BitmapHelper bitmap = new BitmapHelper(path);
                     int left;
                     int right;
@@ -586,7 +587,7 @@ public class GameTextureManager
             string path = "picture/closeup/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
-                if (Program.ANDROID_API_M) {
+                if (Program.ANDROID_API_N) {
                     path = "picture/card/" + pic.code.ToString() + ".png";
                     if (!File.Exists(path))
                     {
@@ -668,7 +669,7 @@ public class GameTextureManager
     {
         try
         {
-            if (Program.ANDROID_API_M) {
+            if (Program.ANDROID_API_N) {
                 BitmapHelper bitmap = new BitmapHelper(path);
                 int left;
                 int right;
@@ -826,6 +827,18 @@ public class GameTextureManager
                 df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");
                 path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }*/
+            LoadCardPicture(pic, path);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("e 2" + e.ToString());
+        }
+    }
+
+    private static void LoadCardPicture(PictureResource pic, string path)
+    {
+        try
+        {
             if (!File.Exists(path))
             {
                 if (pic.code > 0)
