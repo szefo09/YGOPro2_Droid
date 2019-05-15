@@ -96,7 +96,7 @@ public class MyCard : WindowServantSP
             (new Thread(() => { TcpHelper.join(mycard_ip, username, match_type == "athletic" ? athletic_port : entertain_port, pswString, "0x" + String.Format("{0:X}", Config.ClientVersion)); })).Start();
             isRequesting = false;
         } catch (Exception e) {
-            if (!e.GetType().Equals(ThreadAbortException)) { 
+            if (e.GetType() != typeof(ThreadAbortException)) { 
                 Program.PrintToChat(InterString.Get("未知错误: ") + e.Message);
             } else { 
                 Program.PrintToChat("匹配已中断。");
