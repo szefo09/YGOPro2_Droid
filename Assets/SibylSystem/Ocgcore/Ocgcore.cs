@@ -756,7 +756,7 @@ public class Ocgcore : ServantWithCardDescription
     }
 
 	public void setDefaultReturnServant() {
-		if (Program.I().mycard.isMatchingWithMyCard) {
+		if (Program.I().mycard.isMatching) {
 			returnServant = Program.I().mycard;
 		} else { 
             returnServant = Program.I().selectServer;

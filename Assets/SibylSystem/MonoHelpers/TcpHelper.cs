@@ -206,7 +206,7 @@ public static class TcpHelper
             {
                 if (Program.I().menu.isShowed == false) 
                 {
-                    Program.I().shiftToServant(Program.I().mycard.isMatchingWithMyCard ? Program.I().mycard : Program.I().selectServer);
+                    Program.I().shiftToServant(Program.I().mycard.isMatching ? Program.I().mycard : Program.I().selectServer);
                 }
                 if (!roomListChecking)
                 {
