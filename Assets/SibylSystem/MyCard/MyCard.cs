@@ -43,7 +43,7 @@ public class MyCard : WindowServantSP
 
     public void terminateThread()
     { 
-        if (!isRequesting && requestThread = null)
+        if (!isRequesting && requestThread == null)
         {
             return;
         }
