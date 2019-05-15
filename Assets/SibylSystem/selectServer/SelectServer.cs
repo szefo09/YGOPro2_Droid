@@ -55,8 +55,6 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("[AI]Doom Bots of Doom");
         //serversList.items.Add("[OCG&TCG]한국서버");
         //serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
-        serversList.items.Add("[MyCard]Athletic");
-        serversList.items.Add("[MyCard]Entertain");
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
         {
             serversList.items.Add("[自定义]");
@@ -127,26 +125,6 @@ public class SelectServer : WindowServantSP
                     UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                     UIHelper.getByName<UIInput>(gameObject, "port_").value = "573";
                     Config.Set("serversPicker", "[AI]Doom Bots of Doom");
-
-                    inputIP_.enabled = false;
-                    inputPort_.enabled = false;
-                    break;
-                }
-             case "[MyCard]Athletic":
-                {
-                    UIHelper.getByName<UIInput>(gameObject, "ip_").value = "tiramisu.mycard.moe";
-                    UIHelper.getByName<UIInput>(gameObject, "port_").value = "8911";
-                    Config.Set("serversPicker", "[MyCard]Athletic");
-
-                    inputIP_.enabled = false;
-                    inputPort_.enabled = false;
-                    break;
-                }
-             case "[MyCard]Entertain":
-                {
-                    UIHelper.getByName<UIInput>(gameObject, "ip_").value = "tiramisu.mycard.moe";
-                    UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
-                    Config.Set("serversPicker", "[MyCard]Entertain");
 
                     inputIP_.enabled = false;
                     inputPort_.enabled = false;
@@ -312,33 +290,6 @@ public class SelectServer : WindowServantSP
         UIHelper.getByName<UIInput>(gameObject, "version_").value = str;
     }
 
-    bool isMyCard() { 
-        string server = serversList.value;
-        return server == "[MyCard]Athletic" || server == "[MyCard]Entertain";
-    }
-
-	void startMyCard(string name, string password, string match_type = "entertain") {
-		MyCardHelper mycard = new MyCardHelper();
-		Program.PrintToChat(InterString.Get("正在登录至MyCard。"));
-        string fail_reason = "";
-        bool res = mycard.login(name, password, out fail_reason);
-        if (!res) {
-            Program.PrintToChat(InterString.Get("MyCard登录失败。原因: ") + fail_reason);
-            return;
-        }
-        Program.PrintToChat(InterString.Get("正在请求匹配。匹配类型: ") + match_type);
-        string pswString = mycard.requestMatch(match_type, out fail_reason);
-        if (pswString == null) { 
-            Program.PrintToChat(InterString.Get("匹配请求失败。原因: ") + fail_reason);
-            return;
-        }
-        string ipString = UIHelper.getByName<UIInput>(gameObject, "ip_").value;
-        string portString = UIHelper.getByName<UIInput>(gameObject, "port_").value;
-        string versionString = UIHelper.getByName<UIInput>(gameObject, "version_").value;
-        Program.PrintToChat(InterString.Get("匹配成功。正在进入房间。"));
-        KF_onlineGame(name, ipString, portString, versionString, pswString);
-    }
-
     void onClickJoin()
     {
         if (!isShowed)
@@ -350,16 +301,12 @@ public class SelectServer : WindowServantSP
         string portString = UIHelper.getByName<UIInput>(gameObject, "port_").value;
         string pswString = UIHelper.getByName<UIInput>(gameObject, "psw_").value;
         string versionString = UIHelper.getByName<UIInput>(gameObject, "version_").value;
-        if (isMyCard()) {
-            startMyCard(Name, pswString, portString == "8911" ? "athletic" : "entertain");
-        } else { 
-            KF_onlineGame(Name, ipString, portString, versionString, pswString);
-        }
+        KF_onlineGame(Name, ipString, portString, versionString, pswString);
     }
 
     public void onClickRoomList()
     {
-        if (!isShowed || isMyCard())
+        if (!isShowed)
         {
             return;
         }
@@ -388,25 +335,24 @@ public class SelectServer : WindowServantSP
         {
             if (name != "")
             {
-                if (!isMyCard()) { 
-                    //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
-                    string fantasty = "psw: " + pswString;
-                    list.items.Remove(fantasty);
-                    list.items.Insert(0, fantasty);
-                    list.value = fantasty;
-                    if (list.items.Count > 5)
-                    {
-                        list.items.RemoveAt(list.items.Count - 1);
-                    }
-                    string all = "";
-                    for (int i = 0; i < list.items.Count; i++)
-                    {
-                        all += list.items[i] + "\r\n";
-                    }
-                    File.WriteAllText("config/passwords.conf", all);
-                    printFile(false);
+                //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
+                string fantasty = "psw: " + pswString;
+                list.items.Remove(fantasty);
+                list.items.Insert(0, fantasty);
+                list.value = fantasty;
+                if (list.items.Count > 5)
+                {
+                    list.items.RemoveAt(list.items.Count - 1);
                 }
-                (new Thread(() => { TcpHelper.join(ipString, name, portString, pswString, versionString); })).Start();
+                string all = "";
+                for (int i = 0; i < list.items.Count; i++)
+                {
+                    all += list.items[i] + "\r\n";
+                }
+                File.WriteAllText("config/passwords.conf", all);
+                printFile(false);
+				Program.I().mycard.isMatchingWithMyCard = false;
+				(new Thread(() => { TcpHelper.join(ipString, name, portString, pswString, versionString); })).Start();
             }
             else
             {
