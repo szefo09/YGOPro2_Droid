@@ -124,15 +124,15 @@ public class MyCardHelper {
 	}
 
 	private static void DownloadFaceFromUrl(string nameFace, string url)
-    {
-        string face = "textures/face/" + nameFace + ".png";
-        HttpDldFile df = new HttpDldFile();
-        df.Download(url, face);
-        if (File.Exists(face))
-        {
-            Texture2D Face = UIHelper.getTexture2D(face);
-            UIHelper.faces.Remove(nameFace);
-            UIHelper.faces.Add(nameFace, Face);
-        }
-    }
+	{
+		string face = "textures/face/" + nameFace + ".png";
+		HttpDldFile df = new HttpDldFile();
+		df.Download(url, face);
+		if (File.Exists(face))
+		{
+			Texture2D Face = UIHelper.getTexture2D(face);
+			UIHelper.faces.Remove(nameFace);
+			UIHelper.faces.Add(nameFace, Face);
+		}
+	}
 }

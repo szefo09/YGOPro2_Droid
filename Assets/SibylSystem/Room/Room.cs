@@ -164,17 +164,17 @@ public class Room : WindowServantSP
         RoomPlayer player = new RoomPlayer();
         player.name = name;
         player.prep = false;
-		if (Program.I().mycard.isMatching && name != "********") //athletic match name mask
-		{
-			(new Thread(() =>
-			{
-				MyCardHelper.DownloadFace(name);
+        if (Program.I().mycard.isMatching && name != "********") //athletic match name mask
+        {
+            (new Thread(() =>
+            {
+                MyCardHelper.DownloadFace(name);
                 if(isShowed)
                     realize();
                 else if(Program.I().ocgcore.isShowed && Program.I().ocgcore.gameInfo)
                     Program.I().ocgcore.gameInfo.realize();
-			})).Start();
-		} 
+            })).Start();
+        } 
         roomPlayers[pos] = player;
         realize();
         UIHelper.Flash();
