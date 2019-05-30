@@ -34,18 +34,21 @@ public static class GameStringManager
         return return_value;
     }
 
-    public static void initialize(string path)
+    public static bool initialize(string path, bool test = false)
     {
         string text = System.IO.File.ReadAllText(path);
         string st = text.Replace("\r", "");
         string[] lines = st.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        bool success = true;
+        bool found = false;
         foreach (string line in lines)
         {
             if (line.Length > 1 && line.Substring(0, 1) == "!")
             {
-                string[] mats = line.Substring(1, line.Length - 1).Split(new string[] { " ", "	" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] mats = line.Substring(1, line.Length - 1).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (mats.Length > 2)
                 {
+                    found = true;
                     hashedString a = new hashedString();
                     a.region = mats[0];
                     try
@@ -54,6 +57,7 @@ public static class GameStringManager
                     }
                     catch (Exception e)
                     {
+                        success = false;
                         Program.DEBUGLOG(e);
                     }
                     a.content = "";
@@ -62,14 +66,17 @@ public static class GameStringManager
                         a.content += mats[i] + " ";
                     }
                     a.content = a.content.Substring(0, a.content.Length - 1);
-                    hashedStrings.Add(a);
-                    if (a.region == "setname")
-                    {
-                        xilies.Add(a);
+                    if(!test) {
+                        hashedStrings.Add(a);
+                        if (a.region == "setname")
+                        {
+                            xilies.Add(a);
+                        }
                     }
                 }
             }
         }
+        return (success && found);
     }
 
     public static string get(string region, int hashCode)
@@ -148,4 +155,3 @@ public static class GameStringManager
         return formatLocation(gps.location, gps.sequence);
     }
 }
-

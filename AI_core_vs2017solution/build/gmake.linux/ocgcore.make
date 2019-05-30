@@ -20,11 +20,11 @@ ifndef AR
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = ../../obj/Linux/x86_64/ocgcore
-  TARGETDIR  = ../../bin/x86_64
+  OBJDIR     = ../../obj/gmake.linux/x86_64/ocgcore
+  TARGETDIR  = ../../bin/gmake.linux/x86_64
   TARGET     = $(TARGETDIR)/libocgcore.so
-  DEFINES   += -DLUA_USE_LINUX
-  INCLUDES  += 
+  DEFINES   += -DLUA_COMPAT_5_2 -DLUA_USE_LINUX
+  INCLUDES  += -I../../ocgcore/lua -I../../ocgcore/sqlite3
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Os -fPIC -fno-strict-aliasing -Wno-multichar
   CXXFLAGS  += $(CFLAGS) -std=gnu++0x
@@ -42,11 +42,11 @@ ifeq ($(config),release)
 endif
 
 ifeq ($(config),release32)
-  OBJDIR     = ../../obj/Linux/x86/ocgcore
-  TARGETDIR  = ../../bin/x86
+  OBJDIR     = ../../obj/gmake.linux/x86/ocgcore
+  TARGETDIR  = ../../bin/gmake.linux/x86
   TARGET     = $(TARGETDIR)/libocgcore.so
-  DEFINES   += -DLUA_USE_LINUX
-  INCLUDES  += 
+  DEFINES   += -DLUA_COMPAT_5_2 -DLUA_USE_LINUX
+  INCLUDES  += -I../../ocgcore/lua -I../../ocgcore/sqlite3
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Os -m32 -fPIC -fno-strict-aliasing -Wno-multichar
   CXXFLAGS  += $(CFLAGS) -std=gnu++0x
@@ -94,6 +94,7 @@ OBJECTS := \
 	$(OBJDIR)/ltablib.o \
 	$(OBJDIR)/ltm.o \
 	$(OBJDIR)/lundump.o \
+	$(OBJDIR)/lutf8lib.o \
 	$(OBJDIR)/lvm.o \
 	$(OBJDIR)/lzio.o \
 	$(OBJDIR)/card.o \
@@ -173,100 +174,103 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 endif
 
-$(OBJDIR)/lapi.o: ../../ocgcore/lapi.c
+$(OBJDIR)/lapi.o: ../../ocgcore/lua/lapi.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lauxlib.o: ../../ocgcore/lauxlib.c
+$(OBJDIR)/lauxlib.o: ../../ocgcore/lua/lauxlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lbaselib.o: ../../ocgcore/lbaselib.c
+$(OBJDIR)/lbaselib.o: ../../ocgcore/lua/lbaselib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lbitlib.o: ../../ocgcore/lbitlib.c
+$(OBJDIR)/lbitlib.o: ../../ocgcore/lua/lbitlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lcode.o: ../../ocgcore/lcode.c
+$(OBJDIR)/lcode.o: ../../ocgcore/lua/lcode.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lcorolib.o: ../../ocgcore/lcorolib.c
+$(OBJDIR)/lcorolib.o: ../../ocgcore/lua/lcorolib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lctype.o: ../../ocgcore/lctype.c
+$(OBJDIR)/lctype.o: ../../ocgcore/lua/lctype.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ldblib.o: ../../ocgcore/ldblib.c
+$(OBJDIR)/ldblib.o: ../../ocgcore/lua/ldblib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ldebug.o: ../../ocgcore/ldebug.c
+$(OBJDIR)/ldebug.o: ../../ocgcore/lua/ldebug.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ldo.o: ../../ocgcore/ldo.c
+$(OBJDIR)/ldo.o: ../../ocgcore/lua/ldo.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ldump.o: ../../ocgcore/ldump.c
+$(OBJDIR)/ldump.o: ../../ocgcore/lua/ldump.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lfunc.o: ../../ocgcore/lfunc.c
+$(OBJDIR)/lfunc.o: ../../ocgcore/lua/lfunc.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lgc.o: ../../ocgcore/lgc.c
+$(OBJDIR)/lgc.o: ../../ocgcore/lua/lgc.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/linit.o: ../../ocgcore/linit.c
+$(OBJDIR)/linit.o: ../../ocgcore/lua/linit.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/liolib.o: ../../ocgcore/liolib.c
+$(OBJDIR)/liolib.o: ../../ocgcore/lua/liolib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/llex.o: ../../ocgcore/llex.c
+$(OBJDIR)/llex.o: ../../ocgcore/lua/llex.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lmathlib.o: ../../ocgcore/lmathlib.c
+$(OBJDIR)/lmathlib.o: ../../ocgcore/lua/lmathlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lmem.o: ../../ocgcore/lmem.c
+$(OBJDIR)/lmem.o: ../../ocgcore/lua/lmem.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/loadlib.o: ../../ocgcore/loadlib.c
+$(OBJDIR)/loadlib.o: ../../ocgcore/lua/loadlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lobject.o: ../../ocgcore/lobject.c
+$(OBJDIR)/lobject.o: ../../ocgcore/lua/lobject.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lopcodes.o: ../../ocgcore/lopcodes.c
+$(OBJDIR)/lopcodes.o: ../../ocgcore/lua/lopcodes.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/loslib.o: ../../ocgcore/loslib.c
+$(OBJDIR)/loslib.o: ../../ocgcore/lua/loslib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lparser.o: ../../ocgcore/lparser.c
+$(OBJDIR)/lparser.o: ../../ocgcore/lua/lparser.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lstate.o: ../../ocgcore/lstate.c
+$(OBJDIR)/lstate.o: ../../ocgcore/lua/lstate.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lstring.o: ../../ocgcore/lstring.c
+$(OBJDIR)/lstring.o: ../../ocgcore/lua/lstring.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lstrlib.o: ../../ocgcore/lstrlib.c
+$(OBJDIR)/lstrlib.o: ../../ocgcore/lua/lstrlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ltable.o: ../../ocgcore/ltable.c
+$(OBJDIR)/ltable.o: ../../ocgcore/lua/ltable.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ltablib.o: ../../ocgcore/ltablib.c
+$(OBJDIR)/ltablib.o: ../../ocgcore/lua/ltablib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ltm.o: ../../ocgcore/ltm.c
+$(OBJDIR)/ltm.o: ../../ocgcore/lua/ltm.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lundump.o: ../../ocgcore/lundump.c
+$(OBJDIR)/lundump.o: ../../ocgcore/lua/lundump.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lvm.o: ../../ocgcore/lvm.c
+$(OBJDIR)/lutf8lib.o: ../../ocgcore/lua/lutf8lib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/lzio.o: ../../ocgcore/lzio.c
+$(OBJDIR)/lvm.o: ../../ocgcore/lua/lvm.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/lzio.o: ../../ocgcore/lua/lzio.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/card.o: ../../ocgcore/card.cpp

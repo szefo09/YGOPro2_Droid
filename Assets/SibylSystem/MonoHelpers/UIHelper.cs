@@ -792,7 +792,7 @@ public static class UIHelper
             {
                 if (fileInfos[i].Name.Length > 4)
                 {
-                    if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".png")
+                    if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".png" || fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".jpg")
                     {
                         string name = fileInfos[i].Name.Substring(0, fileInfos[i].Name.Length - 4);
                         if (!faces.ContainsKey(name))

@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using YGOSharp.Network.Enums;
+using System.Threading;
 
 public class Room : WindowServantSP
 {
@@ -87,7 +88,7 @@ public class Room : WindowServantSP
             Menu.deleteShell();
         }
         base.show();
-        Program.I().ocgcore.returnServant = Program.I().selectServer;
+        Program.I().ocgcore.setDefaultReturnServant();
         Program.I().ocgcore.handler = handler;
         UIHelper.registEvent(toolBar, "input_", onChat);
         Program.charge();
@@ -163,6 +164,17 @@ public class Room : WindowServantSP
         RoomPlayer player = new RoomPlayer();
         player.name = name;
         player.prep = false;
+        if (Program.I().mycard.isMatching && name != "********") //athletic match name mask
+        {
+            (new Thread(() =>
+            {
+                MyCardHelper.DownloadFace(name);
+                if(isShowed)
+                    realize();
+                else if(Program.I().ocgcore.isShowed && Program.I().ocgcore.gameInfo)
+                    Program.I().ocgcore.gameInfo.realize();
+            })).Start();
+        } 
         roomPlayers[pos] = player;
         realize();
         UIHelper.Flash();
@@ -444,7 +456,6 @@ public class Room : WindowServantSP
             else if (Regex.IsMatch(roomname, @"(\w{1,}[,^]{1}T[,#])?(?(1)|(^T[#,]))"))
             {
                 tags.Add("[D14291][TAG] ");
-
             }
         }
         else
@@ -496,7 +507,7 @@ public class Room : WindowServantSP
     public void StocMessage_DuelStart(BinaryReader r)
     {
 
-        Program.I().ocgcore.returnServant = Program.I().selectServer;
+        Program.I().ocgcore.setDefaultReturnServant();
         needSide = false;
         joinWithReconnect = true;
         if (Program.I().deckManager.isShowed)

@@ -32,12 +32,6 @@ public class selectDeck : WindowServantSP
         UIHelper.registEvent(gameObject, "copy_", onCopy);
         UIHelper.registEvent(gameObject, "rename_", onRename);
         UIHelper.registEvent(gameObject, "code_", onCode);
-        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-        {
-            UIHelper.getByName<UILabel>(gameObject, "!default").text = "搜索卡组";
-        } else {
-            UIHelper.getByName<UILabel>(gameObject, "!default").text = "Search";
-        }
         searchInput = UIHelper.getByName<UIInput>(gameObject, "search_");
         superScrollView.install();
         for (int i = 0; i < quickCards.Length; i++)
@@ -187,6 +181,42 @@ public class selectDeck : WindowServantSP
                 RMSshow_none(InterString.Get("非法输入！请检查输入的文件名。"));
             }
         }
+        if (hashCode == "onCode")
+        {
+            if(result[0].value != "") {
+                try
+                {
+                    YGOSharp.Deck deck;
+                    if(!DeckManager.FromBase64toCodedDeck(result[0].value, out deck))
+                    {
+                        RMSshow_none(InterString.Get("卡组代码无效。"));
+                        return;
+                    }
+                    string value = "#created by ygopro2\r\n#main\r\n";
+                    for (int i = 0; i < deck.Main.Count; i++)
+                    {
+                        value += deck.Main[i].ToString() + "\r\n";
+                    }
+                    value += "#extra\r\n";
+                    for (int i = 0; i < deck.Extra.Count; i++)
+                    {
+                        value += deck.Extra[i].ToString() + "\r\n";
+                    }
+                    value += "!side\r\n";
+                    for (int i = 0; i < deck.Side.Count; i++)
+                    {
+                        value += deck.Side[i].ToString() + "\r\n";
+                    }
+                    System.IO.File.WriteAllText("deck/" + superScrollView.selectedString + ".ydk", value, System.Text.Encoding.UTF8);
+                    printSelected();
+                    RMSshow_none(InterString.Get("卡组代码加载成功。"));
+                }
+                catch (Exception)
+                {
+                    RMSshow_none(InterString.Get("卡组代码加载失败。"));
+                }
+            }
+        }
     }
 
     void onNew()
@@ -255,6 +285,7 @@ public class selectDeck : WindowServantSP
         string path = "deck/" + superScrollView.selectedString + ".ydk";
         if (File.Exists(path))
         {
+/*
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
             System.Diagnostics.Process.Start("notepad.exe", path);
 #elif UNITY_STANDALONE_OSX //Mac OS X
@@ -266,6 +297,15 @@ public class selectDeck : WindowServantSP
             jo.Call("openFile", Program.ANDROID_GAME_PATH + path);
 //#elif UNITY_IPHONE //iPhone
 #endif
+ */
+            YGOSharp.Deck deck;
+            DeckManager.FromYDKtoCodedDeck(path, out deck);
+            string default_string;
+            if(deck.Main.Count > 0 || deck.Extra.Count > 0 || deck.Side.Count > 0)
+                default_string = DeckManager.convertDeckToBase64(deck);
+            else
+                default_string = "";
+            RMSshow_input("onCode", InterString.Get("卡组代码"), default_string);
         }
     }
 

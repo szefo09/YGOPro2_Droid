@@ -16,32 +16,41 @@ namespace YGOSharp
 
         public static string nullString = "";
 
-        internal static void initialize(string databaseFullPath)
+        internal static bool initialize(string databaseFullPath, bool test = false)
         {
-            nullName = InterString.Get("未知卡片");
-            nullString = "";
-            nullString += "欢迎使用 KoishiPro2 iOS，本软件免责声明：[url=http://koishi.222diy.gdn/lab.html][u]http://koishi.222diy.gdn/lab.html[/u][/url]";
-            nullString += "\r\n\r\n";
-            nullString += "KoishiPro2 iOS的用户QQ群627975038，游戏中遇到任何bug欢迎提交";
-            nullString += "\r\n\r\n";
-            nullString += "更多关于电脑/安卓版KoishiPro及7210服务器的信息可加QQ群338443272";
-            nullString += "\r\n\r\n";
-            nullString += "喜欢游戏王DIY的朋友欢迎来222服QQ群642043095";
-            using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
-            {
-                connection.Open();
-
-                using (IDbCommand command = new SqliteCommand("SELECT datas.*, texts.* FROM datas,texts WHERE datas.id=texts.id;", connection))
+            if(!test) {
+                nullName = InterString.Get("未知卡片");
+                nullString = "";
+                nullString += "欢迎使用 KoishiPro2 iOS，本软件免责声明：[url=http://koishi.222diy.gdn/lab.html][u]http://koishi.222diy.gdn/lab.html[/u][/url]";
+                nullString += "\r\n\r\n";
+                nullString += "KoishiPro2 iOS的用户QQ群627975038，游戏中遇到任何bug欢迎提交";
+                nullString += "\r\n\r\n";
+                nullString += "更多关于电脑/安卓版KoishiPro及7210服务器的信息可加QQ群338443272";
+                nullString += "\r\n\r\n";
+                nullString += "喜欢游戏王DIY的朋友欢迎来222服QQ群642043095";
+            }
+            bool success = true;
+            try {
+                using (SqliteConnection connection = new SqliteConnection("Data Source=" + databaseFullPath))
                 {
-                    using (IDataReader reader = command.ExecuteReader())
+                    connection.Open();
+
+                    using (IDbCommand command = new SqliteCommand("SELECT datas.*, texts.* FROM datas,texts WHERE datas.id=texts.id;", connection))
                     {
-                        while (reader.Read())
+                        using (IDataReader reader = command.ExecuteReader())
                         {
-                            LoadCard(reader);
+                            while (reader.Read())
+                            {
+                                LoadCard(reader, test);
+                            }
                         }
                     }
                 }
             }
+            catch (System.Exception e) {
+                success = false;
+            }
+            return success;
         }
 
         internal static Card GetCard(int id)
@@ -79,10 +88,10 @@ namespace YGOSharp
             return returnValue;
         }
 
-        private static void LoadCard(IDataRecord reader)
+        private static void LoadCard(IDataRecord reader, bool test = false)
         {
             Card card = new Card(reader);
-            if (!_cards.ContainsKey(card.Id))
+            if (!_cards.ContainsKey(card.Id) && !test)
             {
                 _cards.Add(card.Id, card);
             }
